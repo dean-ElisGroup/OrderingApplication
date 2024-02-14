@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "21472992381",
+    "project_id": "elis-solstockorder-test",
+    "storage_bucket": "elis-solstockorder-test.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:21472992381:android:c43db2d7fdb726eded2514",
+        "android_client_info": {
+          "package_name": "com.flutterflow.elisinventoryorderingapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "21472992381-8amqf48mo50q8va5dv4c09r8q46722cs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA1WNiHMTMwVyQBpUDp2TBnORXC_5vvQFU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "21472992381-8amqf48mo50q8va5dv4c09r8q46722cs.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "21472992381-obemuitruq5ipkdjhvc9qdg9rj3obn37.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.flutterflow.elisinventoryorderingapp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:21472992381:android:6a247e51f6e415e4ed2514",
+        "android_client_info": {
+          "package_name": "com.solstockorder.test"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "21472992381-8amqf48mo50q8va5dv4c09r8q46722cs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA1WNiHMTMwVyQBpUDp2TBnORXC_5vvQFU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "21472992381-8amqf48mo50q8va5dv4c09r8q46722cs.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "21472992381-obemuitruq5ipkdjhvc9qdg9rj3obn37.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.flutterflow.elisinventoryorderingapp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
