@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/loginFragment">
+
+    <fragment
+        android:id="@+id/landingPageFragment"
+        android:name="com.elis.orderingapplication.LandingPageFragment"
+        android:label="fragment_landing_page"
+        tools:layout="@layout/fragment_landing_page" >
+        <action
+            android:id="@+id/action_landingPageFragment_to_deliveryAddressFragment"
+            app:destination="@id/deliveryAddressFragment" />
+        <action
+            android:id="@+id/action_landingPageFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.elis.orderingapplication.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_landingPageFragment"
+            app:destination="@id/landingPageFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/deliveryAddressFragment"
+        android:name="com.elis.orderingapplication.DeliveryAddressFragment"
+        android:label="fragment_delivery_address"
+        tools:layout="@layout/fragment_delivery_address" >
+        <action
+            android:id="@+id/action_deliveryAddressFragment_to_landingPageFragment"
+            app:destination="@id/landingPageFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/posGroupFragment"
+        android:name="com.elis.orderingapplication.PosGroupFragment"
+        android:label="fragment_pos_group"
+        tools:layout="@layout/fragment_pos_group" >
+        <action
+            android:id="@+id/action_posGroupFragment_to_deliveryAddressFragment"
+            app:destination="@id/deliveryAddressFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/posFragment"
+        android:name="com.elis.orderingapplication.PosFragment"
+        android:label="fragment_pos"
+        tools:layout="@layout/fragment_pos" >
+        <action
+            android:id="@+id/action_posFragment_to_posGroupFragment"
+            app:destination="@id/posGroupFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/orderEntryFragment"
+        android:name="com.elis.orderingapplication.ArticleEntryFragment"
+        android:label="fragment_article_entry"
+        tools:layout="@layout/fragment_article_entry" >
+
+        <action
+            android:id="@+id/action_orderEntryFragment_to_posFragment"
+            app:destination="@id/posFragment" />
+    </fragment>
+</navigation>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<defaults>
+    <entry>
+        <key>SOL_OrderInfo_URL_LIVE</key>
+        <value>https://serviceonline.elisonline.co.uk/SolMaster/Ordering.wso/OrderInfo</value>
+    </entry>
+    <entry>
+        <key>SOL_OrderEvent_URL_LIVE</key>
+        <value>https://serviceonline.elisonline.co.uk/SolMaster/Ordering.wso/OrderEvent</value>
+    </entry>
+    <entry>
+        <key>SOL_Logout_URL_LIVE</key>
+        <value>https://serviceonline.elisonline.co.uk/SolMaster/Ordering.wso/Logout</value>
+    </entry>
+    <entry>
+        <key>SOL_Login_URL_LIVE</key>
+        <value>https://serviceonline.elisonline.co.uk/SolMaster/Ordering.wso/Login</value>
+    </entry>
+    <entry>
+        <key>SOL_IsServiceOnline_URL_LIVE</key>
+        <value>https://serviceonline.elisonline.co.uk/SolMaster/Ordering.wso</value>
+    </entry>
+    <entry>
+        <key>SOL_IsServiceOnline_URL</key>
+        <value>http://serviceonlinetest.elisonline.co.uk/SolMasterTraining1/Ordering.wso</value>
+    </entry>
+    <entry>
+        <key>SOL_Login_URL</key>
+        <value>http://serviceonlinetest.elisonline.co.uk/SolMasterTraining5/Ordering.wso/Login</value>
+    </entry>
+    <entry>
+        <key>SOL_Logout_URL</key>
+        <value>http://serviceonlinetest.elisonline.co.uk/SolMasterTraining5/Ordering.wso/Logout</value>
+    </entry>
+    <entry>
+        <key>SOL_OrderEvent_URL</key>
+        <value>http://serviceonlinetest.elisonline.co.uk/SolMasterTraining5/Ordering.wso/OrderEvent</value>
+    </entry>
+    <entry>
+        <key>SOL_OrderInfo_URL</key>
+        <value>http://serviceonlinetest.elisonline.co.uk/SolMasterTraining5/Ordering.wso/OrderInfo</value>
+    </entry>
+</defaults>
