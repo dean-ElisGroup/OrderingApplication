@@ -2,17 +2,17 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".LoginFragment">
+    tools:context="com.solstockorder.dev.LoginFragment">
 
     <data>
 
         <variable
             name="viewModel"
-            type="com.elis.orderingapplication.viewModels.LoginViewModel" />
+            type="com.solstockorder.dev.viewModels.LoginViewModel" />
 
         <variable
             name="paramViewModel"
-            type="com.elis.orderingapplication.viewModels.ParamsViewModel" />
+            type="com.solstockorder.dev.viewModels.ParamsViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

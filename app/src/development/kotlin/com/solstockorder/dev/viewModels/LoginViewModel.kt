@@ -1,4 +1,4 @@
-package com.elis.orderingapplication.viewModels
+package com.solstockorder.dev.viewModels
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

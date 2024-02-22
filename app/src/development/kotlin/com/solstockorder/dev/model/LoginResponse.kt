@@ -1,4 +1,4 @@
-package com.elis.orderingapplication.model
+package com.solstockorder.dev.model
 
 import com.google.gson.annotations.SerializedName
 

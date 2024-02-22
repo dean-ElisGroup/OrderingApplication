@@ -1,4 +1,4 @@
-package com.elis.orderingapplication
+package com.solstockorder.dev
 
 import android.content.Context
 import android.os.Bundle
@@ -18,17 +18,18 @@ import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
-import com.elis.orderingapplication.model.LoginRequest
-import com.elis.orderingapplication.model.OrderingRequest
-import com.elis.orderingapplication.viewModels.ParamsViewModel
-import com.elis.orderingapplication.viewModels.LoginViewModel
+import com.solstockorder.dev.model.LoginRequest
+import com.solstockorder.dev.model.OrderingRequest
+import com.solstockorder.dev.viewModels.ParamsViewModel
+import com.solstockorder.dev.viewModels.LoginViewModel
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import android.widget.ProgressBar
-import com.elis.orderingapplication.databinding.FragmentLoginBinding
-
+import com.solstockorder.dev.databinding.FragmentLoginBinding
+import com.solstockorder.dev.BuildConfig
+import com.solstockorder.dev.R
 
 class LoginFragment : Fragment() {
 
