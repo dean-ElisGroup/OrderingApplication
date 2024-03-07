@@ -6,7 +6,7 @@
 <data>
     <variable
         name="viewModel"
-        type="com.elis.solstockorder.viewModels.ParamsViewModel" />
+        type="com.elis.orderingapplication.viewModels.ParamsViewModel" />
 </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -39,6 +39,17 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_horizontal">
+
+            <TextView
+                android:id="@+id/sessionKey"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="32dp"
+                android:text="TextView"
+                app:layout_constraintEnd_toStartOf="@+id/headerBlock"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/headerBlock"

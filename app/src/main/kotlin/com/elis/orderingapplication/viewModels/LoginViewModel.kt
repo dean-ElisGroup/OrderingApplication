@@ -12,9 +12,8 @@ import retrofit2.Response
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-
 class LoginViewModel(val loginRep: UserLoginRepository) : ViewModel() {
-    private val userLoginResponse: MutableLiveData<ApiResponse<OrderingLoginResponseStruct>?> =
+    val userLoginResponse: MutableLiveData<ApiResponse<OrderingLoginResponseStruct>?> =
         MutableLiveData()
 
     fun getUserLogin(loginRequest: LoginRequest) = viewModelScope.launch {
@@ -27,6 +26,12 @@ class LoginViewModel(val loginRep: UserLoginRepository) : ViewModel() {
         if (response.isSuccessful && response.body()?.message == "") {
             response.body()?.let { resultResponse ->
                 return ApiResponse.Success(resultResponse)
+            }
+        }
+
+        if (response.isSuccessful && response.body()?.message != "") {
+            response.body()?.let { resultResponse ->
+                return ApiResponse.ErrorLogin(resultResponse.message)
             }
         }
         return ApiResponse.Error(response.message())

@@ -53,6 +53,7 @@ class LandingPageFragment : Fragment() {
 
         return binding.root //inflater.inflate(layout.fragment_landing_page, container, false)
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val menuHost: MenuHost = requireActivity()
         binding?.apply { viewModel = sharedViewModel }
@@ -88,40 +89,5 @@ class LandingPageFragment : Fragment() {
         }
     }
 
-   /* private fun apiCall2(sKey: String) {
-        val orderRequest = OrderingRequest(sKey)
-        val retrofitData = ServiceBuilder.buildService(RestApiInterface::class.java)
 
-        retrofitData.sendOrder(orderRequest).enqueue(
-            object : retrofit2.Callback<DeliveryData> {
-                override fun onResponse(
-                    call: Call<DeliveryData>,
-                    response: Response<DeliveryData>
-                ) {
-                    if (response.body()?.deliveryAddresses?.orderingDeliveryAddressStruct?.size != 0) {
-                        var testingResult =
-                            response.body()?.deliveryAddresses?.orderingDeliveryAddressStruct?.size
-                        if (testingResult != null) {
-                            Toast.makeText(
-                                activity,
-                                testingResult,
-                                Toast.LENGTH_LONG
-                            ).show()
-                        }
-                    }
-                }
-
-                override fun onFailure(
-                    call: Call<DeliveryData>,
-                    t: Throwable
-                ) {
-                    Toast.makeText(
-                        activity,
-                        "Failed",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-
-            })
-    }*/
 }

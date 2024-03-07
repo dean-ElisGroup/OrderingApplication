@@ -48,6 +48,19 @@
         <chat>
           <accountId value="VXNlcjozMDUxMTg=" />
           <internalId value="fbc3f642-ed9b-431b-8bba-6e825a052790" />
+          <messages>
+            <list>
+              <message>
+                <speaker value="HUMAN" />
+                <text value="Live data observe in a fragment" />
+              </message>
+              <message>
+                <speaker value="ASSISTANT" />
+                <text value=" Here is an example of using LiveData observe in a fragment with the selected code:&#10;&#10;```kt&#10;class LoginFragment : Fragment() {&#10;&#10;  private lateinit var loginViewModel: LoginViewModel&#10;  &#10;  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {&#10;    super.onViewCreated(view, savedInstanceState)&#10;    &#10;    loginViewModel.userLoginResponse.observe(viewLifecycleOwner) { response -&gt;&#10;      when (response) {&#10;        is ApiResponse.Success -&gt; {&#10;          // handle success response&#10;        }&#10;        is ApiResponse.Error -&gt; {&#10;          // handle error response &#10;        }&#10;      }&#10;    }&#10;  }&#10;&#10;}&#10;```&#10;&#10;The key points:&#10;&#10;- The LiveData is observed in the fragment by calling `observe` on it and passing the `viewLifecycleOwner` &#10;- This ties the LiveData observation lifecycle to the fragment's view lifecycle&#10;- The lambda provides the code to handle the different response cases&#10;- The response is the LiveData value that gets emitted&#10;&#10;So in this example, the `userLoginResponse` LiveData from the LoginViewModel is observed in the fragment. When the LiveData emits a new value, the observer lambda will execute to handle the response." />
+              </message>
+            </list>
+          </messages>
+          <updatedAt value="2024-03-07T13:45:54.2826652" />
         </chat>
       </list>
     </chats>

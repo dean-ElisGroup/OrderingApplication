@@ -7,4 +7,5 @@ sealed class ApiResponse<T>(
     class Success<T>(data: T) : ApiResponse<T>(data)
     class Error<T>(message: String, data: T? = null) : ApiResponse<T>(data, message)
     class Loading<T> : ApiResponse<T>()
+    class ErrorLogin<T>(message: String, data: T? = null) : ApiResponse<T>(data, message)
 }
