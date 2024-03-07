@@ -3,38 +3,33 @@ package com.elis.orderingapplication.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.elis.orderingapplication.model.LoginResponse
+import com.elis.orderingapplication.model.LoginRequest
+import com.elis.orderingapplication.model.OrderingLoginResponseStruct
 import com.elis.orderingapplication.repositories.UserLoginRepository
+import com.elis.orderingapplication.utils.ApiResponse
 import kotlinx.coroutines.launch
-import retrofit2.Call
 import retrofit2.Response
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import javax.security.auth.callback.Callback
 
 
-class LoginViewModel constructor(private val repository: UserLoginRepository) : ViewModel() {
+class LoginViewModel(val loginRep: UserLoginRepository) : ViewModel() {
+    private val userLoginResponse: MutableLiveData<ApiResponse<OrderingLoginResponseStruct>?> =
+        MutableLiveData()
 
-    val userLoginResponse = MutableLiveData<List<LoginResponse>>()
-    val errorMessage = MutableLiveData<String>()
+    fun getUserLogin(loginRequest: LoginRequest) = viewModelScope.launch {
+        userLoginResponse.postValue(ApiResponse.Loading())
+        val response = loginRep.getUserLogin(loginRequest)
+        userLoginResponse.postValue(handleUserLoginResponse(response))
+    }
 
-
-    fun getUserLoginResponse() {
-        viewModelScope.launch {
-            val response = repository.getUserLogin()
-            response.enqueue(object : retrofit2.Callback<List<LoginResponse>> {
-                override fun onResponse(
-                    call: Call<List<LoginResponse>>,
-                    response: Response<List<LoginResponse>>
-                ) {
-                    userLoginResponse.postValue(response.body())
-                }
-
-                override fun onFailure(call: Call<List<LoginResponse>>, t: Throwable) {
-                    errorMessage.postValue(t.message)
-                }
-            })
+    private fun handleUserLoginResponse(response: Response<OrderingLoginResponseStruct>): ApiResponse<OrderingLoginResponseStruct>? {
+        if (response.isSuccessful && response.body()?.message == "") {
+            response.body()?.let { resultResponse ->
+                return ApiResponse.Success(resultResponse)
+            }
         }
+        return ApiResponse.Error(response.message())
     }
 
     fun getDate(): String? {
@@ -42,3 +37,5 @@ class LoginViewModel constructor(private val repository: UserLoginRepository) : 
         return LocalDateTime.now().format(formatter)
     }
 }
+
+

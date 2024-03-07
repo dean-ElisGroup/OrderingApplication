@@ -2,8 +2,9 @@ package com.elis.orderingapplication.repositories
 
 import com.elis.orderingapplication.interfaces.UserLogin
 import com.elis.orderingapplication.model.LoginRequest
+import com.elis.orderingapplication.retrofit.RetroFitInstance
 
-class UserLoginRepository constructor(private val retrofitService: UserLogin) {
-    fun getUserLogin() =
-        retrofitService.getSessionKey(LoginRequest("SOUHMEADOPD1", "Tuesday1"))
+class UserLoginRepository() {
+suspend fun getUserLogin(loginRequest: LoginRequest) =
+        RetroFitInstance.api.getSessionKey(loginRequest)
 }

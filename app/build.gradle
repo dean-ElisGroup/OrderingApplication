@@ -4,6 +4,7 @@ plugins {
     id 'com.google.gms.google-services'
     id 'com.google.firebase.crashlytics'
     id 'kotlin-kapt'
+    id 'kotlin-android'
     id("com.google.devtools.ksp").version("1.9.10-1.0.13") // Or latest version of KSP
     id("io.objectbox")
 }
@@ -30,22 +31,18 @@ android {
             applicationIdSuffix ".dev"
             manifestPlaceholders = [appLabel: "Stock Ordering - Dev"]
             namespace 'com.solstockorder.dev'
-            buildFeatures{
-                dataBinding true
-                viewBinding true
-                buildConfig true
-            }
+            versionName "1.2.16"
         }
         staging {
             dimension "app_environment"
             applicationIdSuffix ".test"
             applicationId "com.solstockorder"
             manifestPlaceholders = [appLabel: "Stock Ordering - Test"]
-            namespace 'com.solstockorder.test'
+            namespace 'com.solcstockorder.test'
             buildFeatures{
-                dataBinding true
-                viewBinding true
-                buildConfig true
+                dataBinding = true
+                viewBinding = true
+                buildConfig = true
             }
 
         }
@@ -55,9 +52,9 @@ android {
             manifestPlaceholders = [appLabel: "Stock Ordering"]
             namespace 'com.elis.orderingapplication'
             buildFeatures{
-                dataBinding true
-                viewBinding true
-                buildConfig true
+                dataBinding = true
+                viewBinding = true
+                buildConfig = true
             }
         }
     }
@@ -74,6 +71,12 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+
+    buildFeatures {
+        dataBinding = true
+        viewBinding = true
+        buildConfig = true
     }
 
 
@@ -108,6 +111,7 @@ dependencies {
     implementation("androidx.compose.material3:material3-window-size-class:1.2.0")
     androidTestImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'org.hamcrest:hamcrest-library:2.2'
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
 
     implementation 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
     implementation 'androidx.work:work-runtime:2.9.0'

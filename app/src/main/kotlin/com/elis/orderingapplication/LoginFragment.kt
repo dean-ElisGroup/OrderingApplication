@@ -17,7 +17,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
+
 import com.elis.orderingapplication.model.LoginRequest
 import com.elis.orderingapplication.model.OrderingRequest
 import com.elis.orderingapplication.viewModels.ParamsViewModel
@@ -27,21 +27,24 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import android.widget.ProgressBar
+import androidx.lifecycle.ViewModelProvider
 import com.elis.orderingapplication.databinding.FragmentLoginBinding
-
+import com.elis.orderingapplication.repositories.UserLoginRepository
+import com.elis.orderingapplication.viewModels.LoginViewModelFactory
 
 class LoginFragment : Fragment() {
 
     private lateinit var binding: FragmentLoginBinding
     private val sharedViewModel: ParamsViewModel by activityViewModels()
 
-    private val loginViewModel: LoginViewModel by lazy {
-        ViewModelProvider(this)[LoginViewModel::class.java]
-    }
+    //private val rep = UserLoginRepository()
+    //private val provider = LoginViewModelFactory(rep)
+    //private val loginViewModel = ViewModelProvider(this, provider)[LoginViewModel::class.java]
+    private lateinit var loginView: LoginViewModel
+
 
     private var username: Editable? = null
     private var password: Editable? = null
-    private var orderInfoRequest = OrderingRequest("")
     private var orderInfoLoading: ProgressBar? = null
 
     override fun onCreateView(
@@ -52,27 +55,28 @@ class LoginFragment : Fragment() {
         val view = binding.root
         sharedViewModel.setAppVersion(BuildConfig.VERSION_NAME)
         sharedViewModel.setFlavor(BuildConfig.FLAVOR)
+        val rep = UserLoginRepository()
+        val provider = LoginViewModelFactory(rep)
+        val loginViewModel = ViewModelProvider(this, provider)[LoginViewModel::class.java]
+        loginView = loginViewModel
         binding.apply { viewModel = loginViewModel }
         binding.apply { paramViewModel = sharedViewModel }
         binding.lifecycleOwner = this
         orderInfoLoading = binding.orderInfoLoading
         fireBaseRemoteConfig()
-
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         // sets Today's date for login activity
-        binding.date.text = loginViewModel.getDate()
+        binding.date.text = loginView.getDate()
         sharedViewModel.setOrderDate(binding.date.text.toString())
         sharedViewModel.setAppVersion(BuildConfig.VERSION_NAME)
         sharedViewModel.setFlavor(BuildConfig.FLAVOR)
         // sets Flavor banner details for login activity
         setFlavorBanner()
         // initiates Firebase remote config options
-
-
         with(binding) {
             loginButton.setOnClickListener {
                 //view
@@ -84,9 +88,10 @@ class LoginFragment : Fragment() {
                     )
                     orderInfoLoading.visibility = VISIBLE
                     it.hideKeyboard()
+                    // Gets and sets the user entered username and password.
                     val login = LoginRequest(username.text.toString(), password.text.toString())
                     // Initiates the Login Api call, passing the above username and password.
-                    loginViewModel.getUserLoginResponse()
+                    loginView.getUserLogin(login)
 
 
                 }
@@ -104,15 +109,15 @@ class LoginFragment : Fragment() {
     private fun setFlavorBanner() {
         val flavorBanner = binding.flavorBanner
         // sets banner text
-        if (sharedViewModel.flavor.value == "dev") {
+        if (sharedViewModel.flavor.value == "development") {
             flavorBanner.text = resources.getString(R.string.devFlavorText)
         }
         // hides banner if PROD application
-        if (sharedViewModel.flavor.value == "prod") {
+        if (sharedViewModel.flavor.value == "production") {
             flavorBanner.isVisible = false
         }
         // sets banner text and banner color
-        if (sharedViewModel.flavor.value == "preProd") {
+        if (sharedViewModel.flavor.value == "staging") {
             flavorBanner.text = resources.getString(R.string.testFlavorText)
             flavorBanner.run {
                 setBackgroundColor(
