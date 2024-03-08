@@ -31,7 +31,7 @@ class LoginAdapter : RecyclerView.Adapter<LoginAdapter.LoginHolder>() {
 
     }
 
-    val differ = AsyncListDiffer(this, differCallBack)
+    private val differ = AsyncListDiffer(this, differCallBack)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LoginHolder {
         return LoginHolder(
