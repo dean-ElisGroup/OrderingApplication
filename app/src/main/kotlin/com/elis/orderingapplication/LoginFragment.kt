@@ -29,6 +29,7 @@ import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import android.widget.ProgressBar
 import androidx.compose.material3.Snackbar
+import androidx.core.content.ContentProviderCompat
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -38,8 +39,11 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.elis.orderingapplication.adapters.LoginAdapter
 import com.elis.orderingapplication.database.UserLogin
+import com.elis.orderingapplication.database.UserLoginDao
 import com.elis.orderingapplication.database.UserLoginDatabase
+import com.elis.orderingapplication.database.UserLoginInsert
 import com.elis.orderingapplication.databinding.FragmentLoginBinding
+import com.elis.orderingapplication.model.ObjectBoxTest
 import com.elis.orderingapplication.model.OrderingLoginResponseStruct
 import com.elis.orderingapplication.repositories.UserLoginRepository
 import com.elis.orderingapplication.utils.ApiResponse
@@ -55,7 +59,6 @@ class LoginFragment : Fragment() {
     //private val loginViewModel = ViewModelProvider(this, provider)[LoginViewModel::class.java]
     private lateinit var loginView: LoginViewModel
     lateinit var loginAdapter: LoginAdapter
-
 
     private var username: Editable? = null
     private var password: Editable? = null
@@ -77,6 +80,7 @@ class LoginFragment : Fragment() {
         binding.lifecycleOwner = this
         orderInfoLoading = binding.orderInfoLoading
         fireBaseRemoteConfig()
+        ObjectBox.init(requireContext())
         return view
     }
 
@@ -89,7 +93,8 @@ class LoginFragment : Fragment() {
         sharedViewModel.setFlavor(BuildConfig.FLAVOR)
         // sets Flavor banner details for login activity
         setFlavorBanner()
-        // initiates Firebase remote config options
+
+
         with(binding) {
             loginButton.setOnClickListener {
                 //view
@@ -116,8 +121,6 @@ class LoginFragment : Fragment() {
                                 loginView.orderInfoResponse.observe(viewLifecycleOwner) { orderInfoResponse ->
                                     when (orderInfoResponse) {
                                         is ApiResponse.Success -> {
-
-
                                             findNavController(view).navigate(R.id.action_loginFragment_to_landingPageFragment)
                                         }
 

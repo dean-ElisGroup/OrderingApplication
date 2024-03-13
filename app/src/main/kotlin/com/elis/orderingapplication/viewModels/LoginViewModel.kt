@@ -1,18 +1,11 @@
 package com.elis.orderingapplication.viewModels
 
-//import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.room.Room
-import com.elis.orderingapplication.database.UserLogin
-import com.elis.orderingapplication.database.UserLoginDao
-import com.elis.orderingapplication.database.UserLoginDatabase
 import com.elis.orderingapplication.model.LoginRequest
 import com.elis.orderingapplication.model.OrderingInfoResponse
 import com.elis.orderingapplication.model.OrderingLoginResponseStruct
-import com.elis.orderingapplication.model.OrderingOrderInfoResponseStruct
 import com.elis.orderingapplication.model.OrderingRequest
 import com.elis.orderingapplication.repositories.UserLoginRepository
 import com.elis.orderingapplication.utils.ApiResponse
@@ -21,22 +14,26 @@ import retrofit2.Response
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-
 class LoginViewModel(private val loginRep: UserLoginRepository) : ViewModel() {
     val userLoginResponse: MutableLiveData<ApiResponse<OrderingLoginResponseStruct>?> =
         MutableLiveData()
     val orderInfoResponse: MutableLiveData<ApiResponse<OrderingInfoResponse>?> =
         MutableLiveData()
+
     fun getUserLogin(loginRequest: LoginRequest) = viewModelScope.launch {
         userLoginResponse.postValue(ApiResponse.Loading())
         val response = loginRep.getUserLogin(loginRequest)
         userLoginResponse.postValue(handleUserLoginResponse(response))
+
+
     }
+
     fun getOrderInfo(sessionKey: OrderingRequest) = viewModelScope.launch {
         orderInfoResponse.postValue(ApiResponse.Loading())
         val response = loginRep.getOrderInfo(sessionKey)
         orderInfoResponse.postValue(handleOrderInfoResponse(response))
     }
+
     private fun handleUserLoginResponse(response: Response<OrderingLoginResponseStruct>): ApiResponse<OrderingLoginResponseStruct>? {
         if (response.isSuccessful && response.body()?.message == "") {
             response.body()?.let { resultResponse ->

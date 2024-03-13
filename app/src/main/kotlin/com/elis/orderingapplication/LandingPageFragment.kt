@@ -16,16 +16,18 @@ import androidx.core.view.MenuProvider
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.elis.orderingapplication.databinding.FragmentLandingPageBinding
-import androidx.lifecycle.*
+import com.elis.orderingapplication.viewModels.LandingPageViewModel
+import com.elis.orderingapplication.viewModels.LoginViewModel
 import com.elis.orderingapplication.viewModels.ParamsViewModel
-
 
 class LandingPageFragment : Fragment() {
 
     private lateinit var binding: FragmentLandingPageBinding
     private val sharedViewModel: ParamsViewModel by activityViewModels()
+    private lateinit var landingPageView: LandingPageViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,6 +37,7 @@ class LandingPageFragment : Fragment() {
             DataBindingUtil.inflate(inflater, R.layout.fragment_landing_page, container, false)
         // Clears hold on UI interaction when progress bar is visible
         requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+
         // Inflate the layout for this fragment
         with(binding) {
             ordersButton.setOnClickListener {
@@ -50,7 +53,6 @@ class LandingPageFragment : Fragment() {
                 }
             }
         }
-
         return binding.root //inflater.inflate(layout.fragment_landing_page, container, false)
     }
 

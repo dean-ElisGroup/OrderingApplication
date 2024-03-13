@@ -87,6 +87,58 @@
           </messages>
           <updatedAt value="2024-03-08T13:43:49.2807178" />
         </chat>
+        <chat>
+          <accountId value="VXNlcjozMDUxMTg=" />
+          <internalId value="7f616c66-7993-420d-a20f-fc47f7638906" />
+          <messages>
+            <list>
+              <message>
+                <speaker value="HUMAN" />
+                <text value="How to insert UserLogin to a room database" />
+              </message>
+              <message>
+                <speaker value="ASSISTANT" />
+                <text value=" Here is how you can insert a UserLogin object into a Room database:&#10;&#10;1. Define a UserLogin data class:&#10;&#10;```kotlin&#10;@Entity&#10;data class UserLogin(&#10;    @PrimaryKey val id: Int,&#10;    @ColumnInfo(name = &quot;username&quot;) val username: String, &#10;    @ColumnInfo(name = &quot;password&quot;) val password: String&#10;)&#10;```&#10;&#10;2. Get reference to the DAO:&#10;&#10;```kotlin &#10;val userLoginDao = AppDatabase.getInstance(context).userLoginDao()&#10;```&#10;&#10;3. Insert the object:&#10;&#10;```kotlin&#10;val user = UserLogin(1, &quot;john&quot;, &quot;password123&quot;)&#10;userLoginDao.insert(user)&#10;```&#10;&#10;The key steps are:&#10;&#10;- Define an entity data class annotated with @Entity&#10;- The fields you want to store in the database should be annotated (e.g. @PrimaryKey) &#10;- Get reference to the DAO object &#10;- Call the insert method on the DAO, passing your entity object&#10;&#10;The DAO will handle inserting the object into the database. Make sure to define the DAO interface and abstract method for insert." />
+              </message>
+            </list>
+          </messages>
+          <updatedAt value="2024-03-11T15:32:52.8457046" />
+        </chat>
+        <chat>
+          <accountId value="VXNlcjozMDUxMTg=" />
+          <internalId value="2cf3b1af-4d1e-4d6d-bf47-0a2cfac0acd8" />
+          <llm>
+            <llm>
+              <model value="anthropic/claude-2.0" />
+              <provider value="Anthropic" />
+              <title value="Claude 2.0" />
+            </llm>
+          </llm>
+        </chat>
+        <chat>
+          <accountId value="VXNlcjozMDUxMTg=" />
+          <internalId value="0a55a60d-cd69-4112-8206-7b1be382ab02" />
+          <llm>
+            <llm>
+              <model value="anthropic/claude-2.0" />
+              <provider value="Anthropic" />
+              <title value="Claude 2.0" />
+            </llm>
+          </llm>
+          <messages>
+            <list>
+              <message>
+                <speaker value="HUMAN" />
+                <text value="objectbox" />
+              </message>
+              <message>
+                <speaker value="ASSISTANT" />
+                <text value=" Here are a few key things to know about using ObjectBox in an Android Kotlin project:&#10;&#10;- Add the ObjectBox Kotlin gradle plugin in your app's build.gradle file:&#10;&#10;```&#10;plugins {&#10;  id &quot;io.objectbox&quot; version &quot;3.0.0&quot;&#10;}&#10;```&#10;&#10;- Annotate Kotlin data classes with @Entity to generate ObjectBox entities:&#10;&#10;```kotlin&#10;@Entity&#10;data class Book(&#10;  var name: String,&#10;  var pages: Int&#10;)&#10;```&#10;&#10;- Generate ObjectBox code by running:&#10;&#10;```&#10;./gradlew objectboxGenerate&#10;```&#10;&#10;- Get an ObjectBox instance and open/create a database:&#10;&#10;```kotlin &#10;val boxStore = MyObjectBox.builder().androidContext(context).build()&#10;val box = boxStore.boxFor(Book::class.java)&#10;```&#10;&#10;- Use the ObjectBox Kotlin extensions for a concise API:&#10;&#10;```kotlin&#10;box.put(Book(&quot;My Book&quot;, 100))&#10;val book = box.get(1)&#10;```&#10;&#10;- ObjectBox entities are regular Kotlin objects, you can use them as usual.&#10;&#10;So in summary, ObjectBox provides a nice Kotlin-first API for object persistence on Android." />
+              </message>
+            </list>
+          </messages>
+          <updatedAt value="2024-03-13T09:31:17.2754403" />
+        </chat>
       </list>
     </chats>
   </component>

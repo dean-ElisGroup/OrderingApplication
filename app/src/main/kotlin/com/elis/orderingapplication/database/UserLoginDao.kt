@@ -10,10 +10,10 @@ import androidx.room.Update
 interface UserLoginDao {
 
     @Insert
-    suspend fun insert(night: UserLogin)
+    suspend fun insert(user: UserLogin)
 
     @Update
-    suspend fun update(night: UserLogin)
+    suspend fun update(user: UserLogin)
 
     @Query("SELECT * from user_login WHERE userLoginId = :key")
     suspend fun get(key: Long): UserLogin?
@@ -21,11 +21,7 @@ interface UserLoginDao {
     @Query("DELETE FROM user_login")
     suspend fun clear()
 
-
     @Query("SELECT * FROM user_login ORDER BY userLoginId DESC")
-    fun getAllNights(): LiveData<List<UserLogin>>
-
-    @Query("SELECT * FROM user_login ORDER BY userLoginId DESC LIMIT 1")
-    suspend fun getTonight(): UserLogin?
+    fun getUser(): LiveData<List<UserLogin>>
 
 }

@@ -47,7 +47,7 @@ class OrderInfoAdapter : RecyclerView.Adapter<OrderInfoAdapter.OrderInfoHolder>(
         val loginSession = differ.currentList[position]
         holder.itemView.apply {
             FragmentLandingPageBinding.bind(this).apply {
-                sessionKey.text = loginSession.orderingOrderInfoResponseStruct.deliveryAddresses.orderingDeliveryAddressStruct.deliveryAddressName.toString()
+                sessionKey.text = loginSession.orderingOrderInfoResponseStruct.deliveryAddresses.orderingDeliveryAddressStruct.deliveryAddressName
             }
         }
     }
