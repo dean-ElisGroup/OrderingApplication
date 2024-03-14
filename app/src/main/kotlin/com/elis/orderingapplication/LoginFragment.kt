@@ -79,6 +79,7 @@ class LoginFragment : Fragment() {
         binding.apply { paramViewModel = sharedViewModel }
         binding.lifecycleOwner = this
         orderInfoLoading = binding.orderInfoLoading
+
         fireBaseRemoteConfig()
         ObjectBox.init(requireContext())
         return view
@@ -115,12 +116,15 @@ class LoginFragment : Fragment() {
                             is ApiResponse.Success -> {
                                 // Sets the session key to be used for the Ordering Api call.
                                 orderInfoLoading.visibility = VISIBLE
+
                                 response.data?.let { it1 -> sharedViewModel.setSessionKey(it1.sessionKey) }
                                 val sessionKey = OrderingRequest(sharedViewModel.getSessionKey())
                                 loginView.getOrderInfo(sessionKey)
                                 loginView.orderInfoResponse.observe(viewLifecycleOwner) { orderInfoResponse ->
+                                    //sharedViewModel.setOrderInfo(loginView.orderInfoResponse.observe())
                                     when (orderInfoResponse) {
                                         is ApiResponse.Success -> {
+                                            sharedViewModel.setOrderInfo(loginView.orderInfoResponse.value)
                                             findNavController(view).navigate(R.id.action_loginFragment_to_landingPageFragment)
                                         }
 

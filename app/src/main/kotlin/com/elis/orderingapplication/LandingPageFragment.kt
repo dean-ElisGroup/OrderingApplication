@@ -27,6 +27,7 @@ class LandingPageFragment : Fragment() {
 
     private lateinit var binding: FragmentLandingPageBinding
     private val sharedViewModel: ParamsViewModel by activityViewModels()
+
     private lateinit var landingPageView: LandingPageViewModel
 
     override fun onCreateView(

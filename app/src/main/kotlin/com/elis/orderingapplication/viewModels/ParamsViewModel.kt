@@ -3,14 +3,12 @@ package com.elis.orderingapplication.viewModels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.elis.orderingapplication.model.OrderingRequest
+import com.elis.orderingapplication.pojo2.OrderInfo
+import com.elis.orderingapplication.utils.ApiResponse
 
 class ParamsViewModel : ViewModel() {
     private val _orderDate = MutableLiveData<String>("")
     val orderDate: LiveData<String> = _orderDate
-
-    //private val _sessionKey = MutableLiveData<String>("")
-    //val sessionKey: LiveData<String> = _sessionKey
 
     private lateinit var _sessionKey: String
 
@@ -19,6 +17,9 @@ class ParamsViewModel : ViewModel() {
 
     private val _flavor = MutableLiveData<String>("")
     val flavor: LiveData<String> = _flavor
+
+    private var _orderInfo: ApiResponse<OrderInfo>? = null
+    val orderInfo: ApiResponse<OrderInfo>? = _orderInfo
 
     fun setOrderDate(orderDate: String) {
         _orderDate.value = orderDate
@@ -31,6 +32,12 @@ class ParamsViewModel : ViewModel() {
     fun getSessionKey(): String {
         return _sessionKey
     }
+    fun setOrderInfo(orderInfo: ApiResponse<OrderInfo>?){
+        _orderInfo = orderInfo
+    }
+    fun getOrder(): ApiResponse<OrderInfo>? {
+        return _orderInfo
+   }
 
     fun setAppVersion(appVersion: String) {
         val version = "Version: "
@@ -45,11 +52,9 @@ class ParamsViewModel : ViewModel() {
         return _orderDate.value.isNullOrEmpty()
     }
 
-    //fun hasNoSessionKey(): Boolean {
-    //    return _sessionKey.value.isNullOrEmpty()
-   // }
-
     fun hasNoAppVersion(): Boolean {
         return _appVersion.value.isNullOrEmpty()
     }
+
+
 }

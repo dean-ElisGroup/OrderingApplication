@@ -114,7 +114,7 @@
                 android:fontFamily="@font/sharpsans_medium"
                 android:letterSpacing=".1"
                 android:maxLines="1"
-                android:text="@string/select_a_delivery_address"
+                android:text="@string/please_select_a_point_of_service"
                 android:textAlignment="center"
                 android:textColor="@color/elis_blue"
                 android:textSize="16sp"
@@ -137,8 +137,7 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    tools:listitem="@layout/delivery_address_cardview"/>
+                    app:layout_constraintStart_toStartOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.Guideline
@@ -188,7 +187,7 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </layout>

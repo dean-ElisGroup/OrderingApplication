@@ -40,6 +40,24 @@
             android:id="@+id/action_deliveryAddressFragment_to_landingPageFragment"
             app:destination="@id/landingPageFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/posGroupFragment"
+        android:name="com.elis.orderingapplication.PosGroupFragment"
+        android:label="fragment_pos_group"
+        tools:layout="@layout/fragment_pos_group" >
+        <action
+            android:id="@+id/action_posGroupFragment_to_deliveryAddressFragment"
+            app:destination="@id/deliveryAddressFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/posFragment"
+        android:name="com.elis.orderingapplication.PosFragment"
+        android:label="fragment_pos"
+        tools:layout="@layout/fragment_pos" >
+        <action
+            android:id="@+id/action_posFragment_to_posGroupFragment"
+            app:destination="@id/posGroupFragment" />
+    </fragment>
 
 
 </navigation>

@@ -4,9 +4,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.elis.orderingapplication.model.LoginRequest
-import com.elis.orderingapplication.model.OrderingInfoResponse
 import com.elis.orderingapplication.model.OrderingLoginResponseStruct
 import com.elis.orderingapplication.model.OrderingRequest
+import com.elis.orderingapplication.pojo2.OrderInfo
 import com.elis.orderingapplication.repositories.UserLoginRepository
 import com.elis.orderingapplication.utils.ApiResponse
 import kotlinx.coroutines.launch
@@ -17,7 +17,7 @@ import java.time.format.DateTimeFormatter
 class LoginViewModel(private val loginRep: UserLoginRepository) : ViewModel() {
     val userLoginResponse: MutableLiveData<ApiResponse<OrderingLoginResponseStruct>?> =
         MutableLiveData()
-    val orderInfoResponse: MutableLiveData<ApiResponse<OrderingInfoResponse>?> =
+    val orderInfoResponse: MutableLiveData<ApiResponse<OrderInfo>?> =
         MutableLiveData()
 
     fun getUserLogin(loginRequest: LoginRequest) = viewModelScope.launch {
@@ -49,7 +49,7 @@ class LoginViewModel(private val loginRep: UserLoginRepository) : ViewModel() {
         return ApiResponse.Error(response.message())
     }
 
-    private fun handleOrderInfoResponse(response: Response<OrderingInfoResponse>): ApiResponse<OrderingInfoResponse>? {
+    private fun handleOrderInfoResponse(response: Response<OrderInfo>): ApiResponse<OrderInfo>? {
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
                 return ApiResponse.Success(resultResponse)

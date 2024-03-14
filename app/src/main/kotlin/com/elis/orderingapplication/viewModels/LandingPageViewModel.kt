@@ -1,24 +1,20 @@
 package com.elis.orderingapplication.viewModels
 
 import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.elis.orderingapplication.database.OrderInfo
-import com.elis.orderingapplication.database.OrderInfoDao
-import com.elis.orderingapplication.database.OrderInfoDatabase
-import com.elis.orderingapplication.database.UserLoginDatabase
-import kotlinx.coroutines.launch
+import androidx.lifecycle.ViewModelProvider
 
-class LandingPageViewModel (private val orderInfoDao: OrderInfoDao) : ViewModel() {
 
-    fun insertOrder() {
+class LandingPageViewModel(): ViewModel() {
+/*
+    private val loginViewModel: LoginViewModel by activityViewModels()
 
-        val order = OrderInfo(
-            deliveryAddressName = "Dean",
-            deliveryAddressNo = 665254
-        )
-        viewModelScope.launch {
-            orderInfoDao.insert(order)
+
+    loginViewModel.orderInfoResponse.observe(viewLifecycleOwner) { response ->
+        if (response?.data != null) {
+            val data = response.data
+            // handle response
         }
-    }
+    }*/
 }

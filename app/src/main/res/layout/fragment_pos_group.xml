@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".DeliveryAddressFragment"
+    tools:context=".PosGroupFragment"
     android:orientation="vertical">
     <data>
         <variable
@@ -62,7 +62,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="8dp"
@@ -82,6 +82,7 @@
                     android:text="@string/order_date_text"
                     android:textAlignment="center"
                     android:textColor="@color/elis_blue"
+                    android:textSize="18sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -100,6 +101,38 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/orderDateText" />
+
+                <TextView
+                    android:id="@+id/deliveryAdddress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="8dp"
+                    android:fontFamily="@font/sharpsans_medium"
+                    android:text="@{viewModel.orderDate}"
+                    android:textFontWeight="800"
+                    android:textSize="18sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/deliveryAddressText" />
+
+                <TextView
+                    android:id="@+id/deliveryAddressText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/delivery_address_text"
+                    android:textAlignment="center"
+                    android:textColor="@color/elis_blue"
+                    android:textSize="18sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/orderDate" />
+
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
@@ -114,7 +147,7 @@
                 android:fontFamily="@font/sharpsans_medium"
                 android:letterSpacing=".1"
                 android:maxLines="1"
-                android:text="@string/select_a_delivery_address"
+                android:text="@string/please_select_a_point_of_service_group"
                 android:textAlignment="center"
                 android:textColor="@color/elis_blue"
                 android:textSize="16sp"
@@ -137,8 +170,7 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    tools:listitem="@layout/delivery_address_cardview"/>
+                    app:layout_constraintStart_toStartOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.Guideline
@@ -188,7 +220,7 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </layout>

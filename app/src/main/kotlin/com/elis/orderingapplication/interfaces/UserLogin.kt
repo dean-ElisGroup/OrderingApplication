@@ -1,10 +1,9 @@
 package com.elis.orderingapplication.interfaces
 
 import com.elis.orderingapplication.model.LoginRequest
-import com.elis.orderingapplication.model.OrderingInfoResponse
 import com.elis.orderingapplication.model.OrderingLoginResponseStruct
-import com.elis.orderingapplication.model.OrderingOrderInfoResponseStruct
 import com.elis.orderingapplication.model.OrderingRequest
+import com.elis.orderingapplication.pojo2.OrderInfo
 import com.elis.orderingapplication.utils.ApiChannels.Companion.LOGIN
 import com.elis.orderingapplication.utils.ApiChannels.Companion.ORDER_INFO
 import retrofit2.Response
@@ -25,6 +24,6 @@ interface OrderInfo {
     @POST(ORDER_INFO)
     suspend fun getOrderInfo(
         @Body sessionKey: OrderingRequest
-    ): Response<OrderingInfoResponse>
+    ): Response<OrderInfo>
 
 }

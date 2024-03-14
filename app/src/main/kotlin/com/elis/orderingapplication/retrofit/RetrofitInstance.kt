@@ -2,6 +2,8 @@ package com.elis.orderingapplication.retrofit
 
 import com.elis.orderingapplication.interfaces.OrderInfo
 import com.elis.orderingapplication.interfaces.UserLogin
+import com.elis.orderingapplication.model.DeliveryAddresses
+import com.elis.orderingapplication.model.OrderingDeliveryAddressStruct
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
