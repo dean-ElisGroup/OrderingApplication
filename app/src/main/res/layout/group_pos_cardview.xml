@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable
-            name="deliveryAddress"
-            type="com.elis.orderingapplication.pojo2.DeliveryAddress" />
+            name="orderInfo"
+            type="com.elis.orderingapplication.pojo2.OrderInfo" />
     </data>
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -16,23 +16,15 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="5dp">
-
             <TextView
                 android:id="@+id/deliveryAddressName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginLeft="15dp"
-                android:text="@{deliveryAddress.deliveryAddressName}"
+                android:text="@{orderInfo.UId}"
                 android:textSize="20sp"
                 android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/deliveryAddressNo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{deliveryAddress.deliveryAddressNo}"
-                android:layout_weight="1" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </layout>

@@ -2,8 +2,9 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".DeliveryAddressFragment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".DeliveryAddressFragment">
+
     <data>
         <variable
             name="viewModel"
@@ -11,6 +12,9 @@
         <variable
             name="loginViewModel"
             type="com.elis.orderingapplication.viewModels.LoginViewModel" />
+        <variable
+            name="deliveryAddressModel"
+            type="com.elis.orderingapplication.viewModels.DeliveryAddressViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -28,6 +32,7 @@
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
+            style="@style/overflowMenuColour"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/elis_blue"
@@ -35,9 +40,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:navigationContentDescription="@string/go_back_to_options"
-            app:titleTextAppearance="@style/Toolbar.TitleText"
-            style="@style/overflowMenuColour"
-            />
+            app:titleTextAppearance="@style/Toolbar.TitleText" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/button_layout"
@@ -138,7 +141,10 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    tools:listitem="@layout/delivery_address_cardview"/>
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    app:spanCount="1"
+                    tools:itemCount="5"
+                    tools:listitem="@layout/delivery_address_cardview" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.Guideline
@@ -146,8 +152,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.03"
-                />
+                app:layout_constraintGuide_percent="0.03" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline4"
@@ -172,23 +177,23 @@
                 style="@style/Widget.Material3.Button.Icon"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:backgroundTint="#00FFFFFF"
                 android:contentDescription="@string/overflow_menu_text"
+                android:gravity="center_vertical"
                 android:paddingTop="1dp"
                 android:paddingEnd="1dp"
-                android:layout_marginTop="8dp"
                 android:translationZ="90dp"
                 app:icon="@drawable/ic_more_vert"
                 app:iconGravity="start|end"
                 app:iconSize="30dp"
                 app:iconTint="@color/white"
                 app:layout_constraintEnd_toStartOf="@+id/guideline4"
-                app:layout_constraintTop_toTopOf="parent"
-                android:gravity="center_vertical"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </layout>

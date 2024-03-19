@@ -86,7 +86,7 @@ android {
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:+'
+    implementation 'androidx.core:core-ktx:1.12.0'
     def room_version = '2.6.1'
 
     implementation("androidx.room:room-runtime:2.6.1")
@@ -100,7 +100,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.11.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'com.google.firebase:firebase-messaging-ktx:23.4.1'
-    implementation 'com.google.firebase:firebase-config-ktx:21.6.1'
+    implementation 'com.google.firebase:firebase-config-ktx:21.6.3'
     implementation 'com.google.firebase:firebase-crashlytics-ktx:18.6.2'
     implementation 'com.google.firebase:firebase-analytics-ktx:21.5.1'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.7.7'
@@ -108,15 +108,15 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-    implementation("androidx.compose.material3:material3:1.2.0")
-    implementation("androidx.compose.material3:material3-window-size-class:1.2.0")
+    implementation("androidx.compose.material3:material3:1.2.1")
+    implementation("androidx.compose.material3:material3-window-size-class:1.2.1")
     androidTestImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'org.hamcrest:hamcrest-library:2.2'
     implementation("androidx.datastore:datastore-preferences:1.0.0")
 
     implementation 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
     implementation 'androidx.work:work-runtime:2.9.0'
-    implementation platform('com.google.firebase:firebase-bom:32.7.2')
+    implementation platform('com.google.firebase:firebase-bom:32.7.4')
     implementation 'javax.annotation:javax.annotation-api:1.3.2'
     implementation 'com.fasterxml.jackson.module:jackson-module-kotlin:2.16.1'
     implementation("androidx.datastore:datastore-preferences:1.0.0")

@@ -3,6 +3,7 @@ package com.elis.orderingapplication.viewModels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.elis.orderingapplication.pojo2.DeliveryAddress
 import com.elis.orderingapplication.pojo2.OrderInfo
 import com.elis.orderingapplication.utils.ApiResponse
 
@@ -21,6 +22,10 @@ class ParamsViewModel : ViewModel() {
     private var _orderInfo: ApiResponse<OrderInfo>? = null
     val orderInfo: ApiResponse<OrderInfo>? = _orderInfo
 
+    private var _deliveryAddress: List<DeliveryAddress>? = null
+    val deliveryAddress: List<DeliveryAddress>? = _deliveryAddress
+
+
     fun setOrderDate(orderDate: String) {
         _orderDate.value = orderDate
     }
@@ -38,6 +43,12 @@ class ParamsViewModel : ViewModel() {
     fun getOrder(): ApiResponse<OrderInfo>? {
         return _orderInfo
    }
+    fun setDeliveryAddress(deliveryAddress: ApiResponse<OrderInfo>?) {
+        _deliveryAddress = deliveryAddress?.data?.deliveryAddresses
+    }
+    fun getDeliveryAddresses(): List<DeliveryAddress>? {
+        return _deliveryAddress
+    }
 
     fun setAppVersion(appVersion: String) {
         val version = "Version: "

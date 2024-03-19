@@ -2,17 +2,10 @@ package com.elis.orderingapplication
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.activity.viewModels
-import androidx.core.content.ContentProviderCompat
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
-import com.elis.orderingapplication.database.OrderInfoDatabase
-import com.elis.orderingapplication.database.UserLoginDatabase
 import com.elis.orderingapplication.databinding.ActivityMainBinding
-import com.elis.orderingapplication.viewModels.LandingPageViewModel
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding

@@ -197,6 +197,60 @@
               <title value="Claude 2.0" />
             </llm>
           </llm>
+          <messages>
+            <list>
+              <message>
+                <speaker value="HUMAN" />
+                <text value="how to createcardview recycler view" />
+              </message>
+              <message>
+                <speaker value="ASSISTANT" />
+                <text value=" Here is how to create a RecyclerView with CardViews in Android:&#10;&#10;1. Add the CardView dependency in your app level build.gradle file:&#10;&#10;```&#10;implementation 'androidx.cardview:cardview:1.0.0'&#10;```&#10;&#10;2. Create a layout XML file for each card item (e.g. card_item.xml):&#10;&#10;```xml&#10;&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;&#10;&lt;androidx.cardview.widget.CardView &#10;    xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;&#10;    android:layout_width=&quot;match_parent&quot;&#10;    android:layout_height=&quot;wrap_content&quot;&#10;    android:layout_margin=&quot;8dp&quot;&gt;&#10;&#10;    &lt;!-- Card content --&gt;&#10;&#10;&lt;/androidx.cardview.widget.CardView&gt;&#10;```&#10;&#10;3. Create a layout XML file for the RecyclerView (e.g. recycler_view.xml):&#10;&#10;```xml&#10;&lt;androidx.recyclerview.widget.RecyclerView&#10;    android:id=&quot;@+id/recycler_view&quot;&#10;    android:layout_width=&quot;match_parent&quot; &#10;    android:layout_height=&quot;match_parent&quot;/&gt;&#10;```&#10;&#10;4. Create a RecyclerView Adapter and ViewHolder to populate each card item.&#10;&#10;5. Set the layout manager and adapter on the RecyclerView in your activity/fragment. &#10;&#10;6. Populate the adapter with a list of data objects to display the cards.&#10;&#10;So in summary, you need the CardView layouts, RecyclerView, Adapter, ViewHolder, and data source to build a scrollable list of cards. The RecyclerView handles recycling the card views efficiently." />
+              </message>
+              <message>
+                <speaker value="HUMAN" />
+                <text value="Use data binding for a recyclerview adapter" />
+              </message>
+              <message>
+                <speaker value="ASSISTANT" />
+                <text value=" Here is an example of using data binding in a RecyclerView adapter:&#10;&#10;1. Define a data binding layout for each item (item_layout.xml):&#10;&#10;```xml&#10;&lt;layout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;&gt;&#10;&#10;   &lt;data&gt;&#10;       &lt;variable&#10;           name=&quot;item&quot;&#10;           type=&quot;com.example.Item&quot; /&gt;&#10;   &lt;/data&gt;&#10;&#10;   &lt;!-- Layout content --&gt;&#10;   &lt;TextView&#10;       android:text=&quot;@{item.name}&quot;&#10;       .../&gt;&#10;&#10;&lt;/layout&gt;&#10;```&#10;&#10;2. In your ViewHolder, inflate the binding and set the binding variable:&#10;&#10;```kotlin&#10;class ItemViewHolder(private val binding: ItemLayoutBinding) : RecyclerView.ViewHolder(binding.root) {&#10;&#10;  fun bind(item: Item) {&#10;      binding.item = item&#10;  }&#10;&#10;}&#10;```&#10;&#10;3. In your Adapter's onCreateViewHolder():&#10;&#10;```kotlin &#10;override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {&#10;&#10;    val binding = ItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)&#10;    &#10;    return ItemViewHolder(binding)&#10;&#10;}&#10;```&#10;&#10;4. In your Adapter's onBindViewHolder():&#10;&#10;```kotlin&#10;override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {&#10;&#10;    val item = items[position]&#10;    holder.bind(item)&#10;&#10;}&#10;```&#10;&#10;So in this way, you setup the binding for each item inside the ViewHolder. The binding variable allows the layout to update automatically when the data changes." />
+              </message>
+            </list>
+          </messages>
+          <updatedAt value="2024-03-15T08:20:14.8141034" />
+        </chat>
+        <chat>
+          <accountId value="VXNlcjozMDUxMTg=" />
+          <internalId value="3488ef5e-14f7-4db8-b942-10a08dc1df73" />
+          <llm>
+            <llm>
+              <model value="anthropic/claude-2.0" />
+              <provider value="Anthropic" />
+              <title value="Claude 2.0" />
+            </llm>
+          </llm>
+        </chat>
+        <chat>
+          <accountId value="VXNlcjozMDUxMTg=" />
+          <internalId value="6775c1ea-0efd-405a-aad2-57c04057bb59" />
+          <llm>
+            <llm>
+              <model value="anthropic/claude-2.0" />
+              <provider value="Anthropic" />
+              <title value="Claude 2.0" />
+            </llm>
+          </llm>
+        </chat>
+        <chat>
+          <accountId value="VXNlcjozMDUxMTg=" />
+          <internalId value="d7bf3cb4-21fc-48cc-ad36-5c55bbd3b568" />
+          <llm>
+            <llm>
+              <model value="anthropic/claude-2.0" />
+              <provider value="Anthropic" />
+              <title value="Claude 2.0" />
+            </llm>
+          </llm>
         </chat>
       </list>
     </chats>
