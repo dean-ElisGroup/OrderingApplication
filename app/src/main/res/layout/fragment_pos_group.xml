@@ -6,11 +6,11 @@
     android:orientation="vertical">
     <data>
         <variable
-            name="viewModel"
+            name="sharedViewModel"
             type="com.elis.orderingapplication.viewModels.ParamsViewModel" />
         <variable
-            name="loginViewModel"
-            type="com.elis.orderingapplication.viewModels.LoginViewModel" />
+            name="orderingGroupViewModel"
+            type="com.elis.orderingapplication.viewModels.OrderingGroupViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -166,7 +166,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/selectAnOption">
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/delivery_address_selection"
+                    android:id="@+id/ordering_group_selection"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"

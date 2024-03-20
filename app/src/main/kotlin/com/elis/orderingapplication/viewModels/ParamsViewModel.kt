@@ -3,8 +3,10 @@ package com.elis.orderingapplication.viewModels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.elis.orderingapplication.model.OrderingGroups
 import com.elis.orderingapplication.pojo2.DeliveryAddress
 import com.elis.orderingapplication.pojo2.OrderInfo
+import com.elis.orderingapplication.pojo2.OrderingGroup
 import com.elis.orderingapplication.utils.ApiResponse
 
 class ParamsViewModel : ViewModel() {
@@ -25,6 +27,8 @@ class ParamsViewModel : ViewModel() {
     private var _deliveryAddress: List<DeliveryAddress>? = null
     val deliveryAddress: List<DeliveryAddress>? = _deliveryAddress
 
+    private var _orderingGroups: List<OrderingGroup>? = null
+    val orderingGroups: List<OrderingGroup>? = _orderingGroups
 
     fun setOrderDate(orderDate: String) {
         _orderDate.value = orderDate
@@ -33,7 +37,6 @@ class ParamsViewModel : ViewModel() {
     fun setSessionKey(sessionKey: String) {
         _sessionKey = sessionKey
     }
-
     fun getSessionKey(): String {
         return _sessionKey
     }
@@ -42,12 +45,19 @@ class ParamsViewModel : ViewModel() {
     }
     fun getOrder(): ApiResponse<OrderInfo>? {
         return _orderInfo
-   }
+    }
     fun setDeliveryAddress(deliveryAddress: ApiResponse<OrderInfo>?) {
         _deliveryAddress = deliveryAddress?.data?.deliveryAddresses
     }
     fun getDeliveryAddresses(): List<DeliveryAddress>? {
         return _deliveryAddress
+    }
+
+    fun setOrderingGroups(orderingGroups: ApiResponse<OrderInfo>?) {
+        _orderingGroups = orderingGroups?.data?.orderingGroups
+    }
+    fun getOrderingGroups(): List<OrderingGroup>? {
+        return _orderingGroups
     }
 
     fun setAppVersion(appVersion: String) {

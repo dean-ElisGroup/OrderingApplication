@@ -50,6 +50,15 @@
             app:destination="@id/deliveryAddressFragment" />
     </fragment>
     <fragment
+        android:id="@+id/posGroupFragmentToPosFragment"
+        android:name="com.elis.orderingapplication.PosGroupFragment"
+        android:label="fragment_pos_group"
+        tools:layout="@layout/fragment_pos_group" >
+        <action
+            android:id="@+id/action_posGroupFragment_to_posFragment"
+            app:destination="@id/posFragment" />
+    </fragment>
+    <fragment
         android:id="@+id/posFragment"
         android:name="com.elis.orderingapplication.PosFragment"
         android:label="fragment_pos"

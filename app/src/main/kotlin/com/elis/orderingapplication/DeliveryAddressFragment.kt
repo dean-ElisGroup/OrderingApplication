@@ -12,8 +12,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.elis.orderingapplication.adapters.DeliveryAddressAdapter
 import com.elis.orderingapplication.databinding.FragmentDeliveryAddressBinding
 import com.elis.orderingapplication.pojo2.DeliveryAddress
-import com.elis.orderingapplication.pojo2.OrderInfo
-import com.elis.orderingapplication.utils.ApiResponse
 import com.elis.orderingapplication.viewModels.DeliveryAddressViewModel
 import com.elis.orderingapplication.viewModels.ParamsViewModel
 
@@ -26,9 +24,6 @@ class DeliveryAddressFragment : Fragment() {
     private val deliveryAddressViewModel: DeliveryAddressViewModel by lazy {
         ViewModelProvider(this)[DeliveryAddressViewModel::class.java]
     }
-    //private val sharedViewModel: ParamsViewModel by lazy {
-     //   ViewModelProvider(this)[ParamsViewModel::class.java]
-    //}
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,22 +34,6 @@ class DeliveryAddressFragment : Fragment() {
         binding.lifecycleOwner = this
         binding.deliveryAddressModel = deliveryAddressViewModel
         binding.viewModel = sharedViewModel
-
-        /*
-        val recyclerView: RecyclerView = binding.deliveryAddressSelection
-
-        val orderInfoList: ApiResponse<OrderInfo>? = sharedViewModel.getOrder()
-        val testData = sharedViewModel.setDeliveryAddress(orderInfoList)
-
-        val deliveryAddressList: List<DeliveryAddress>? = sharedViewModel.getDeliveryAddresses()
-
-        val adapter = DeliveryAddressAdapter()
-        adapter.submitList(deliveryAddressList)
-
-        binding.deliveryAddressSelection.adapter = adapter
-        recyclerView.adapter = adapter
-        adapter.notifyDataSetChanged()
-        */
 
         binding.toolbar.title = getString(R.string.delivery_address_title)
         binding.toolbar.setNavigationIcon(R.drawable.ic_back)
@@ -72,8 +51,6 @@ class DeliveryAddressFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val recyclerView: RecyclerView = binding.deliveryAddressSelection
-
-        //val orderInfoList: ApiResponse<OrderInfo>? = sharedViewModel.getOrder()
         sharedViewModel.setDeliveryAddress(sharedViewModel.getOrder())
 
         val deliveryAddressList: List<DeliveryAddress>? = sharedViewModel.getDeliveryAddresses()
@@ -83,9 +60,6 @@ class DeliveryAddressFragment : Fragment() {
 
         binding.deliveryAddressSelection.adapter = adapter
         recyclerView.adapter = adapter
-        adapter.notifyDataSetChanged()
-
-
     }
 }
 

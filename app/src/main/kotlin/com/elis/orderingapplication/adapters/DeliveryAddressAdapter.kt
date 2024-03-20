@@ -52,34 +52,4 @@ class DeliveryAddressAdapter :
     }
 
 
-/* private var binding: DeliveryAddressCardviewBindingImpl
 
- inner class ViewHolder(orderInfo: DeliveryAddressCardviewBindingImpl) : RecyclerView.ViewHolder(
-     binding?.root!!
- ) {
-     val textView: TextView
-     init {
-         textView = orderInfo.root.findViewById(R.id.textView)
-     }
- }
- override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-
-     return ViewHolder(DataBindingUtil.inflate(
-         LayoutInflater.from(parent.context),
-         R.layout.delivery_address_cardview,
-         parent, false))
- }
-
- override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-     val testData = mList[position]
-     holder.itemView.apply {
-         FragmentDeliveryAddressBinding.bind(this).apply {
-             holder.textView.text =
-                 testData?.deliveryAddresses?.get(position)?.deliveryAddressName
-         }
-     }
- }
-
- override fun getItemCount(): Int {
-     return mList.size
- }*/

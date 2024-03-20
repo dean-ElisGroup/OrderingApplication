@@ -6,33 +6,37 @@
             name="deliveryAddress"
             type="com.elis.orderingapplication.pojo2.DeliveryAddress" />
     </data>
+
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="100dp"
         android:layout_margin="10dp"
+        android:contextClickable="true"
         app:cardElevation="6dp">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:gravity="center"
+            android:orientation="vertical"
             android:padding="5dp">
 
             <TextView
                 android:id="@+id/deliveryAddressName"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginLeft="15dp"
-                android:text="@{deliveryAddress.deliveryAddressName}"
+                android:fontFamily="@font/elis_sharpsans"
+                android:textAlignment="center"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/deliveryAddressNo"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{deliveryAddress.deliveryAddressNo}"
-                android:layout_weight="1" />
+                android:fontFamily="@font/elis_sharpsans"
+                android:textAlignment="center"
+                android:textSize="14sp" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </layout>
