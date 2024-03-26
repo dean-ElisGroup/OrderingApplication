@@ -8,4 +8,6 @@ sealed class ApiResponse<T>(
     class Error<T>(message: String, data: T? = null) : ApiResponse<T>(data, message)
     class Loading<T> : ApiResponse<T>()
     class ErrorLogin<T>(message: String, data: T? = null) : ApiResponse<T>(data, message)
+
+    class NoDataError<T>(message: String, data: T? = null) : ApiResponse<T>(data, message)
 }

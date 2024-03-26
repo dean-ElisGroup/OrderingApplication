@@ -6,12 +6,15 @@
     tools:context=".DeliveryAddressFragment">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.elis.orderingapplication.viewModels.ParamsViewModel" />
+
         <variable
             name="loginViewModel"
             type="com.elis.orderingapplication.viewModels.LoginViewModel" />
+
         <variable
             name="deliveryAddressModel"
             type="com.elis.orderingapplication.viewModels.DeliveryAddressViewModel" />
@@ -94,7 +97,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="10dp"
                     android:layout_marginEnd="8dp"
                     android:fontFamily="@font/sharpsans_medium"
                     android:text="@{viewModel.orderDate}"
@@ -125,27 +127,13 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayout2"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:layout_constraintEnd_toStartOf="@+id/guideline4"
-                app:layout_constraintStart_toStartOf="@+id/guideline3"
-                app:layout_constraintTop_toBottomOf="@+id/selectAnOption">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/delivery_address_selection"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                    app:spanCount="1"
-                    tools:itemCount="5"
-                    tools:listitem="@layout/delivery_address_cardview" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.25" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline3"
@@ -160,6 +148,39 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:layout_constraintGuide_percent="0.97" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginBottom="5dp"
+                app:layout_constraintBottom_toTopOf="@id/guideline6"
+                app:layout_constraintEnd_toEndOf="@id/guideline4"
+                app:layout_constraintStart_toStartOf="@+id/guideline3"
+                app:layout_constraintTop_toBottomOf="@id/guideline5">
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:backgroundTint="@color/white"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/delivery_address_selection"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:spanCount="1"
+                    tools:listitem="@layout/delivery_address_cardview" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <ImageView
                 android:id="@+id/small_elis_logo"

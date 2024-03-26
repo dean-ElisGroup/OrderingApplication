@@ -20,10 +20,10 @@ class PosFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_pos, container, false)
-        binding?.apply { viewModel = sharedViewModel }
+        binding.apply { viewModel = sharedViewModel }
         binding.toolbar.title = getString(R.string.pos_title)
         binding.toolbar.setNavigationIcon(R.drawable.ic_back)
         binding.toolbar.setNavigationOnClickListener {

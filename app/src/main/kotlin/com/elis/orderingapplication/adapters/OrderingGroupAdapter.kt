@@ -12,8 +12,6 @@ import com.elis.orderingapplication.pojo2.OrderingGroup
 class OrderingGroupAdapter :
     ListAdapter<OrderingGroup, OrderingGroupAdapter.OrderingGroupViewHolder>(DiffCallback) {
 
-    private lateinit var onClickListener: OnClickListener
-
     class OrderingGroupViewHolder(private var binding: GroupPosCardviewBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(orderingGroup: OrderingGroup) {
@@ -51,17 +49,8 @@ class OrderingGroupAdapter :
     override fun onBindViewHolder(holder: OrderingGroupViewHolder, position: Int) {
         val orderingGroup = getItem(position)
         holder.bind(orderingGroup)
-        holder.itemView.setOnClickListener {
-            onClickListener.onClick(position, getItem(position))
-        }
+
     }
 
-    fun setOnClickListener(onClickListener: OnClickListener) {
-        this.onClickListener = onClickListener
-    }
 
-    // onClickListener Interface
-    interface OnClickListener {
-        fun onClick(position: Int, orderingGroup: OrderingGroup)
-    }
 }

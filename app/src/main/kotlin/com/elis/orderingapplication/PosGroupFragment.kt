@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import androidx.navigation.Navigation.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import com.elis.orderingapplication.adapters.OrderingGroupAdapter
 import com.elis.orderingapplication.databinding.FragmentPosGroupBinding
@@ -21,11 +22,12 @@ class PosGroupFragment : Fragment() {
     private lateinit var binding: FragmentPosGroupBinding
     private val sharedViewModel: ParamsViewModel by activityViewModels()
     private val orderingGroupViewModel: OrderingGroupViewModel by activityViewModels()
+    private val args : PosGroupFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         //binding =
         //    DataBindingUtil.inflate(inflater, R.layout.fragment_pos_group, container, false)
 
@@ -34,11 +36,12 @@ class PosGroupFragment : Fragment() {
         binding.orderingGroupViewModel = orderingGroupViewModel
         binding.sharedViewModel = sharedViewModel
 
+
         binding.toolbar.title = getString(R.string.pos_group_title)
         binding.toolbar.setNavigationIcon(R.drawable.ic_back)
         binding.toolbar.setNavigationOnClickListener {
             view?.let { it ->
-                Navigation.findNavController(it)
+                findNavController(it)
                     .navigate(R.id.action_posGroupFragment_to_deliveryAddressFragment)
             }
         }
@@ -50,6 +53,9 @@ class PosGroupFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val recyclerView: RecyclerView = binding.orderingGroupSelection
+        val spacingInPixels = resources.getDimensionPixelSize(R.dimen.spacing) // Define your desired spacing value in pixels
+        val itemSpacingDecoration = CardViewDecoration(spacingInPixels)
+        recyclerView.addItemDecoration(itemSpacingDecoration)
         sharedViewModel.setOrderingGroups(sharedViewModel.getOrder())
 
         val orderingGroupList: List<OrderingGroup>? = sharedViewModel.getOrderingGroups()
@@ -59,13 +65,6 @@ class PosGroupFragment : Fragment() {
 
         binding.orderingGroupSelection.adapter = adapter
         recyclerView.adapter = adapter
-        adapter.setOnClickListener(object: OrderingGroupAdapter.OnClickListener {
-            override fun onClick(position: Int, orderingGroup: OrderingGroup)
-            {
-                findNavController(view).navigate(R.id.action_posGroupFragment_to_posFragment)
-            }
-        })
 
     }
-}
 }

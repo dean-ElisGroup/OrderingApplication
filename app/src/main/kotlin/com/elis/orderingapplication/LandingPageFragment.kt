@@ -33,7 +33,7 @@ class LandingPageFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_landing_page, container, false)
         // Clears hold on UI interaction when progress bar is visible
@@ -59,7 +59,7 @@ class LandingPageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val menuHost: MenuHost = requireActivity()
-        binding?.apply { viewModel = sharedViewModel }
+        binding.apply { viewModel = sharedViewModel }
         //apiCall2(sharedViewModel.session_key.value.toString())
         menuHost.addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {

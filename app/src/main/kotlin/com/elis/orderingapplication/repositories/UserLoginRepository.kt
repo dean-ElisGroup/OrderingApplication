@@ -7,7 +7,7 @@ import com.elis.orderingapplication.model.LoginRequest
 import com.elis.orderingapplication.model.OrderingRequest
 import com.elis.orderingapplication.retrofit.RetroFitInstance
 
-class UserLoginRepository() {
+class UserLoginRepository {
     suspend fun getUserLogin(loginRequest: LoginRequest) =
         RetroFitInstance.api.getSessionKey(loginRequest)
 

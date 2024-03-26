@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
 
-class LandingPageViewModel(): ViewModel() {
+class LandingPageViewModel : ViewModel() {
 /*
     private val loginViewModel: LoginViewModel by activityViewModels()
 

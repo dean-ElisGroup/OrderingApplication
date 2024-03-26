@@ -18,7 +18,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
-
 import com.elis.orderingapplication.model.LoginRequest
 import com.elis.orderingapplication.model.OrderingRequest
 import com.elis.orderingapplication.viewModels.ParamsViewModel
@@ -28,23 +27,10 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import android.widget.ProgressBar
-import androidx.compose.material3.Snackbar
-import androidx.core.content.ContentProviderCompat
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.withCreated
 import androidx.navigation.Navigation.findNavController
-import androidx.room.Room
-import androidx.room.RoomDatabase
 import com.elis.orderingapplication.adapters.LoginAdapter
-import com.elis.orderingapplication.database.UserLogin
-import com.elis.orderingapplication.database.UserLoginDao
-import com.elis.orderingapplication.database.UserLoginDatabase
-import com.elis.orderingapplication.database.UserLoginInsert
 import com.elis.orderingapplication.databinding.FragmentLoginBinding
-import com.elis.orderingapplication.model.ObjectBoxTest
-import com.elis.orderingapplication.model.OrderingLoginResponseStruct
 import com.elis.orderingapplication.repositories.UserLoginRepository
 import com.elis.orderingapplication.utils.ApiResponse
 import com.elis.orderingapplication.viewModels.LoginViewModelFactory
@@ -145,6 +131,23 @@ class LoginFragment : Fragment() {
                                                     WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
                                                 )
                                             }
+                                        }
+
+                                        is ApiResponse.NoDataError -> {
+                                            orderInfoLoading.visibility = INVISIBLE
+                                            val noDataMessage =
+                                                "There was an issue loading data. Please try again."
+                                            Log.e("TAG", noDataMessage)
+
+                                            Toast.makeText(
+                                                requireContext(),
+                                                noDataMessage,
+                                                Toast.LENGTH_SHORT
+
+                                            ).show()
+                                            requireActivity().window.clearFlags(
+                                                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+                                            )
                                         }
 
                                         else -> {

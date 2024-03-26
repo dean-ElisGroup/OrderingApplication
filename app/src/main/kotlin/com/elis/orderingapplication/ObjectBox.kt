@@ -16,8 +16,8 @@ object ObjectBox {
             .build()
 
         if (BuildConfig.DEBUG) {
-            val started = Admin(store).start(context.applicationContext);
-            Log.i("ObjectBoxAdmin", "Started: $started");
+            val started = Admin(store).start(context.applicationContext)
+            Log.i("ObjectBoxAdmin", "Started: $started")
         }
 
 

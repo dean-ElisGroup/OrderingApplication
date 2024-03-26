@@ -5,9 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.elis.orderingapplication.adapters.DeliveryAddressAdapter
 import com.elis.orderingapplication.databinding.FragmentDeliveryAddressBinding
@@ -28,7 +31,7 @@ class DeliveryAddressFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         binding = FragmentDeliveryAddressBinding.inflate(inflater)
         binding.lifecycleOwner = this
@@ -43,6 +46,8 @@ class DeliveryAddressFragment : Fragment() {
                     .navigate(R.id.action_deliveryAddressFragment_to_landingPageFragment)
             }
         }
+
+
         // Inflate the layout for this fragment
         return binding.root
     }
@@ -55,11 +60,28 @@ class DeliveryAddressFragment : Fragment() {
 
         val deliveryAddressList: List<DeliveryAddress>? = sharedViewModel.getDeliveryAddresses()
 
-        val adapter = DeliveryAddressAdapter()
+        val adapter =
+            DeliveryAddressAdapter(DeliveryAddressAdapter.DeliveryAddressListener { deliveryAddressNo ->
+                deliveryAddressViewModel.onDeliveryAddressClicked(deliveryAddressNo)
+                deliveryAddressViewModel.navigateToOrderingGroup.observe(
+                    viewLifecycleOwner,
+                    Observer { deliveryAddressNo ->
+                        deliveryAddressNo?.let {
+                            this.findNavController().navigate(
+                                DeliveryAddressFragmentDirections.actionDeliveryAddressFragmentToPosGroupFragment(
+                                    deliveryAddressNo
+                                )
+                            )
+                            deliveryAddressViewModel.onDeliveryAddressNavigated()
+                        }
+                    })
+            })
         adapter.submitList(deliveryAddressList)
 
         binding.deliveryAddressSelection.adapter = adapter
         recyclerView.adapter = adapter
+
+
     }
 }
 

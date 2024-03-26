@@ -7,15 +7,15 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.elis.orderingapplication.databinding.DeliveryAddressCardviewBinding
 import com.elis.orderingapplication.pojo2.DeliveryAddress
-import com.elis.orderingapplication.pojo2.OrderInfo
-import com.elis.orderingapplication.utils.ApiResponse
 
-class DeliveryAddressAdapter :
+class DeliveryAddressAdapter(private val clickListener: DeliveryAddressListener) :
     ListAdapter<DeliveryAddress, DeliveryAddressAdapter.DeliveryAddressViewHolder>(DiffCallback) {
+
     class DeliveryAddressViewHolder(private var binding: DeliveryAddressCardviewBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(orderInfo: DeliveryAddress) {
+        fun bind(clickListener: DeliveryAddressListener,orderInfo: DeliveryAddress) {
             binding.deliveryAddress = orderInfo
+            binding.clickListener = clickListener
             binding.executePendingBindings()
         }
     }
@@ -47,9 +47,18 @@ class DeliveryAddressAdapter :
 
         override fun onBindViewHolder(holder: DeliveryAddressViewHolder, position: Int) {
             val deliveryAddress = getItem(position)
-            holder.bind(deliveryAddress)
+            //holder.bind(deliveryAddress)
+            holder.bind(clickListener,deliveryAddress)
         }
+
+    class DeliveryAddressListener(val clickListener: (deliveryAddressNo: String?) -> Unit) {
+        fun onClick(deliveryAddress: DeliveryAddress) = clickListener(deliveryAddress.deliveryAddressNo)
     }
+
+
+
+
+}
 
 
 

@@ -25,10 +25,10 @@ class ParamsViewModel : ViewModel() {
     val orderInfo: ApiResponse<OrderInfo>? = _orderInfo
 
     private var _deliveryAddress: List<DeliveryAddress>? = null
-    val deliveryAddress: List<DeliveryAddress>? = _deliveryAddress
+    //val deliveryAddress: List<DeliveryAddress>? = _deliveryAddress
 
     private var _orderingGroups: List<OrderingGroup>? = null
-    val orderingGroups: List<OrderingGroup>? = _orderingGroups
+    //val orderingGroups: List<OrderingGroup>? = _orderingGroups
 
     fun setOrderDate(orderDate: String) {
         _orderDate.value = orderDate

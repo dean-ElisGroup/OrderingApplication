@@ -34,7 +34,7 @@ class LoginViewModel(private val loginRep: UserLoginRepository) : ViewModel() {
         orderInfoResponse.postValue(handleOrderInfoResponse(response))
     }
 
-    private fun handleUserLoginResponse(response: Response<OrderingLoginResponseStruct>): ApiResponse<OrderingLoginResponseStruct>? {
+    private fun handleUserLoginResponse(response: Response<OrderingLoginResponseStruct>): ApiResponse<OrderingLoginResponseStruct> {
         if (response.isSuccessful && response.body()?.message == "") {
             response.body()?.let { resultResponse ->
                 return ApiResponse.Success(resultResponse)
@@ -49,13 +49,16 @@ class LoginViewModel(private val loginRep: UserLoginRepository) : ViewModel() {
         return ApiResponse.Error(response.message())
     }
 
-    private fun handleOrderInfoResponse(response: Response<OrderInfo>): ApiResponse<OrderInfo>? {
-        if (response.isSuccessful) {
+    private fun handleOrderInfoResponse(response: Response<OrderInfo>): ApiResponse<OrderInfo> {
+        if (response.isSuccessful && response.body()?.deliveryAddresses?.isNotEmpty() == true) {
             response.body()?.let { resultResponse ->
                 return ApiResponse.Success(resultResponse)
             }
         }
-        return ApiResponse.Error(response.message())
+        //if (response.isSuccessful && response.body()?.deliveryAddresses?.isNotEmpty() == false) {
+        //        return ApiResponse.NoDataError("There was an issue loading data. Please try again.")
+       // }
+        return ApiResponse.NoDataError("There was an issue loading data. Please try again.")
     }
 
 

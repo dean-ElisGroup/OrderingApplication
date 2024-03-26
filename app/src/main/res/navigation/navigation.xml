@@ -39,6 +39,12 @@
         <action
             android:id="@+id/action_deliveryAddressFragment_to_landingPageFragment"
             app:destination="@id/landingPageFragment" />
+        <action
+            android:id="@+id/action_deliveryAddressFragment_to_posGroupFragment"
+            app:destination="@id/posGroupFragment" />
+        <argument
+            android:name="deliveryAddressNo"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/posGroupFragment"
@@ -48,6 +54,9 @@
         <action
             android:id="@+id/action_posGroupFragment_to_deliveryAddressFragment"
             app:destination="@id/deliveryAddressFragment" />
+        <argument
+            android:name="deliveryAddressNo"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/posGroupFragmentToPosFragment"
@@ -67,6 +76,7 @@
             android:id="@+id/action_posFragment_to_posGroupFragment"
             app:destination="@id/posGroupFragment" />
     </fragment>
+
 
 
 </navigation>
