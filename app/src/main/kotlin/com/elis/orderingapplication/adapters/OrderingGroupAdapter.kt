@@ -1,21 +1,21 @@
 package com.elis.orderingapplication.adapters
 
-import android.content.DialogInterface
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.elis.orderingapplication.databinding.GroupPosCardviewBinding
+import com.elis.orderingapplication.databinding.OrderingGroupCardviewBinding
 import com.elis.orderingapplication.pojo2.OrderingGroup
 
-class OrderingGroupAdapter :
+class OrderingGroupAdapter(private val clickListener: OrderingGroupListener) :
     ListAdapter<OrderingGroup, OrderingGroupAdapter.OrderingGroupViewHolder>(DiffCallback) {
 
-    class OrderingGroupViewHolder(private var binding: GroupPosCardviewBinding) :
+    class OrderingGroupViewHolder(private var binding: OrderingGroupCardviewBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(orderingGroup: OrderingGroup) {
+        fun bind(clickListener: OrderingGroupListener, orderingGroup: OrderingGroup) {
             binding.orderingGroup = orderingGroup
+            binding.clickListener = clickListener
             binding.executePendingBindings()
         }
     }
@@ -38,7 +38,7 @@ class OrderingGroupAdapter :
         viewType: Int
     ): OrderingGroupViewHolder {
         return OrderingGroupViewHolder(
-            GroupPosCardviewBinding.inflate(
+            OrderingGroupCardviewBinding.inflate(
                 LayoutInflater.from(
                     parent.context
                 )
@@ -48,9 +48,16 @@ class OrderingGroupAdapter :
 
     override fun onBindViewHolder(holder: OrderingGroupViewHolder, position: Int) {
         val orderingGroup = getItem(position)
-        holder.bind(orderingGroup)
+        holder.bind(clickListener, orderingGroup)
+    }
 
+    class OrderingGroupListener(val clickListener: (orderingGroupDescription: String?) -> Unit) {
+        fun onClick(orderingGroup: OrderingGroup) =
+            clickListener(orderingGroup.orderingGroupDescription)
     }
 
 
 }
+
+
+

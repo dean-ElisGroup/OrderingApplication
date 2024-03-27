@@ -7,6 +7,7 @@ import com.elis.orderingapplication.model.OrderingGroups
 import com.elis.orderingapplication.pojo2.DeliveryAddress
 import com.elis.orderingapplication.pojo2.OrderInfo
 import com.elis.orderingapplication.pojo2.OrderingGroup
+import com.elis.orderingapplication.pojo2.PointsOfService
 import com.elis.orderingapplication.utils.ApiResponse
 
 class ParamsViewModel : ViewModel() {
@@ -25,10 +26,14 @@ class ParamsViewModel : ViewModel() {
     val orderInfo: ApiResponse<OrderInfo>? = _orderInfo
 
     private var _deliveryAddress: List<DeliveryAddress>? = null
-    //val deliveryAddress: List<DeliveryAddress>? = _deliveryAddress
 
     private var _orderingGroups: List<OrderingGroup>? = null
-    //val orderingGroups: List<OrderingGroup>? = _orderingGroups
+
+    private var _deliveryAddressName = MutableLiveData<String>("")
+    val deliveryAddressName: LiveData<String> = _deliveryAddressName
+
+    private var _orderingGroupName = MutableLiveData<String>("")
+    val orderingGroupName: LiveData<String> = _orderingGroupName
 
     fun setOrderDate(orderDate: String) {
         _orderDate.value = orderDate
@@ -37,25 +42,43 @@ class ParamsViewModel : ViewModel() {
     fun setSessionKey(sessionKey: String) {
         _sessionKey = sessionKey
     }
+
     fun getSessionKey(): String {
         return _sessionKey
     }
-    fun setOrderInfo(orderInfo: ApiResponse<OrderInfo>?){
+
+    fun setOrderInfo(orderInfo: ApiResponse<OrderInfo>?) {
         _orderInfo = orderInfo
     }
+
     fun getOrder(): ApiResponse<OrderInfo>? {
         return _orderInfo
     }
+
     fun setDeliveryAddress(deliveryAddress: ApiResponse<OrderInfo>?) {
         _deliveryAddress = deliveryAddress?.data?.deliveryAddresses
     }
+
     fun getDeliveryAddresses(): List<DeliveryAddress>? {
         return _deliveryAddress
     }
 
+    fun getPointsOfService(): List<PointsOfService>?{
+        return _deliveryAddress?.component1()?.pointsOfService
+    }
+
+    fun setDeliveryAddressName(deliveryAddressName: String){
+        _deliveryAddressName.value = deliveryAddressName
+    }
+    fun setOrderingGroupName(orderingGroupName: String){
+        _orderingGroupName.value = orderingGroupName
+    }
+
+
     fun setOrderingGroups(orderingGroups: ApiResponse<OrderInfo>?) {
         _orderingGroups = orderingGroups?.data?.orderingGroups
     }
+
     fun getOrderingGroups(): List<OrderingGroup>? {
         return _orderingGroups
     }

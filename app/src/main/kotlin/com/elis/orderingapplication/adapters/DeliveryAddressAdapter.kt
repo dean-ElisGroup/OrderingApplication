@@ -13,7 +13,7 @@ class DeliveryAddressAdapter(private val clickListener: DeliveryAddressListener)
 
     class DeliveryAddressViewHolder(private var binding: DeliveryAddressCardviewBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(clickListener: DeliveryAddressListener,orderInfo: DeliveryAddress) {
+        fun bind(clickListener: DeliveryAddressListener, orderInfo: DeliveryAddress) {
             binding.deliveryAddress = orderInfo
             binding.clickListener = clickListener
             binding.executePendingBindings()
@@ -32,30 +32,30 @@ class DeliveryAddressAdapter(private val clickListener: DeliveryAddressListener)
             return oldItem.deliveryAddressNo == newItem.deliveryAddressNo
         }
     }
-        override fun onCreateViewHolder(
-            parent: ViewGroup,
-            viewType: Int
-        ): DeliveryAddressViewHolder {
-            return DeliveryAddressViewHolder(
-                DeliveryAddressCardviewBinding.inflate(
-                    LayoutInflater.from(
-                        parent.context
-                    )
+
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): DeliveryAddressViewHolder {
+        return DeliveryAddressViewHolder(
+            DeliveryAddressCardviewBinding.inflate(
+                LayoutInflater.from(
+                    parent.context
                 )
             )
-        }
-
-        override fun onBindViewHolder(holder: DeliveryAddressViewHolder, position: Int) {
-            val deliveryAddress = getItem(position)
-            //holder.bind(deliveryAddress)
-            holder.bind(clickListener,deliveryAddress)
-        }
-
-    class DeliveryAddressListener(val clickListener: (deliveryAddressNo: String?, deliveryAddressName: String?) -> Unit) {
-        fun onClick(deliveryAddress: DeliveryAddress) = clickListener(deliveryAddress.deliveryAddressNo, deliveryAddress.deliveryAddressName)
+        )
     }
 
+    override fun onBindViewHolder(holder: DeliveryAddressViewHolder, position: Int) {
+        val deliveryAddress = getItem(position)
+        //holder.bind(deliveryAddress)
+        holder.bind(clickListener, deliveryAddress)
+    }
 
+    class DeliveryAddressListener(val clickListener: (deliveryAddressNo: String?) -> Unit) {
+        fun onClick(deliveryAddress: DeliveryAddress) =
+            clickListener(deliveryAddress.deliveryAddressName)
+    }
 
 
 }

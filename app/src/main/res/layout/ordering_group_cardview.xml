@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="orderingGroup"
+            type="com.elis.orderingapplication.pojo2.OrderingGroup" />
+        <variable
+            name="clickListener" type="com.elis.orderingapplication.adapters.OrderingGroupAdapter.OrderingGroupListener"/>
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:layout_margin="10dp"
+        android:clickable="true"
+        android:minHeight="130dp"
+        android:maxHeight="130dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="10dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:gravity="center|fill"
+            android:backgroundTint="@color/white"
+            android:onClick="@{() -> clickListener.onClick(orderingGroup)}"
+            android:orientation="vertical"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/deliveryAddressName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/elis_sharpsans"
+                android:text="@{orderingGroup.orderingGroupDescription}"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layout_editor_absoluteX="5dp"
+                tools:layout_editor_absoluteY="5dp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+</layout>

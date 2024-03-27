@@ -45,9 +45,6 @@
         <argument
             android:name="deliveryAddressNo"
             app:argType="string" />
-        <argument
-            android:name="deliveryAddressName"
-            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/posGroupFragment"
@@ -57,22 +54,14 @@
         <action
             android:id="@+id/action_posGroupFragment_to_deliveryAddressFragment"
             app:destination="@id/deliveryAddressFragment" />
-        <argument
-            android:name="deliveryAddressNo"
-            app:argType="string" />
-        <argument
-            android:name="deliveryAddressName"
-            app:argType="string" />
-    </fragment>
-    <fragment
-        android:id="@+id/posGroupFragmentToPosFragment"
-        android:name="com.elis.orderingapplication.PosGroupFragment"
-        android:label="fragment_pos_group"
-        tools:layout="@layout/fragment_pos_group" >
         <action
             android:id="@+id/action_posGroupFragment_to_posFragment"
             app:destination="@id/posFragment" />
+        <argument
+            android:name="deliveryAddressNo"
+            app:argType="string" />
     </fragment>
+
     <fragment
         android:id="@+id/posFragment"
         android:name="com.elis.orderingapplication.PosFragment"
@@ -81,8 +70,21 @@
         <action
             android:id="@+id/action_posFragment_to_posGroupFragment"
             app:destination="@id/posGroupFragment" />
+        <action
+            android:id="@+id/action_posFragment_to_articleEntryFragment"
+            app:destination="@id/articleEntryFragment" />
+        <argument
+            android:name="orderingGroup"
+            app:argType="string" />
     </fragment>
-
+    <fragment
+        android:id="@+id/articleEntryFragment"
+        android:name="com.elis.orderingapplication.ArticleEntryFragment"
+        android:label="fragment_article_entry"
+        tools:layout="@layout/fragment_article_entry" />
+    <argument
+        android:name="pos"
+        app:argType="string" />
 
 
 </navigation>

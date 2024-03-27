@@ -43,6 +43,8 @@
     <string name="delivery_address_text">Delivery address</string>
     <string name="point_of_service_text">Point of service</string>
     <string name="enter_counted_qty">Enter counted qty</string>
+    <string name="ordering_group_text">Ordering Group</string>
+    <string name="pos_text">Point of Service</string>
 
 
 </resources>

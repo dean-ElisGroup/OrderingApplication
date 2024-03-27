@@ -6,7 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.Navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import com.elis.orderingapplication.adapters.OrderingGroupAdapter
@@ -47,6 +49,15 @@ class PosGroupFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
+        sharedViewModel.setDeliveryAddressName(args.deliveryAddressNo)
+
+        if(args.deliveryAddressNo.isNullOrEmpty())
+            binding.deliveryAddressName = sharedViewModel.deliveryAddressName.value
+
+        else
+            binding.deliveryAddressName = args.deliveryAddressNo
+
         val recyclerView: RecyclerView = binding.orderingGroupSelection
         val spacingInPixels = resources.getDimensionPixelSize(R.dimen.spacing)
         val itemSpacingDecoration = CardViewDecoration(spacingInPixels)
@@ -55,7 +66,23 @@ class PosGroupFragment : Fragment() {
 
         val orderingGroupList: List<OrderingGroup>? = sharedViewModel.getOrderingGroups()
 
-        val adapter = OrderingGroupAdapter()
+        val adapter =
+            OrderingGroupAdapter(OrderingGroupAdapter.OrderingGroupListener { orderingGroupNo ->
+                orderingGroupViewModel.onOrderingGroupClicked(orderingGroupNo)
+                orderingGroupViewModel.navigateToOrderingGroup.observe(
+                    viewLifecycleOwner,
+                    Observer { orderingGroupNo ->
+                        orderingGroupNo?.let {
+                            this.findNavController().navigate(
+                                PosGroupFragmentDirections.actionPosGroupFragmentToPosFragment(
+                                    orderingGroupNo
+                                )
+                            )
+                            orderingGroupViewModel.onOrderingGroupNavigated()
+                        }
+                    })
+            })
+
         adapter.submitList(orderingGroupList)
 
         binding.orderingGroupSelection.adapter = adapter

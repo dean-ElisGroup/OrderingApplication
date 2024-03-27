@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+
+        <variable
+            name="pos"
+            type="com.elis.orderingapplication.pojo2.PointsOfService" />
+
+        <variable
+            name="clickListener"
+            type="com.elis.orderingapplication.adapters.PosAdapter.PosListener" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:backgroundTint="@color/white"
+        android:clickable="true"
+        android:maxHeight="100dp"
+        android:minHeight="100dp"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="6dp"
+        app:strokeColor="@color/elis_black"
+        app:strokeWidth="1dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:backgroundTint="@color/white"
+            android:gravity="center|fill"
+            android:onClick="@{() -> clickListener.onClick(pos)}"
+            android:orientation="horizontal"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/orderingGroupName"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginBottom="2dp"
+                android:fontFamily="@font/sharpsans_medium"
+                android:gravity="start|center_vertical"
+                android:hint="TESTING TESTING TESTING"
+                android:maxLines="2"
+                android:minLines="1"
+                android:nestedScrollingEnabled="false"
+                android:singleLine="false"
+                android:text="@{pos.pointOfServiceDescription}"
+                android:textAlignment="textStart"
+                android:textColor="@color/elis_black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/proceed_arrow"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/proceed_arrow"
+                android:layout_width="60dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/orderingGroupName"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/baseline_arrow_right_24_black" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+</layout>

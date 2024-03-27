@@ -46,8 +46,6 @@ class DeliveryAddressFragment : Fragment() {
                     .navigate(R.id.action_deliveryAddressFragment_to_landingPageFragment)
             }
         }
-
-
         // Inflate the layout for this fragment
         return binding.root
     }

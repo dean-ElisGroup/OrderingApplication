@@ -2,20 +2,17 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".PosFragment"
+    tools:context=".ArticleEntryFragment"
     android:orientation="vertical">
     <data>
         <variable
             name="sharedViewModel"
             type="com.elis.orderingapplication.viewModels.ParamsViewModel" />
         <variable
-            name="posViewModel"
-            type="com.elis.orderingapplication.viewModels.PosViewModel" />
-        <variable
-            name="deliveryAddressName"
+            name="pos"
             type="String" />
         <variable
-            name="orderingGroupName"
+            name="deliveryAddressName"
             type="String" />
     </data>
 
@@ -143,7 +140,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
                     android:fontFamily="@font/sharpsans_medium"
-                    android:text="@{orderingGroupName}"
+                    android:text="TEST"
                     android:textFontWeight="800"
                     android:textSize="18sp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -157,7 +154,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="2dp"
                     android:layout_marginEnd="8dp"
-                    android:text="@string/ordering_group_text"
+                    android:text="@string/pos_text"
                     android:textAlignment="center"
                     android:textColor="@color/elis_blue"
                     android:textSize="18sp"
@@ -167,44 +164,23 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <TextView
-                android:id="@+id/selectAnOption"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="8dp"
-                android:autoSizeTextType="uniform"
-                android:background="@drawable/instruction_background"
-                android:fontFamily="@font/sharpsans_medium"
-                android:letterSpacing=".1"
-                android:maxLines="1"
-                android:text="@string/please_select_a_point_of_service"
-                android:textAlignment="center"
-                android:textColor="@color/elis_blue"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout2"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="10dp"
                 app:layout_constraintBottom_toTopOf="@id/guideline6"
                 app:layout_constraintEnd_toStartOf="@+id/guideline4"
                 app:layout_constraintStart_toStartOf="@+id/guideline3"
-                app:layout_constraintTop_toBottomOf="@+id/selectAnOption">
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/pos_selection"
+                    android:id="@+id/article_entry"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:spanCount="2"
                     tools:listitem="@layout/pos_cardview" />
