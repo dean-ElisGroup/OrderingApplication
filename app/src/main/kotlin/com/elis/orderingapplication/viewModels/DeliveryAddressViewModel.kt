@@ -8,8 +8,9 @@ class DeliveryAddressViewModel : ViewModel() {
     private val _navigateToOrderingGroup = MutableLiveData<String?>()
     val navigateToOrderingGroup
         get() = _navigateToOrderingGroup
-    fun onDeliveryAddressClicked(deliveryAddressNo: String?) {
+    fun onDeliveryAddressClicked(deliveryAddressNo: String?, deliveryAddressName: String?) {
         _navigateToOrderingGroup.value = deliveryAddressNo
+        _navigateToOrderingGroup.value = deliveryAddressName
     }
     fun onDeliveryAddressNavigated() {
         _navigateToOrderingGroup.value = null

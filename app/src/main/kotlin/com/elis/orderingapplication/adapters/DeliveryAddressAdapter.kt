@@ -51,8 +51,8 @@ class DeliveryAddressAdapter(private val clickListener: DeliveryAddressListener)
             holder.bind(clickListener,deliveryAddress)
         }
 
-    class DeliveryAddressListener(val clickListener: (deliveryAddressNo: String?) -> Unit) {
-        fun onClick(deliveryAddress: DeliveryAddress) = clickListener(deliveryAddress.deliveryAddressNo)
+    class DeliveryAddressListener(val clickListener: (deliveryAddressNo: String?, deliveryAddressName: String?) -> Unit) {
+        fun onClick(deliveryAddress: DeliveryAddress) = clickListener(deliveryAddress.deliveryAddressNo, deliveryAddress.deliveryAddressName)
     }
 
 

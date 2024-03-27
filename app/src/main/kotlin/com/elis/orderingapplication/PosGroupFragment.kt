@@ -1,13 +1,11 @@
 package com.elis.orderingapplication
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.Navigation
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
@@ -28,14 +26,11 @@ class PosGroupFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        //binding =
-        //    DataBindingUtil.inflate(inflater, R.layout.fragment_pos_group, container, false)
 
         binding = FragmentPosGroupBinding.inflate(inflater)
         binding.lifecycleOwner = this
         binding.orderingGroupViewModel = orderingGroupViewModel
         binding.sharedViewModel = sharedViewModel
-
 
         binding.toolbar.title = getString(R.string.pos_group_title)
         binding.toolbar.setNavigationIcon(R.drawable.ic_back)
@@ -53,7 +48,7 @@ class PosGroupFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val recyclerView: RecyclerView = binding.orderingGroupSelection
-        val spacingInPixels = resources.getDimensionPixelSize(R.dimen.spacing) // Define your desired spacing value in pixels
+        val spacingInPixels = resources.getDimensionPixelSize(R.dimen.spacing)
         val itemSpacingDecoration = CardViewDecoration(spacingInPixels)
         recyclerView.addItemDecoration(itemSpacingDecoration)
         sharedViewModel.setOrderingGroups(sharedViewModel.getOrder())
