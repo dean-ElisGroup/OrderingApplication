@@ -13,7 +13,10 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import com.elis.orderingapplication.adapters.OrderingGroupAdapter
 import com.elis.orderingapplication.databinding.FragmentPosGroupBinding
+import com.elis.orderingapplication.pojo2.DeliveryAddress
+import com.elis.orderingapplication.pojo2.OrderInfo
 import com.elis.orderingapplication.pojo2.OrderingGroup
+import com.elis.orderingapplication.pojo2.PointsOfService
 import com.elis.orderingapplication.viewModels.OrderingGroupViewModel
 import com.elis.orderingapplication.viewModels.ParamsViewModel
 
@@ -22,7 +25,7 @@ class PosGroupFragment : Fragment() {
     private lateinit var binding: FragmentPosGroupBinding
     private val sharedViewModel: ParamsViewModel by activityViewModels()
     private val orderingGroupViewModel: OrderingGroupViewModel by activityViewModels()
-    private val args : PosGroupFragmentArgs by navArgs()
+    private val args: PosGroupFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,9 +55,8 @@ class PosGroupFragment : Fragment() {
 
         sharedViewModel.setDeliveryAddressName(args.deliveryAddressNo)
 
-        if(args.deliveryAddressNo.isNullOrEmpty())
+        if (args.deliveryAddressNo.isNullOrEmpty())
             binding.deliveryAddressName = sharedViewModel.deliveryAddressName.value
-
         else
             binding.deliveryAddressName = args.deliveryAddressNo
 
@@ -62,9 +64,24 @@ class PosGroupFragment : Fragment() {
         val spacingInPixels = resources.getDimensionPixelSize(R.dimen.spacing)
         val itemSpacingDecoration = CardViewDecoration(spacingInPixels)
         recyclerView.addItemDecoration(itemSpacingDecoration)
+        // Finds delivery address data based on the selected delivery address
+        val filteredOrderInfo = sharedViewModel.getDeliveryAddresses()
+            ?.filter { it.deliveryAddressNo == args.deliveryAddressNo }
+        // Sets OrderingGroups data
         sharedViewModel.setOrderingGroups(sharedViewModel.getOrder())
-
-        val orderingGroupList: List<OrderingGroup>? = sharedViewModel.getOrderingGroups()
+        val orderingGroupList: List<PointsOfService>? =
+            filteredOrderInfo?.get(0)?.pointsOfService
+        // Groups Points of Service from ordering info to get total number of ordering groups.
+        val mapOrderingGroupList = orderingGroupList?.groupBy { it.pointOfServiceOrderingGroupNo }
+        // Final list to enable displaying of correct Ordering Groups
+        val groupedOrderingGroupList = mapOrderingGroupList?.values?.flatten()
+        // Gets Ordering Group data
+        val order = sharedViewModel.getOrderingGroups()
+        // filters Ordering Groups to a list, based on the Points of service for the delivery address selected. This is then passed to the PosGroup adapter class.
+        val orderGroupDescription = order?.filter { test ->
+            groupedOrderingGroupList?.any { id -> id.pointOfServiceOrderingGroupNo == test.orderingGroupNo }
+                ?: true
+        }
 
         val adapter =
             OrderingGroupAdapter(OrderingGroupAdapter.OrderingGroupListener { orderingGroupNo ->
@@ -82,8 +99,7 @@ class PosGroupFragment : Fragment() {
                         }
                     })
             })
-
-        adapter.submitList(orderingGroupList)
+        adapter.submitList(orderGroupDescription)
 
         binding.orderingGroupSelection.adapter = adapter
         recyclerView.adapter = adapter

@@ -11,9 +11,10 @@ import com.elis.orderingapplication.pojo2.PointsOfService
 class PosAdapter(private val clickListener: PosListener) :
     ListAdapter<PointsOfService, PosAdapter.PosViewHolder>(DiffCallback) {
 
+
     class PosViewHolder(private var binding: PosCardviewBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(clickListener: PosListener, pointsOfService: PointsOfService) {
+            fun bind(clickListener: PosListener, pointsOfService: PointsOfService) {
             binding.pos = pointsOfService
             binding.clickListener = clickListener
             binding.executePendingBindings()
@@ -49,6 +50,7 @@ class PosAdapter(private val clickListener: PosListener) :
         val pointsOfService = getItem(position)
         holder.bind(clickListener, pointsOfService)
     }
+
 
     class PosListener(val clickListener: (posName: String?) -> Unit) {
         fun onClick(posName: PointsOfService) =

@@ -48,13 +48,12 @@ class DeliveryAddressAdapter(private val clickListener: DeliveryAddressListener)
 
     override fun onBindViewHolder(holder: DeliveryAddressViewHolder, position: Int) {
         val deliveryAddress = getItem(position)
-        //holder.bind(deliveryAddress)
         holder.bind(clickListener, deliveryAddress)
     }
 
     class DeliveryAddressListener(val clickListener: (deliveryAddressNo: String?) -> Unit) {
         fun onClick(deliveryAddress: DeliveryAddress) =
-            clickListener(deliveryAddress.deliveryAddressName)
+            clickListener(deliveryAddress.deliveryAddressNo)
     }
 
 

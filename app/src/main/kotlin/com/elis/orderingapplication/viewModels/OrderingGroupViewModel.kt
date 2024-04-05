@@ -15,4 +15,5 @@ class OrderingGroupViewModel: ViewModel(){
         _navigateToPosGroup.value = null
     }
 
+
 }

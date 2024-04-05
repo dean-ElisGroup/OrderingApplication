@@ -320,6 +320,61 @@
           <accountId value="VXNlcjozMDUxMTg=" />
           <internalId value="e5ade03e-d7f1-4b8e-9b9d-d04488161df3" />
         </chat>
+        <chat>
+          <accountId value="VXNlcjozMDUxMTg=" />
+          <internalId value="6e5c9612-13c9-4c51-a2ad-7800c069005c" />
+          <messages>
+            <list>
+              <message>
+                <speaker value="HUMAN" />
+                <text value="Use multiple arguments using @...\orderingapplication\adapters\DeliveryAddressAdapter.kt to pass to PosGroupFragment" />
+              </message>
+              <message>
+                <speaker value="ASSISTANT" />
+                <text value="&lt;html&gt;&amp;#9888; &lt;b&gt; Cody encountered an error when processing your message:&lt;/b&gt;&lt;br&gt;&lt;div marginwidth=15&quot; marginheight=&quot;10&quot;&gt;unable to get local issuer certificate&lt;/div&gt;&lt;/html&gt;" />
+              </message>
+            </list>
+          </messages>
+          <updatedAt value="2024-03-27T09:27:59.4995698" />
+        </chat>
+        <chat>
+          <accountId value="VXNlcjozMDUxMTg=" />
+          <internalId value="529ff175-94be-465d-900a-59c7b8ec3d46" />
+          <messages>
+            <list>
+              <message>
+                <speaker value="HUMAN" />
+                <text value="How do i convert a mapOrderingGroupList to groupedOrderingGroupList" />
+              </message>
+              <message>
+                <speaker value="ASSISTANT" />
+                <text value="&lt;html&gt;&amp;#9888; &lt;b&gt; Cody encountered an error when processing your message:&lt;/b&gt;&lt;br&gt;&lt;div marginwidth=15&quot; marginheight=&quot;10&quot;&gt;unable to get local issuer certificate&lt;/div&gt;&lt;/html&gt;" />
+              </message>
+            </list>
+          </messages>
+          <updatedAt value="2024-04-04T10:20:32.9065867" />
+        </chat>
+        <chat>
+          <accountId value="VXNlcjozMDUxMTg=" />
+          <internalId value="a0ec55e9-a2ff-4ad5-a976-b359ab6dee0f" />
+          <messages>
+            <list>
+              <message>
+                <speaker value="HUMAN" />
+                <text value="Explain what @\\c:\Users\dball\StudioProjects\OrderingApplication\app\src\main\kotlin\com\elis\orderingapplication\PosGroupFragment.kt:52-104  does in simple terms. Assume the audience is a beginner programmer who has just learned the language features and basic syntax. Focus on explaining: 1) The purpose of the code 2) What input(s) it takes 3) What output(s) it produces 4) How it achieves its purpose through the logic and algorithm. 5) Any important logic flows or data transformations happening. Use simple language a beginner could understand. Include enough detail to give a full picture of what the code aims to accomplish without getting too technical. Format the explanation in coherent paragraphs, using proper punctuation and grammar. Write the explanation assuming no prior context about the code is known. Do not make assumptions about variables or functions not shown in the shared code. Start the answer with the name of the code that is being explained." />
+              </message>
+              <message>
+                <speaker value="ASSISTANT" />
+                <text value="&lt;html&gt;&lt;b&gt; Cody encountered an error when processing your message:&lt;/b&gt;&lt;br&gt;&lt;div marginwidth=10&quot; marginheight=&quot;10&quot;&gt;&amp;#9888;  unable to get local issuer certificate&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/html&gt;" />
+              </message>
+            </list>
+          </messages>
+          <updatedAt value="2024-04-05T14:03:22.3947991" />
+        </chat>
+        <chat>
+          <accountId value="VXNlcjozMDUxMTg=" />
+          <internalId value="3aa33d11-624e-45b8-b8de-f6e1698d0330" />
+        </chat>
       </list>
     </chats>
   </component>

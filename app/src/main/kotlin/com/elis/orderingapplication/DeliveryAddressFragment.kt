@@ -54,6 +54,9 @@ class DeliveryAddressFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val recyclerView: RecyclerView = binding.deliveryAddressSelection
+        val spacingInPixels = resources.getDimensionPixelSize(R.dimen.spacing)
+        val itemSpacingDecoration = CardViewDecoration(spacingInPixels)
+        recyclerView.addItemDecoration(itemSpacingDecoration)
         sharedViewModel.setDeliveryAddress(sharedViewModel.getOrder())
 
         val deliveryAddressList: List<DeliveryAddress>? = sharedViewModel.getDeliveryAddresses()

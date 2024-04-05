@@ -17,13 +17,17 @@ import com.elis.orderingapplication.databinding.FragmentPosBinding
 import com.elis.orderingapplication.pojo2.PointsOfService
 import com.elis.orderingapplication.viewModels.ParamsViewModel
 import com.elis.orderingapplication.viewModels.PosViewModel
+import android.widget.SearchView
 
 class PosFragment : Fragment() {
 
     private lateinit var binding: FragmentPosBinding
     private val sharedViewModel: ParamsViewModel by activityViewModels()
     private val posViewModel: PosViewModel by activityViewModels()
-    private val args : PosFragmentArgs by navArgs()
+    private val args: PosFragmentArgs by navArgs()
+
+    // private lateinit var searchView: SearchView
+    private lateinit var recyclerView: RecyclerView
 
 
     override fun onCreateView(
@@ -51,18 +55,21 @@ class PosFragment : Fragment() {
         // Inflate the layout for this fragment
         return binding.root
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        recyclerView = binding.posSelection
 
-        val recyclerView: RecyclerView = binding.posSelection
         val spacingInPixels = resources.getDimensionPixelSize(R.dimen.spacing)
         val itemSpacingDecoration = CardViewDecoration(spacingInPixels)
         recyclerView.addItemDecoration(itemSpacingDecoration)
-        //sharedViewModel.setOrderingGroups(sharedViewModel.getOrder())
 
         val posList: List<PointsOfService>? = sharedViewModel.getPointsOfService()
-        val totalPos = posList?.size
+        val filteredPosList: List<PointsOfService>? =
+            posList?.filter { it.pointOfServiceOrderingGroupNo == "335-1" }
+        filteredPosList?.size?.let { sharedViewModel.setPOSTotal(it) }
+        //posList?.size?.let { sharedViewModel.setPOSTotal(it) }
 
         val adapter =
             PosAdapter(PosAdapter.PosListener { pos ->
@@ -80,10 +87,12 @@ class PosFragment : Fragment() {
                     })
             })
 
-        adapter.submitList(posList)
+        //adapter.submitList(posList)
+        adapter.submitList(filteredPosList)
 
         binding.posSelection.adapter = adapter
         recyclerView.adapter = adapter
 
     }
+
 }

@@ -45,6 +45,8 @@
     <string name="enter_counted_qty">Enter counted qty</string>
     <string name="ordering_group_text">Ordering Group</string>
     <string name="pos_text">Point of Service</string>
+    <string name="proceed_button_icon">Proceed button icon</string>
+    <string name="delivery_address_icon">Delivery address building icon</string>
 
 
 </resources>

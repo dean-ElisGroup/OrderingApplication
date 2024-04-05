@@ -7,9 +7,11 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.elis.orderingapplication.databinding.OrderingGroupCardviewBinding
 import com.elis.orderingapplication.pojo2.OrderingGroup
+import com.elis.orderingapplication.pojo2.PointsOfService
+import com.elis.orderingapplication.viewModels.ParamsViewModel
 
 class OrderingGroupAdapter(private val clickListener: OrderingGroupListener) :
-    ListAdapter<OrderingGroup, OrderingGroupAdapter.OrderingGroupViewHolder>(DiffCallback) {
+    ListAdapter<OrderingGroup, OrderingGroupAdapter.OrderingGroupViewHolder>(DiffCallback){
 
     class OrderingGroupViewHolder(private var binding: OrderingGroupCardviewBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -55,8 +57,6 @@ class OrderingGroupAdapter(private val clickListener: OrderingGroupListener) :
         fun onClick(orderingGroup: OrderingGroup) =
             clickListener(orderingGroup.orderingGroupDescription)
     }
-
-
 }
 
 

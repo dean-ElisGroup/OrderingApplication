@@ -16,6 +16,9 @@ class ParamsViewModel : ViewModel() {
 
     private lateinit var _sessionKey: String
 
+    private val _posTotal = MutableLiveData<Int>()
+    val posTotal: LiveData<Int> = _posTotal
+
     private val _appVersion = MutableLiveData<String>("")
     val appVersion: LiveData<String> = _appVersion
 
@@ -45,6 +48,10 @@ class ParamsViewModel : ViewModel() {
 
     fun getSessionKey(): String {
         return _sessionKey
+    }
+
+    fun setPOSTotal(posTotal: Int) {
+        _posTotal.value = posTotal
     }
 
     fun setOrderInfo(orderInfo: ApiResponse<OrderInfo>?) {

@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.elis.orderingapplication.pojo2.DeliveryAddress
 import com.elis.orderingapplication.pojo2.OrderInfo
 import com.elis.orderingapplication.pojo2.OrderingGroup
+import com.elis.orderingapplication.pojo2.PointsOfService
 
 class BindingAdapters {
     @BindingAdapter("deliveryAddressListData")

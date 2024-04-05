@@ -24,8 +24,6 @@ class LoginViewModel(private val loginRep: UserLoginRepository) : ViewModel() {
         userLoginResponse.postValue(ApiResponse.Loading())
         val response = loginRep.getUserLogin(loginRequest)
         userLoginResponse.postValue(handleUserLoginResponse(response))
-
-
     }
 
     fun getOrderInfo(sessionKey: OrderingRequest) = viewModelScope.launch {

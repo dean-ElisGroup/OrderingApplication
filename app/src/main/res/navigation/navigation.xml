@@ -45,6 +45,9 @@
         <argument
             android:name="deliveryAddressNo"
             app:argType="string" />
+        <argument
+            android:name="deliveryAddressName"
+            app:argType="string"/>
     </fragment>
     <fragment
         android:id="@+id/posGroupFragment"
