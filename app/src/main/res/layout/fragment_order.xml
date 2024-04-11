@@ -2,18 +2,15 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".PosFragment"
+    tools:context=".OrderFragment"
     android:orientation="vertical">
     <data>
         <variable
             name="sharedViewModel"
             type="com.elis.orderingapplication.viewModels.ParamsViewModel" />
         <variable
-            name="posViewModel"
-            type="com.elis.orderingapplication.viewModels.PosViewModel" />
-        <variable
-            name="deliveryAddressName"
-            type="String" />
+            name="orderViewModel"
+            type="com.elis.orderingapplication.viewModels.OrderViewModel" />
 
     </data>
 
@@ -77,35 +74,6 @@
                 app:layout_constraintTop_toBottomOf="@id/guideline2">
 
                 <TextView
-                    android:id="@+id/orderDateText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginEnd="8dp"
-                    android:text="@string/order_date_text"
-                    android:textAlignment="center"
-                    android:textColor="@color/elis_blue"
-                    android:textSize="18sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/orderDate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:fontFamily="@font/sharpsans_medium"
-                    android:text="@{sharedViewModel.orderDate}"
-                    android:textFontWeight="800"
-                    android:textSize="18sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/orderDateText" />
-
-                <TextView
                     android:id="@+id/deliveryAdddress"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -124,7 +92,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="2dp"
                     android:layout_marginEnd="8dp"
                     android:text="@string/delivery_address_text"
                     android:textAlignment="center"
@@ -132,7 +99,7 @@
                     android:textSize="18sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/orderDate" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/orderingGroup"
@@ -155,7 +122,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="2dp"
                     android:layout_marginEnd="8dp"
-                    android:text="@string/ordering_group_text"
+                    android:text="@string/pos_order_text"
                     android:textAlignment="center"
                     android:textColor="@color/elis_blue"
                     android:textSize="18sp"
@@ -177,7 +144,7 @@
                 android:fontFamily="@font/sharpsans_medium"
                 android:letterSpacing=".1"
                 android:maxLines="1"
-                android:text="@string/please_select_a_point_of_service"
+                android:text="@string/please_select_an_order"
                 android:textAlignment="center"
                 android:textColor="@color/elis_blue"
                 android:textSize="16sp"
@@ -190,55 +157,26 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginTop="8dp"
-                app:layout_constraintBottom_toTopOf="@id/constraint_total_pos"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toTopOf="@+id/guideline6"
                 app:layout_constraintEnd_toStartOf="@+id/guideline4"
                 app:layout_constraintStart_toStartOf="@+id/guideline3"
                 app:layout_constraintTop_toBottomOf="@+id/selectAnOption">
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/pos_selection"
+                    android:id="@+id/order_selection"
                     android:layout_width="0dp"
-                    android:layout_height="0dp"
+                    android:layout_height="wrap_content"
                     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:spanCount="2"
-                    tools:listitem="@layout/pos_cardview">
+                    app:spanCount="1"
+                    tools:listitem="@layout/order_cardview">
 
                 </androidx.recyclerview.widget.RecyclerView>
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraint_total_pos"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                app:layout_constraintBottom_toTopOf="@id/guideline6"
-                app:layout_constraintEnd_toStartOf="@+id/guideline4"
-                app:layout_constraintStart_toEndOf="@id/guideline3"
-                app:layout_constraintTop_toBottomOf="@id/constraintLayout2">
-
-                <TextView
-                    android:id="@+id/totalPOS"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/untitled_1_01"
-                    android:fontFamily="@font/elis_sharpsans"
-                    android:gravity="fill"
-                    android:text="@{sharedViewModel.posTotal.toString()}"
-                    android:textAlignment="center"
-                    android:textColor="@color/white"
-                    android:textSize="20sp"
-                    android:textStyle="normal"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.5" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.Guideline

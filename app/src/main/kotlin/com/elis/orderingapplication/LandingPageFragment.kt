@@ -16,19 +16,20 @@ import androidx.core.view.MenuProvider
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import androidx.room.Room
+import com.elis.orderingapplication.database.OrderInfo
+import com.elis.orderingapplication.database.OrderInfoDatabase
 import com.elis.orderingapplication.databinding.FragmentLandingPageBinding
 import com.elis.orderingapplication.viewModels.LandingPageViewModel
-import com.elis.orderingapplication.viewModels.LoginViewModel
 import com.elis.orderingapplication.viewModels.ParamsViewModel
 
 class LandingPageFragment : Fragment() {
 
     private lateinit var binding: FragmentLandingPageBinding
     private val sharedViewModel: ParamsViewModel by activityViewModels()
-
     private lateinit var landingPageView: LandingPageViewModel
+    lateinit var database: OrderInfoDatabase
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,6 +60,11 @@ class LandingPageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val menuHost: MenuHost = requireActivity()
+        database = Room.databaseBuilder(
+            requireContext(),
+            OrderInfoDatabase::class.java,
+            "order_info_database"
+        ).build()
         binding.apply { viewModel = sharedViewModel }
         //apiCall2(sharedViewModel.session_key.value.toString())
         menuHost.addMenuProvider(object : MenuProvider {

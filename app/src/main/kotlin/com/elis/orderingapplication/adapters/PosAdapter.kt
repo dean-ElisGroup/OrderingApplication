@@ -2,6 +2,7 @@ package com.elis.orderingapplication.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Filter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -52,9 +53,14 @@ class PosAdapter(private val clickListener: PosListener) :
     }
 
 
-    class PosListener(val clickListener: (posName: String?) -> Unit) {
+    /*class PosListener(val clickListener: (posName: String?) -> Unit) {
         fun onClick(posName: PointsOfService) =
             clickListener(posName.pointOfServiceName)
+    }*/
+
+    class PosListener(val clickListener: (pos: PointsOfService?) -> Unit) {
+        fun onClick(pos: PointsOfService) =
+            clickListener(pos)
     }
 
 

@@ -18,18 +18,20 @@ import com.elis.orderingapplication.pojo2.PointsOfService
 import com.elis.orderingapplication.viewModels.ParamsViewModel
 import com.elis.orderingapplication.viewModels.PosViewModel
 import android.widget.SearchView
+import com.elis.orderingapplication.adapters.OrderAdapter
+import com.elis.orderingapplication.databinding.FragmentOrderBinding
+import com.elis.orderingapplication.pojo2.Article
 import com.elis.orderingapplication.pojo2.Order
+import com.elis.orderingapplication.viewModels.OrderViewModel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-class PosFragment : Fragment() {
+class OrderFragment : Fragment() {
 
-    private lateinit var binding: FragmentPosBinding
+    private lateinit var binding: FragmentOrderBinding
     private val sharedViewModel: ParamsViewModel by activityViewModels()
-    private val posViewModel: PosViewModel by activityViewModels()
-    private val args: PosFragmentArgs by navArgs()
-
-    // private lateinit var searchView: SearchView
+    private val orderViewModel: OrderViewModel by activityViewModels()
+    private val args: OrderFragmentArgs by navArgs()
     private lateinit var recyclerView: RecyclerView
 
 
@@ -38,21 +40,21 @@ class PosFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_pos, container, false)
+            DataBindingUtil.inflate(inflater, R.layout.fragment_order, container, false)
 
         binding.sharedViewModel = sharedViewModel
-        binding.posViewModel = posViewModel
-        binding.toolbar.title = getString(R.string.pos_title)
+        binding.orderViewModel = orderViewModel
+        binding.toolbar.title = getString(R.string.order_selection_title)
         binding.toolbar.setNavigationIcon(R.drawable.ic_back)
         binding.toolbar.setNavigationOnClickListener {
             view?.let { it ->
                 Navigation.findNavController(it)
-                    .navigate(R.id.action_posFragment_to_posGroupFragment)
+                    .navigate(R.id.action_orderFragment_to_posFragment)
             }
         }
         // Sets ordering group and ordering name to shared ViewModel
-        sharedViewModel.setOrderingGroupNo(args.orderingGroupNo)
-        sharedViewModel.setOrderingGroupName(args.orderingGroupName)
+        //sharedViewModel.setOrderingGroupNo(args.orderingGroupNo)
+        //sharedViewModel.setOrderingGroupName(args.orderingGroupName)
         // Inflate the layout for this fragment
         return binding.root
     }
@@ -60,44 +62,43 @@ class PosFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recyclerView = binding.posSelection
+        recyclerView = binding.orderSelection
 
         val spacingInPixels = resources.getDimensionPixelSize(R.dimen.spacing)
         val itemSpacingDecoration = CardViewDecoration(spacingInPixels)
         recyclerView.addItemDecoration(itemSpacingDecoration)
 
-        val posList = sharedViewModel.getPos()
-        val filteredPosList: List<PointsOfService>? =
-            posList?.filter { it.pointOfServiceOrderingGroupNo == sharedViewModel.orderingGroupNo.value }
-        filteredPosList?.size?.let { sharedViewModel.setPOSTotal(it) }
+        val posList = sharedViewModel.getFilteredPointsOfService()?.filter { it.pointOfServiceNo == args.pos }
 
-        sharedViewModel.setFilteredPointsOfService(filteredPosList)
+        //var orderDate = LocalDate.now()
+        //var orderDateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        //var orderDateFormatted = orderDate.format(orderDateFormatter)
 
-        /*var orderDate = LocalDate.now()
-        var orderDateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-        var orderDateFormatted = orderDate.format(orderDateFormatter)
+        val orders: List<Order>? = posList?.flatMap { it.orders!!.toList()}
+        val filteredOrders = orders?.filter { it.orderType =="inventory" }
 
-        val orders: List<Order>? = filteredPosList?.flatMap { it.orders!!.toList()}
-        val filteredOrders = orders?.filter { it.orderDate == orderDateFormatted && it.orderType =="inventory" }
-        */
+        val articles: List<Article>? = filteredOrders?.flatMap { it.articles!!.toList() }
+        articles?.size?.let { sharedViewModel.setArticleTotal(it) }
+        val testing = articles?.map { element -> element.totalArticles = articles?.size }
+
         val adapter =
-            PosAdapter(PosAdapter.PosListener { pos ->
-                posViewModel.onPosClicked(pos)
-                posViewModel.navigateToPos.observe(
+            OrderAdapter(OrderAdapter.OrderListener  { order ->
+                orderViewModel.onOrderClicked(order)
+                orderViewModel.navigateToPos.observe(
                     viewLifecycleOwner,
-                    Observer { pos ->
-                        pos?.let {
+                    Observer { order ->
+                        order?.let {
                             this.findNavController().navigate(
-                                PosFragmentDirections.actionPosFragmentToOrderFragment(pos.pointOfServiceNo
+                                PosFragmentDirections.actionPosFragmentToOrderFragment(
                                 )
                             )
-                            posViewModel.onPosNavigated()
+                            orderViewModel.onOrderNavigated()
                         }
                     })
             })
-        adapter.submitList(filteredPosList)
+        adapter.submitList(filteredOrders)
 
-        binding.posSelection.adapter = adapter
+        binding.orderSelection.adapter = adapter
         recyclerView.adapter = adapter
 
     }

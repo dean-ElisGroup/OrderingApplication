@@ -3,8 +3,8 @@ package com.elis.orderingapplication.viewModels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.elis.orderingapplication.model.OrderingGroups
 import com.elis.orderingapplication.pojo2.DeliveryAddress
+import com.elis.orderingapplication.pojo2.Order
 import com.elis.orderingapplication.pojo2.OrderInfo
 import com.elis.orderingapplication.pojo2.OrderingGroup
 import com.elis.orderingapplication.pojo2.PointsOfService
@@ -18,6 +18,8 @@ class ParamsViewModel : ViewModel() {
 
     private val _posTotal = MutableLiveData<Int>()
     val posTotal: LiveData<Int> = _posTotal
+    private val _articleTotal = MutableLiveData<Int>()
+    val articleTotal: LiveData<Int> = _articleTotal
 
     private val _appVersion = MutableLiveData<String>("")
     val appVersion: LiveData<String> = _appVersion
@@ -32,11 +34,25 @@ class ParamsViewModel : ViewModel() {
 
     private var _orderingGroups: List<OrderingGroup>? = null
 
+    private var _pointsOfService: List<PointsOfService>? = null
+
+    private var _filteredPointsOfService: List<PointsOfService>? = null
+
+    private var _orders: Order? = null
+    val orders: Order? = _orders
+
+    //private var _orders = MutableLiveData<Order>(null)
+    //val order: LiveData<Order> = _orders
+
+
     private var _deliveryAddressName = MutableLiveData<String>("")
     val deliveryAddressName: LiveData<String> = _deliveryAddressName
 
-    private var _orderingGroupName = MutableLiveData<String>("")
-    val orderingGroupName: LiveData<String> = _orderingGroupName
+    private var _orderingGroupName = MutableLiveData<String?>("")
+    val orderingGroupName: MutableLiveData<String?> = _orderingGroupName
+
+    private var _orderingGroupNo = MutableLiveData<String?>("")
+    val orderingGroupNo: MutableLiveData<String?> = _orderingGroupNo
 
     fun setOrderDate(orderDate: String) {
         _orderDate.value = orderDate
@@ -54,12 +70,32 @@ class ParamsViewModel : ViewModel() {
         _posTotal.value = posTotal
     }
 
+    fun setArticleTotal(articleTotal: Int){
+        _articleTotal.value = articleTotal
+    }
+
     fun setOrderInfo(orderInfo: ApiResponse<OrderInfo>?) {
         _orderInfo = orderInfo
     }
 
     fun getOrder(): ApiResponse<OrderInfo>? {
         return _orderInfo
+    }
+
+    fun setPointsOfService(pos: List<PointsOfService>?) {
+        _pointsOfService = pos
+    }
+
+    fun setFilteredPointsOfService(filteredPos: List<PointsOfService>?){
+        _filteredPointsOfService = filteredPos
+    }
+
+    fun getFilteredPointsOfService(): List<PointsOfService>? {
+        return _filteredPointsOfService
+    }
+
+    fun getPos(): List<PointsOfService>? {
+        return _pointsOfService
     }
 
     fun setDeliveryAddress(deliveryAddress: ApiResponse<OrderInfo>?) {
@@ -70,15 +106,14 @@ class ParamsViewModel : ViewModel() {
         return _deliveryAddress
     }
 
-    fun getPointsOfService(): List<PointsOfService>?{
-        return _deliveryAddress?.component1()?.pointsOfService
-    }
-
     fun setDeliveryAddressName(deliveryAddressName: String){
         _deliveryAddressName.value = deliveryAddressName
     }
-    fun setOrderingGroupName(orderingGroupName: String){
+    fun setOrderingGroupName(orderingGroupName: String?){
         _orderingGroupName.value = orderingGroupName
+    }
+    fun setOrderingGroupNo(orderingGroupNo: String?){
+        _orderingGroupNo.value = orderingGroupNo
     }
 
 

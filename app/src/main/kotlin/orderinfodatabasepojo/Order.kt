@@ -1,4 +1,4 @@
-package com.elis.orderingapplication.pojo2
+package orderinfodatabasepojo
 
 import com.squareup.moshi.Json
 import javax.annotation.Generated
@@ -19,13 +19,7 @@ class Order {
     // Additional json field to allow updating of order status when the ordering is being entered.
     @Json(name = "appOrderStatus")
     var appOrderStatus: String? = null
-    // Additional json field to allow updating of order status when the ordering is being entered.
-    @Json(name = "appPointOfServiceNo")
-    var appPosNo: String? = null
 
     @Json(name = "articles")
     var articles: List<Article>? = null
-
-    @Json(name = "totalArticles")
-    var totalArticles: Int? = null
 }

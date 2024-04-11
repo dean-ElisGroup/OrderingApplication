@@ -31,6 +31,8 @@
     <string name="pos_group_title">Point of service group</string>
     <string name="pos_title">Point of service</string>
     <string name="article_entry_title">Order entry</string>
+    <string name="order_selection_title">Orders</string>
+
     // Shared prefs
     <string name="session_shared_prefs">Session Shared Preferences</string>
     <string name="session_key">Session Key</string>
@@ -47,6 +49,8 @@
     <string name="pos_text">Point of Service</string>
     <string name="proceed_button_icon">Proceed button icon</string>
     <string name="delivery_address_icon">Delivery address building icon</string>
+    <string name="please_select_an_order">Select an order</string>
+    <string name="pos_order_text">Point of Service</string>
 
 
 </resources>

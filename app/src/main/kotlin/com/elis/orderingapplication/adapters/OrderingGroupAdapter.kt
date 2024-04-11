@@ -53,10 +53,15 @@ class OrderingGroupAdapter(private val clickListener: OrderingGroupListener) :
         holder.bind(clickListener, orderingGroup)
     }
 
-    class OrderingGroupListener(val clickListener: (orderingGroupDescription: String?) -> Unit) {
+    //class OrderingGroupListener(val clickListener: (orderingGroupDescription: String?) -> Unit) {
+    //    fun onClick(orderingGroup: OrderingGroup) =
+    //        clickListener(orderingGroup.orderingGroupDescription)
+    //}
+    class OrderingGroupListener(val clickListener: (orderingGroupDescription: OrderingGroup) -> Unit) {
         fun onClick(orderingGroup: OrderingGroup) =
-            clickListener(orderingGroup.orderingGroupDescription)
+            clickListener(orderingGroup)
     }
+
 }
 
 

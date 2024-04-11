@@ -1,4 +1,4 @@
-package com.elis.orderingapplication.pojo2
+package orderinfodatabasepojo
 
 import com.squareup.moshi.Json
 import javax.annotation.Generated
@@ -25,7 +25,4 @@ class Article {
 
     @Json(name = "articleIntervalQty")
     var articleIntervalQty: Int? = null
-
-    @Json(name = "totalArticles")
-    var totalArticles: Int? = null
 }

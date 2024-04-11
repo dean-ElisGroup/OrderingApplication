@@ -13,9 +13,6 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import com.elis.orderingapplication.adapters.OrderingGroupAdapter
 import com.elis.orderingapplication.databinding.FragmentPosGroupBinding
-import com.elis.orderingapplication.pojo2.DeliveryAddress
-import com.elis.orderingapplication.pojo2.OrderInfo
-import com.elis.orderingapplication.pojo2.OrderingGroup
 import com.elis.orderingapplication.pojo2.PointsOfService
 import com.elis.orderingapplication.viewModels.OrderingGroupViewModel
 import com.elis.orderingapplication.viewModels.ParamsViewModel
@@ -67,10 +64,17 @@ class PosGroupFragment : Fragment() {
         // Finds delivery address data based on the selected delivery address
         val filteredOrderInfo = sharedViewModel.getDeliveryAddresses()
             ?.filter { it.deliveryAddressNo == args.deliveryAddressNo }
+        // Sets current selected delivery address name
+        filteredOrderInfo?.get(0)?.deliveryAddressName?.let {
+            sharedViewModel.setDeliveryAddressName(
+                it
+            )
+        }
         // Sets OrderingGroups data
         sharedViewModel.setOrderingGroups(sharedViewModel.getOrder())
         val orderingGroupList: List<PointsOfService>? =
             filteredOrderInfo?.get(0)?.pointsOfService
+        sharedViewModel.setPointsOfService(orderingGroupList)
         // Groups Points of Service from ordering info to get total number of ordering groups.
         val mapOrderingGroupList = orderingGroupList?.groupBy { it.pointOfServiceOrderingGroupNo }
         // Final list to enable displaying of correct Ordering Groups
@@ -78,21 +82,21 @@ class PosGroupFragment : Fragment() {
         // Gets Ordering Group data
         val order = sharedViewModel.getOrderingGroups()
         // filters Ordering Groups to a list, based on the Points of service for the delivery address selected. This is then passed to the PosGroup adapter class.
-        val orderGroupDescription = order?.filter { test ->
-            groupedOrderingGroupList?.any { id -> id.pointOfServiceOrderingGroupNo == test.orderingGroupNo }
+        val orderGroupDescription = order?.filter { orderingGroupGroupNo ->
+            groupedOrderingGroupList?.any { id -> id.pointOfServiceOrderingGroupNo == orderingGroupGroupNo.orderingGroupNo }
                 ?: true
         }
 
         val adapter =
-            OrderingGroupAdapter(OrderingGroupAdapter.OrderingGroupListener { orderingGroupNo ->
-                orderingGroupViewModel.onOrderingGroupClicked(orderingGroupNo)
+            OrderingGroupAdapter(OrderingGroupAdapter.OrderingGroupListener { orderingGroup ->
+                orderingGroupViewModel.onOrderingGroupClicked(orderingGroup)
                 orderingGroupViewModel.navigateToOrderingGroup.observe(
                     viewLifecycleOwner,
                     Observer { orderingGroupNo ->
                         orderingGroupNo?.let {
                             this.findNavController().navigate(
                                 PosGroupFragmentDirections.actionPosGroupFragmentToPosFragment(
-                                    orderingGroupNo
+                                    orderingGroup.orderingGroupNo, orderingGroup.orderingGroupDescription
                                 )
                             )
                             orderingGroupViewModel.onOrderingGroupNavigated()

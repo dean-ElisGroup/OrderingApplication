@@ -4,6 +4,7 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.elis.orderingapplication.pojo2.DeliveryAddress
+import com.elis.orderingapplication.pojo2.Order
 import com.elis.orderingapplication.pojo2.OrderInfo
 import com.elis.orderingapplication.pojo2.OrderingGroup
 import com.elis.orderingapplication.pojo2.PointsOfService
@@ -17,6 +18,11 @@ class BindingAdapters {
     @BindingAdapter("orderingGroupsListData")
     fun bindRecyclerViewOrderingGroups(recyclerView: RecyclerView, data: List<OrderingGroup>?) {
         val adapter = recyclerView.adapter as OrderingGroupAdapter
+        adapter.submitList(data)
+    }
+    @BindingAdapter("orderListData")
+    fun bindRecyclerViewOrder(recyclerView: RecyclerView, data: List<Order>?) {
+        val adapter = recyclerView.adapter as OrderAdapter
         adapter.submitList(data)
     }
 }
