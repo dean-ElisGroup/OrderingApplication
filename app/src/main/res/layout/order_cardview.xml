@@ -18,8 +18,8 @@
         android:layout_height="wrap_content"
         android:backgroundTint="@color/white"
         android:clickable="true"
-        android:maxHeight="100dp"
-        android:minHeight="100dp"
+        android:maxHeight="80dp"
+        android:minHeight="80dp"
         app:cardCornerRadius="10dp"
         app:cardElevation="6dp"
         app:strokeColor="@color/elis_black"
@@ -29,8 +29,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/white"
-            android:gravity="center|fill"
-            android:minHeight="100dp"
+            android:elevation="5dp"
+            android:gravity="fill"
+            android:minHeight="80dp"
             android:onClick="@{() -> clickListener.onClick(order)}"
             android:orientation="horizontal"
             android:padding="5dp"
@@ -41,72 +42,59 @@
 
             <ImageView
                 android:id="@+id/new_status"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/baseline_fiber_new_24" />
 
             <TextView
-                android:id="@+id/orderingGroupName"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginStart="2dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="2dp"
-                android:autoSizeTextType="none"
-                android:fontFamily="@font/sharpsans_medium"
-                android:gravity="center|center_vertical"
-                android:maxLines="2"
-                android:minLines="1"
-                android:nestedScrollingEnabled="false"
-                android:paddingStart="5dp"
-                android:singleLine="false"
-                android:text="@{order.deliveryDate}"
-                android:textColor="@color/elis_black"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/constraintLayout3"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintHorizontal_chainStyle="packed"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.5" />
-
-            <TextView
                 android:id="@+id/totalArticles"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:layout_editor_absoluteX="5dp"
-                tools:layout_editor_absoluteY="5dp"
-                android:text="18"/>
+                android:text="@{order.totalArticles.toString()}"
+                android:textAlignment="center"
+                app:layout_constraintTop_toBottomOf="@+id/new_status"
+                tools:layout_editor_absoluteX="7dp" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayout3"
-                android:layout_width="45dp"
-                android:layout_height="60dp"
-                android:layout_marginTop="32dp"
-                android:layout_marginBottom="32dp"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="11dp"
+                android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/totalArticles">
+
+                <TextView
+                    android:id="@+id/orderingGroupName"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="2dp"
+                    android:autoSizeTextType="none"
+                    android:fontFamily="@font/sharpsans_medium"
+                    android:gravity="center|center_vertical"
+                    android:maxLines="2"
+                    android:minLines="1"
+                    android:nestedScrollingEnabled="false"
+                    android:singleLine="false"
+                    android:text="@{order.deliveryDate}"
+                    android:textColor="@color/elis_black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
                 <ImageView
                     android:id="@+id/proceed_arrow"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:foregroundGravity="right"
-                    android:paddingEnd="-20dp"
                     android:scaleType="fitEnd"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.5"
                     app:srcCompat="@drawable/baseline_arrow_right_24_black" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>

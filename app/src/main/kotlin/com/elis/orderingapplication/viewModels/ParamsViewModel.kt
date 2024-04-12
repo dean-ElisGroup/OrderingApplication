@@ -18,8 +18,9 @@ class ParamsViewModel : ViewModel() {
 
     private val _posTotal = MutableLiveData<Int>()
     val posTotal: LiveData<Int> = _posTotal
-    private val _articleTotal = MutableLiveData<Int>()
-    val articleTotal: LiveData<Int> = _articleTotal
+
+    private val _articleTotal = MutableLiveData<Int?>()
+    val articleTotal: LiveData<Int?> = _articleTotal
 
     private val _appVersion = MutableLiveData<String>("")
     val appVersion: LiveData<String> = _appVersion
@@ -70,7 +71,7 @@ class ParamsViewModel : ViewModel() {
         _posTotal.value = posTotal
     }
 
-    fun setArticleTotal(articleTotal: Int){
+    fun setArticleTotal(articleTotal: Int?){
         _articleTotal.value = articleTotal
     }
 

@@ -24,6 +24,7 @@ import com.elis.orderingapplication.pojo2.Article
 import com.elis.orderingapplication.pojo2.Order
 import com.elis.orderingapplication.viewModels.OrderViewModel
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class OrderFragment : Fragment() {
@@ -68,21 +69,30 @@ class OrderFragment : Fragment() {
         val itemSpacingDecoration = CardViewDecoration(spacingInPixels)
         recyclerView.addItemDecoration(itemSpacingDecoration)
 
-        val posList = sharedViewModel.getFilteredPointsOfService()?.filter { it.pointOfServiceNo == args.pos }
+        val posList =
+            sharedViewModel.getFilteredPointsOfService()?.filter { it.pointOfServiceNo == args.pos }
 
-        //var orderDate = LocalDate.now()
-        //var orderDateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-        //var orderDateFormatted = orderDate.format(orderDateFormatter)
+        val orders: List<Order>? = posList?.flatMap { it.orders!!.toList() }
+        val filteredOrders =
+            orders?.filter { it.orderDate == getOrderDate() && it.orderType == "inventory" }
+                ?.toMutableList()
 
-        val orders: List<Order>? = posList?.flatMap { it.orders!!.toList()}
-        val filteredOrders = orders?.filter { it.orderType =="inventory" }
+        val articles: List<Article>? = filteredOrders?.flatMap { it.articles!!.toMutableList() }
+        val totalArticles = articles?.size
+        //val testing = articles?.map { element -> element.totalArticles = articles?.size }?.size
 
-        val articles: List<Article>? = filteredOrders?.flatMap { it.articles!!.toList() }
-        articles?.size?.let { sharedViewModel.setArticleTotal(it) }
-        val testing = articles?.map { element -> element.totalArticles = articles?.size }
+        val iterator = filteredOrders?.listIterator()
+        while(iterator!!.hasNext()) {
+            val i = iterator.next()
+            i.totalArticles = totalArticles
+        }
+
+
+        //sharedViewModel.setArticleTotal(testing)
+        //articles?.size?.let { sharedViewModel.setArticleTotal(it) }
 
         val adapter =
-            OrderAdapter(OrderAdapter.OrderListener  { order ->
+            OrderAdapter(OrderAdapter.OrderListener { order ->
                 orderViewModel.onOrderClicked(order)
                 orderViewModel.navigateToPos.observe(
                     viewLifecycleOwner,
@@ -102,5 +112,11 @@ class OrderFragment : Fragment() {
         recyclerView.adapter = adapter
 
     }
+
+    fun getOrderDate(): String? {
+        var orderDateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        return LocalDateTime.now().format(orderDateFormatter)
+    }
+
 
 }

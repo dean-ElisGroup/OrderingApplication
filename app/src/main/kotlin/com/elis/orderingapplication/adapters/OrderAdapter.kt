@@ -2,24 +2,20 @@ package com.elis.orderingapplication.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Filter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.elis.orderingapplication.databinding.OrderCardviewBinding
-import com.elis.orderingapplication.databinding.PosCardviewBinding
 import com.elis.orderingapplication.pojo2.Order
-import com.elis.orderingapplication.pojo2.PointsOfService
-import com.elis.orderingapplication.viewModels.ParamsViewModel
 
 class OrderAdapter(private val clickListener: OrderListener) :
     ListAdapter<Order, OrderAdapter.OrderViewHolder>(DiffCallback) {
-
 
     class OrderViewHolder(private var binding: OrderCardviewBinding) :
         RecyclerView.ViewHolder(binding.root) {
             fun bind(clickListener: OrderListener, order: Order) {
             binding.order = order
+                binding.totalArticles
             binding.clickListener = clickListener
             binding.executePendingBindings()
         }

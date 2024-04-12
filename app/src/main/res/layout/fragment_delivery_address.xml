@@ -129,13 +129,6 @@
 
 
             <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.23" />
-
-            <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -156,7 +149,7 @@
                 app:layout_constraintBottom_toTopOf="@id/guideline6"
                 app:layout_constraintEnd_toEndOf="@id/guideline4"
                 app:layout_constraintStart_toStartOf="@+id/guideline3"
-                app:layout_constraintTop_toBottomOf="@id/guideline5">
+                app:layout_constraintTop_toBottomOf="@id/selectAnOption">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/delivery_address_selection"

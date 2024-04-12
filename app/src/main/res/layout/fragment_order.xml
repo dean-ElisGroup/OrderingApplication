@@ -74,7 +74,7 @@
                 app:layout_constraintTop_toBottomOf="@id/guideline2">
 
                 <TextView
-                    android:id="@+id/deliveryAdddress"
+                    android:id="@+id/deliveryAddress"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -128,7 +128,7 @@
                     android:textSize="18sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/deliveryAdddress" />
+                    app:layout_constraintTop_toBottomOf="@id/deliveryAddress" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -163,15 +163,30 @@
                 app:layout_constraintStart_toStartOf="@+id/guideline3"
                 app:layout_constraintTop_toBottomOf="@+id/selectAnOption">
 
+                <Button
+                    android:id="@+id/choose_date_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/elis_black"
+                    android:text="@string/date_selection_button"
+                    app:icon="@drawable/baseline_calendar_month_24"
+                    app:iconGravity="textStart"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:strokeColor="@color/white"
+                    app:strokeWidth="0.5dp" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/order_selection"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
+                    android:paddingTop="5dp"
                     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/choose_date_button"
                     app:spanCount="1"
                     tools:listitem="@layout/order_cardview">
 
