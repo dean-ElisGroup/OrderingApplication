@@ -18,8 +18,7 @@
         android:layout_height="wrap_content"
         android:backgroundTint="@color/white"
         android:clickable="true"
-        android:maxHeight="100dp"
-        android:minHeight="100dp"
+        android:maxHeight="70dp"
         app:cardCornerRadius="10dp"
         app:cardElevation="6dp"
         app:strokeColor="@color/elis_black"
@@ -30,7 +29,6 @@
             android:layout_height="wrap_content"
             android:backgroundTint="@color/white"
             android:gravity="center|fill"
-            android:minHeight="100dp"
             android:onClick="@{() -> clickListener.onClick(pos)}"
             android:orientation="horizontal"
             android:padding="5dp"
@@ -38,14 +36,6 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             tools:layout_editor_absoluteX="5dp">
-
-            <ImageView
-                android:id="@+id/new_status"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/baseline_fiber_new_24" />
 
             <TextView
                 android:id="@+id/orderingGroupName"
@@ -63,13 +53,11 @@
                 android:paddingStart="5dp"
                 android:singleLine="false"
                 android:text="@{pos.pointOfServiceDescription}"
-                android:textAlignment="textStart"
                 android:textColor="@color/elis_black"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/constraintLayout3"
+                  app:layout_constraintEnd_toStartOf="@+id/constraintLayout3"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"

@@ -108,6 +108,17 @@
             app:argType="string"
             android:defaultValue="@null"
             app:nullable="true"/>
+        <action
+            android:id="@+id/action_orderFragment_to_articleFragment"
+            app:destination="@id/articleFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/articleFragment"
+        android:name="com.elis.orderingapplication.ArticleFragment"
+        android:label="ArticleFragment" >
+        <action
+            android:id="@+id/action_articleFragment_to_orderFragment"
+            app:destination="@id/orderFragment" />
     </fragment>
 
 

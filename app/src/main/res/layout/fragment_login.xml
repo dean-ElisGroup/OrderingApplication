@@ -196,6 +196,7 @@
             android:id="@+id/app_version"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:paddingBottom="10dp"
             android:text="@{paramViewModel.appVersion}"
             android:textAlignment="center"
@@ -203,20 +204,23 @@
             android:textSize="11sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/right_guideline"
-            app:layout_constraintStart_toStartOf="@+id/left_guideline" />
+            app:layout_constraintStart_toStartOf="@+id/left_guideline"
+            app:layout_constraintTop_toBottomOf="@id/flavor_banner" />
 
         <TextView
             android:id="@+id/flavor_banner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:background="#CD60A8"
             android:fontFamily="@font/sharpsans_medium"
             android:textAlignment="center"
             android:textColor="@color/white"
-            android:textSize="22sp"
+            android:textSize="18sp"
             app:layout_constraintBottom_toTopOf="@+id/app_version"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/loginButton" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"

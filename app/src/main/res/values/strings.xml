@@ -52,6 +52,8 @@
     <string name="please_select_an_order">Select an order</string>
     <string name="pos_order_text">Point of Service</string>
     <string name="date_selection_button">Choose date</string>
+    <string name="Enter_Counted_Qty">Enter counted qty</string>
+    <string name="this_is_the_counted_qty_field">This is the counted qty field.</string>
 
 
 </resources>

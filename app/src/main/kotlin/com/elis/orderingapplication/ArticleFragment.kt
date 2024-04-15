@@ -22,7 +22,7 @@ import com.elis.orderingapplication.pojo2.Order
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-class PosFragment : Fragment() {
+class ArticleFragment : Fragment() {
 
     private lateinit var binding: FragmentPosBinding
     private val sharedViewModel: ParamsViewModel by activityViewModels()
