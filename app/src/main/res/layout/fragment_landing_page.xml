@@ -89,7 +89,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:background="@drawable/instruction_background"
+                android:background="@drawable/instruction_background_v2"
                 android:fontFamily="@font/sharpsans_medium"
                 android:letterSpacing=".1"
                 android:text="@string/please_select_an_option"

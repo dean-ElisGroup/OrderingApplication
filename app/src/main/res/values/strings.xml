@@ -32,6 +32,8 @@
     <string name="pos_title">Point of service</string>
     <string name="article_entry_title">Order entry</string>
     <string name="order_selection_title">Orders</string>
+    <string name="article_title">Article entry</string>
+
 
     // Shared prefs
     <string name="session_shared_prefs">Session Shared Preferences</string>
@@ -54,6 +56,12 @@
     <string name="date_selection_button">Choose date</string>
     <string name="Enter_Counted_Qty">Enter counted qty</string>
     <string name="this_is_the_counted_qty_field">This is the counted qty field.</string>
+    <string name="target_qty_text">Target Qty\n</string>
+    <string name="order_qty_text">Order Qty</string>
+    <string name="enter_county_qty_hint">Qty</string>
+    <string name="article_entry_of">of</string>
+    <string name="article_entry_last_article_text">You are entering the last article</string>
+    <string name="article_entry_article_position_text">Article</string>
 
 
 </resources>

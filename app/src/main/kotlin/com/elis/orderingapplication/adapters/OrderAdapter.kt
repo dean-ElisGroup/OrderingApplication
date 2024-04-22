@@ -15,7 +15,6 @@ class OrderAdapter(private val clickListener: OrderListener) :
         RecyclerView.ViewHolder(binding.root) {
             fun bind(clickListener: OrderListener, order: Order) {
             binding.order = order
-                binding.totalArticles
             binding.clickListener = clickListener
             binding.executePendingBindings()
         }

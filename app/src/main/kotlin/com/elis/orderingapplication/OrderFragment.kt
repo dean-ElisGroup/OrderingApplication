@@ -12,18 +12,12 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
-import com.elis.orderingapplication.adapters.PosAdapter
-import com.elis.orderingapplication.databinding.FragmentPosBinding
-import com.elis.orderingapplication.pojo2.PointsOfService
 import com.elis.orderingapplication.viewModels.ParamsViewModel
-import com.elis.orderingapplication.viewModels.PosViewModel
-import android.widget.SearchView
 import com.elis.orderingapplication.adapters.OrderAdapter
 import com.elis.orderingapplication.databinding.FragmentOrderBinding
 import com.elis.orderingapplication.pojo2.Article
 import com.elis.orderingapplication.pojo2.Order
 import com.elis.orderingapplication.viewModels.OrderViewModel
-import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -76,10 +70,11 @@ class OrderFragment : Fragment() {
         val filteredOrders =
             orders?.filter { it.orderDate == getOrderDate() && it.orderType == "inventory" }
                 ?.toMutableList()
+        // Sets filtered order data to global shared view model.
+        sharedViewModel.setFilteredOrders(filteredOrders)
 
         val articles: List<Article>? = filteredOrders?.flatMap { it.articles!!.toMutableList() }
         val totalArticles = articles?.size
-        //val testing = articles?.map { element -> element.totalArticles = articles?.size }?.size
 
         val iterator = filteredOrders?.listIterator()
         while(iterator!!.hasNext()) {
@@ -94,13 +89,12 @@ class OrderFragment : Fragment() {
         val adapter =
             OrderAdapter(OrderAdapter.OrderListener { order ->
                 orderViewModel.onOrderClicked(order)
-                orderViewModel.navigateToPos.observe(
+                orderViewModel.navigateToOrder.observe(
                     viewLifecycleOwner,
                     Observer { order ->
                         order?.let {
                             this.findNavController().navigate(
-                                PosFragmentDirections.actionPosFragmentToOrderFragment(
-                                )
+                                OrderFragmentDirections.actionOrderFragmentToArticleFragment(order.orderDate)
                             )
                             orderViewModel.onOrderNavigated()
                         }

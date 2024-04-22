@@ -170,7 +170,6 @@
                 android:layout_height="0dp"
                 android:clickable="false"
                 android:orientation="horizontal"
-                android:visibility="gone"
                 app:layout_constraintBottom_toTopOf="@+id/guideline6"
                 app:layout_constraintEnd_toStartOf="@+id/guideline4"
                 app:layout_constraintStart_toStartOf="@+id/guideline3"
@@ -190,19 +189,6 @@
 
                 </androidx.recyclerview.widget.RecyclerView>
             </LinearLayout>
-
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/article_entry_viewpager"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                app:layout_constraintBottom_toTopOf="@+id/guideline6"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline3"

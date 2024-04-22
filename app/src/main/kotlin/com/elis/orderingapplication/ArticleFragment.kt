@@ -1,58 +1,58 @@
 package com.elis.orderingapplication
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
-import com.elis.orderingapplication.adapters.PosAdapter
-import com.elis.orderingapplication.databinding.FragmentPosBinding
-import com.elis.orderingapplication.pojo2.PointsOfService
+import androidx.viewpager2.widget.ViewPager2
+import com.elis.orderingapplication.adapters.ArticleAdapter
+import com.elis.orderingapplication.adapters.ArticleEntryAdapter
+import com.elis.orderingapplication.databinding.FragmentArticleBinding
+import com.elis.orderingapplication.pojo2.Article
+import com.elis.orderingapplication.viewModels.ArticleViewModel
 import com.elis.orderingapplication.viewModels.ParamsViewModel
-import com.elis.orderingapplication.viewModels.PosViewModel
-import android.widget.SearchView
-import com.elis.orderingapplication.pojo2.Order
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
+
 
 class ArticleFragment : Fragment() {
 
-    private lateinit var binding: FragmentPosBinding
+    private lateinit var binding: FragmentArticleBinding
     private val sharedViewModel: ParamsViewModel by activityViewModels()
-    private val posViewModel: PosViewModel by activityViewModels()
-    private val args: PosFragmentArgs by navArgs()
-
-    // private lateinit var searchView: SearchView
+    private val articleViewModel: ArticleViewModel by activityViewModels()
+    private val args: ArticleFragmentArgs by navArgs()
     private lateinit var recyclerView: RecyclerView
-
+    private lateinit var viewPager: ViewPager2
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_pos, container, false)
+            DataBindingUtil.inflate(inflater, R.layout.fragment_article, container, false)
 
         binding.sharedViewModel = sharedViewModel
-        binding.posViewModel = posViewModel
-        binding.toolbar.title = getString(R.string.pos_title)
+        binding.articleViewModel = articleViewModel
+        binding.toolbar.title = getString(R.string.article_title)
         binding.toolbar.setNavigationIcon(R.drawable.ic_back)
         binding.toolbar.setNavigationOnClickListener {
             view?.let { it ->
                 Navigation.findNavController(it)
-                    .navigate(R.id.action_posFragment_to_posGroupFragment)
+                    .navigate(R.id.action_articleFragment_to_orderFragment)
             }
         }
+        viewPager = binding.articleEntryViewpager
+
         // Sets ordering group and ordering name to shared ViewModel
-        sharedViewModel.setOrderingGroupNo(args.orderingGroupNo)
-        sharedViewModel.setOrderingGroupName(args.orderingGroupName)
+        //sharedViewModel.setOrderingGroupNo(args.orderingGroupNo)
+        //sharedViewModel.setOrderingGroupName(args.orderingGroupName)
         // Inflate the layout for this fragment
         return binding.root
     }
@@ -60,58 +60,56 @@ class ArticleFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recyclerView = binding.posSelection
+        recyclerView = binding.articleEntry
+        viewPager = binding.articleEntryViewpager
 
-        val spacingInPixels = resources.getDimensionPixelSize(R.dimen.spacing)
-        val itemSpacingDecoration = CardViewDecoration(spacingInPixels)
-        recyclerView.addItemDecoration(itemSpacingDecoration)
 
-        val posList = sharedViewModel.getPos()
-        val filteredPosList: List<PointsOfService>? =
-            posList?.filter { it.pointOfServiceOrderingGroupNo == sharedViewModel.orderingGroupNo.value }
-        filteredPosList?.size?.let { sharedViewModel.setPOSTotal(it) }
 
-        sharedViewModel.setFilteredPointsOfService(filteredPosList)
+        //val spacingInPixels = resources.getDimensionPixelSize(R.dimen.spacing)
+        //val itemSpacingDecoration = CardViewDecoration(spacingInPixels)
+        //recyclerView.addItemDecoration(itemSpacingDecoration)
 
-        var filteredOrders: List<Order>? = filteredPosList?.find { it.orders!!.isNotEmpty() }?.orders
+        val order = sharedViewModel.getFilteredOrders()
 
-        var totalOrders: Int? = filteredOrders?.size
+        val articles: List<Article>? = order?.flatMap { it.articles!!.toList() }
 
-        /*filteredOrders?.forEach { order ->
-            if (totalArticle != null) {
-                order.articles?.let {
-                    totalArticle += it.size
-                }
-            }
-        }*/
+        sharedViewModel.setArticleTotal(articles?.size)
 
-        /*var orderDate = LocalDate.now()
-        var orderDateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-        var orderDateFormatted = orderDate.format(orderDateFormatter)
+        val iterator = articles?.listIterator()
+        while(iterator!!.hasNext()) {
+            val i = iterator.next()
+            i.totalArticles = articles.size
+        }
 
-        val orders: List<Order>? = filteredPosList?.flatMap { it.orders!!.toList()}
-        val filteredOrders = orders?.filter { it.orderDate == orderDateFormatted && it.orderType =="inventory" }
-        */
+        val viewPagerAdapter = ArticleEntryAdapter(articles)
+        viewPagerAdapter.submitList(articles)
+        viewPager = binding.articleEntryViewpager
+        //binding.articleEntryViewpager.adapter = viewPagerAdapter
+        viewPager.adapter = viewPagerAdapter
+        viewPagerAdapter.submitList(articles)
+
         val adapter =
-            PosAdapter(PosAdapter.PosListener { pos ->
-                posViewModel.onPosClicked(pos)
-                posViewModel.navigateToPos.observe(
+            ArticleAdapter(ArticleAdapter.ArticleListener { article ->
+                articleViewModel.onArticleClicked(article)
+                articleViewModel.navigateToArticle.observe(
                     viewLifecycleOwner,
-                    Observer { pos ->
-                        pos?.let {
+                    Observer { article ->
+                        article?.let {
                             this.findNavController().navigate(
-                                PosFragmentDirections.actionPosFragmentToOrderFragment(pos.pointOfServiceNo
-                                )
+                                ArticleFragmentDirections.actionArticleFragmentToOrderFragment()
                             )
-                            posViewModel.onPosNavigated()
+                            articleViewModel.onArticleNavigated()
                         }
                     })
             })
-        adapter.submitList(filteredPosList)
+        adapter.submitList(articles)
 
-        binding.posSelection.adapter = adapter
+        binding.articleEntry.adapter = adapter
         recyclerView.adapter = adapter
 
+
     }
+
+
 
 }

@@ -7,7 +7,7 @@ import com.elis.orderingapplication.pojo2.Order
 class OrderViewModel: ViewModel(){
 
     private val _navigateToOrder = MutableLiveData<Order?>()
-    val navigateToPos
+    val navigateToOrder
         get() = _navigateToOrder
     fun onOrderClicked(order: Order?) {
         _navigateToOrder.value = order

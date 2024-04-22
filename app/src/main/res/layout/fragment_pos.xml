@@ -70,7 +70,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="8dp"
-                android:background="@drawable/instruction_background"
+                android:background="@drawable/instruction_background_v2"
                 android:elevation="2dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -173,7 +173,7 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="8dp"
                 android:autoSizeTextType="uniform"
-                android:background="@drawable/instruction_background"
+                android:background="@drawable/instruction_background_v2"
                 android:fontFamily="@font/sharpsans_medium"
                 android:letterSpacing=".1"
                 android:maxLines="1"
@@ -186,7 +186,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayout2"
+                android:id="@+id/article_entry_card"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginTop="8dp"
@@ -220,7 +220,7 @@
                 app:layout_constraintBottom_toTopOf="@id/guideline6"
                 app:layout_constraintEnd_toStartOf="@+id/guideline4"
                 app:layout_constraintStart_toEndOf="@id/guideline3"
-                app:layout_constraintTop_toBottomOf="@id/constraintLayout2">
+                app:layout_constraintTop_toBottomOf="@id/article_entry_card">
 
                 <TextView
                     android:id="@+id/totalPOS"

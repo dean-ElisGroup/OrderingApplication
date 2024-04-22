@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ArticleEntryFragment1">
+
+    <data>
+
+        <variable
+            name="sharedViewModel"
+            type="com.elis.orderingapplication.viewModels.ParamsViewModel" />
+
+        <variable
+            name="articleViewModel"
+            type="com.elis.orderingapplication.viewModels.ArticleViewModel" />
+
+        <variable
+            name="deliveryAddressName"
+            type="String" />
+
+        <variable
+            name="article"
+            type="com.elis.orderingapplication.pojo2.Article" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/instruction_background_v3"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/sharpsans_medium"
+            android:text="@string/article_entry_article_position_text"
+            android:textAlignment="center"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/last_article_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/sharpsans_medium"
+            android:text="@string/article_entry_last_article_text"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textColor="#F44336"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/article_position" />
+
+        <TextView
+            android:id="@+id/entercountedqty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/sharpsans_medium"
+            android:text="@string/Enter_Counted_Qty"
+            android:textColor="@color/elis_black"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider" />
+
+        <TextView
+            android:id="@+id/target_qty_text"
+            android:layout_width="0dp"
+            android:layout_height="33dp"
+            android:layout_marginTop="6dp"
+            android:fontFamily="@font/sharpsans_medium"
+            android:text="@string/target_qty_text"
+            android:textAlignment="center"
+            android:textColor="@color/elis_black"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@+id/target_qty"
+            app:layout_constraintStart_toStartOf="@+id/target_qty"
+            app:layout_constraintTop_toBottomOf="@+id/entercountedqty" />
+
+        <TextView
+            android:id="@+id/order_qty_text"
+            android:layout_width="0dp"
+            android:layout_height="33dp"
+            android:layout_marginTop="6dp"
+            android:fontFamily="@font/sharpsans_medium"
+            android:text="@string/order_qty_text"
+            android:textAlignment="center"
+            android:textColor="@color/elis_black"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@+id/order_qty"
+            app:layout_constraintStart_toStartOf="@+id/order_qty"
+            app:layout_constraintTop_toBottomOf="@+id/entercountedqty" />
+
+        <TextView
+            android:id="@+id/target_qty"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/target_order_qty_box"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="@{article.articleTargetQty.toString()}"
+            android:textColor="@color/white"
+            android:textSize="30sp"
+            app:layout_constraintEnd_toStartOf="@+id/counted_qty"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/counted_qty" />
+
+        <TextView
+            android:id="@+id/order_qty"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/target_order_qty_box"
+            android:gravity="center_horizontal|center_vertical"
+            android:textColor="@color/white"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/counted_qty"
+            app:layout_constraintTop_toTopOf="@+id/counted_qty" />
+
+        <EditText
+            android:id="@+id/counted_qty"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/counted_qty_box"
+            android:clickable="true"
+            android:contextClickable="true"
+            android:ems="10"
+            android:fontFamily="@font/sharpsans_medium"
+            android:gravity="center_horizontal|center_vertical"
+            android:hint="@string/enter_county_qty_hint"
+            android:inputType="number"
+            android:textColor="@color/elis_black"
+            android:textSize="40sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/entercountedqty" />
+
+        <TextView
+            android:id="@+id/article_description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:autoSizeTextType="uniform"
+            android:background="@color/elis_light_blue"
+            android:fontFamily="@font/sharpsans_medium"
+            android:padding="10dp"
+            android:textAlignment="center"
+            android:textColor="@color/elis_black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/order_qty"
+            app:layout_constraintStart_toStartOf="@+id/target_qty"
+            app:layout_constraintTop_toBottomOf="@+id/counted_qty" />
+
+        <TextView
+            android:id="@+id/article_no"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/sharpsans_medium"
+            android:textAlignment="center"
+            android:textColor="@color/elis_black"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toTopOf="@+id/guideline5"
+            app:layout_constraintEnd_toEndOf="@+id/article_description"
+            app:layout_constraintStart_toStartOf="@+id/article_description"
+            app:layout_constraintTop_toBottomOf="@+id/article_description"
+            app:layout_constraintVertical_bias="0.06999999" />
+
+        <TextView
+            android:id="@+id/article_position"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/article_count_box"
+            android:gravity="center_horizontal|center_vertical"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toBottomOf="@id/of_article_position"
+            app:layout_constraintEnd_toStartOf="@id/article_position2"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="@+id/entercountedqty" />
+
+        <TextView
+            android:id="@+id/article_position2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="@string/article_entry_of"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toBottomOf="@+id/of_article_position"
+            app:layout_constraintEnd_toStartOf="@+id/of_article_position"
+            app:layout_constraintStart_toEndOf="@+id/article_position"
+            app:layout_constraintTop_toTopOf="@+id/of_article_position" />
+
+        <TextView
+            android:id="@+id/of_article_position"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/article_count_box"
+            android:gravity="center_horizontal|center_vertical"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toTopOf="@+id/last_article_text"
+            app:layout_constraintEnd_toEndOf="@+id/entercountedqty"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toEndOf="@id/article_position2"
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/article_entry_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="5dp"
+            android:visibility="gone"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/article_no">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="370dp" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintBottom_toTopOf="@+id/entercountedqty"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/last_article_text" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/send_order_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="15dp"
+            android:visibility="gone"
+            app:backgroundTint="#08AC4C"
+            app:icon="@drawable/baseline_send_24"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:iconSize="35dp"
+            app:layout_constraintBottom_toTopOf="@+id/guideline5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/article_no" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>

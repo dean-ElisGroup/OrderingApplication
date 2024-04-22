@@ -39,6 +39,8 @@ class ParamsViewModel : ViewModel() {
 
     private var _filteredPointsOfService: List<PointsOfService>? = null
 
+    private var _filteredOrders: List<Order>? = null
+
     private var _orders: Order? = null
     val orders: Order? = _orders
 
@@ -97,6 +99,13 @@ class ParamsViewModel : ViewModel() {
 
     fun getPos(): List<PointsOfService>? {
         return _pointsOfService
+    }
+
+    fun setFilteredOrders(filteredOrder: List<Order>?){
+        _filteredOrders = filteredOrder
+    }
+    fun getFilteredOrders(): List<Order>?{
+        return _filteredOrders
     }
 
     fun setDeliveryAddress(deliveryAddress: ApiResponse<OrderInfo>?) {

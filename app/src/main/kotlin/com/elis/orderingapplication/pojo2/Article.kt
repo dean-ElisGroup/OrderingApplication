@@ -26,6 +26,12 @@ class Article {
     @Json(name = "articleIntervalQty")
     var articleIntervalQty: Int? = null
 
+    @Json(name = "solOrderQty")
+    var solOrderQty: Int? = null
+
+    @Json(name = "solCountedQty")
+    var solCountedQty: Int? = null
+
     @Json(name = "totalArticles")
     var totalArticles: Int? = null
 }
