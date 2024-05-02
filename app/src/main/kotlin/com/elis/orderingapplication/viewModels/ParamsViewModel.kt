@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.elis.orderingapplication.pojo2.DeliveryAddress
 import com.elis.orderingapplication.pojo2.Order
 import com.elis.orderingapplication.pojo2.OrderInfo
+import com.elis.orderingapplication.pojo2.OrderRowsItem
 import com.elis.orderingapplication.pojo2.OrderingGroup
 import com.elis.orderingapplication.pojo2.PointsOfService
 import com.elis.orderingapplication.utils.ApiResponse
@@ -44,6 +45,9 @@ class ParamsViewModel : ViewModel() {
     private var _orders: Order? = null
     val orders: Order? = _orders
 
+    private val _orderRowsItem = MutableLiveData<List<OrderRowsItem?>?>()
+    val orderRowsItem: MutableLiveData<List<OrderRowsItem?>?> = _orderRowsItem
+
     //private var _orders = MutableLiveData<Order>(null)
     //val order: LiveData<Order> = _orders
 
@@ -73,7 +77,7 @@ class ParamsViewModel : ViewModel() {
         _posTotal.value = posTotal
     }
 
-    fun setArticleTotal(articleTotal: Int?){
+    fun setArticleTotal(articleTotal: Int?) {
         _articleTotal.value = articleTotal
     }
 
@@ -89,7 +93,7 @@ class ParamsViewModel : ViewModel() {
         _pointsOfService = pos
     }
 
-    fun setFilteredPointsOfService(filteredPos: List<PointsOfService>?){
+    fun setFilteredPointsOfService(filteredPos: List<PointsOfService>?) {
         _filteredPointsOfService = filteredPos
     }
 
@@ -101,10 +105,11 @@ class ParamsViewModel : ViewModel() {
         return _pointsOfService
     }
 
-    fun setFilteredOrders(filteredOrder: List<Order>?){
+    fun setFilteredOrders(filteredOrder: List<Order>?) {
         _filteredOrders = filteredOrder
     }
-    fun getFilteredOrders(): List<Order>?{
+
+    fun getFilteredOrders(): List<Order>? {
         return _filteredOrders
     }
 
@@ -116,13 +121,15 @@ class ParamsViewModel : ViewModel() {
         return _deliveryAddress
     }
 
-    fun setDeliveryAddressName(deliveryAddressName: String){
+    fun setDeliveryAddressName(deliveryAddressName: String) {
         _deliveryAddressName.value = deliveryAddressName
     }
-    fun setOrderingGroupName(orderingGroupName: String?){
+
+    fun setOrderingGroupName(orderingGroupName: String?) {
         _orderingGroupName.value = orderingGroupName
     }
-    fun setOrderingGroupNo(orderingGroupNo: String?){
+
+    fun setOrderingGroupNo(orderingGroupNo: String?) {
         _orderingGroupNo.value = orderingGroupNo
     }
 
@@ -133,6 +140,17 @@ class ParamsViewModel : ViewModel() {
 
     fun getOrderingGroups(): List<OrderingGroup>? {
         return _orderingGroups
+    }
+
+    fun setOrderRowsItem(orderRow: OrderRowsItem) {
+        _orderRowsItem.value = _orderRowsItem.value ?: ArrayList()
+        val currentList = _orderRowsItem.value?.toMutableList()
+        currentList?.add(orderRow)
+        _orderRowsItem.value = currentList
+    }
+
+    fun getOrderRowsItem(): List<OrderRowsItem?>? {
+        return _orderRowsItem.value
     }
 
     fun setAppVersion(appVersion: String) {

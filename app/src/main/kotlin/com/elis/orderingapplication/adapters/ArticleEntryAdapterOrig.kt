@@ -1,45 +1,23 @@
 package com.elis.orderingapplication.adapters
 
-import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.Lifecycle
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.elis.orderingapplication.ArticleEntryFragment1
-import com.elis.orderingapplication.model.Articles
 import com.elis.orderingapplication.pojo2.Article
+import com.elis.orderingapplication.databinding.FragmentArticleEntryViewpagerBinding
+import com.elis.orderingapplication.pojo2.OrderRowsItem
+import com.elis.orderingapplication.pojo2.SendOrder
 
-
-class ArticleEntryAdapter (fragmentManager: FragmentManager, lifecycle: Lifecycle, private val articles: List<Article>) :
-FragmentStateAdapter(fragmentManager, lifecycle){
-    override fun getItemCount(): Int {
-        return articles.size
-
-    }
-
-    override fun createFragment(position: Int): Fragment {
-        val articles = articles[position]
-        val entryFragment = ArticleEntryFragment1()
-        val articlePosition = position+1
-
-        val fragmentBundle = Bundle()
-        fragmentBundle.putString("articleNo", articles.articleNo)
-        fragmentBundle.putString("articleDescription", articles.articleDescription)
-        fragmentBundle.putString("articleTargetQty", articles.articleTargetQty.toString())
-        fragmentBundle.putString("articleSize", articles.articleSize)
-        fragmentBundle.putString("numberOfArticles", itemCount.toString())
-        fragmentBundle.putString("currentArticlePosition", articlePosition.toString())
-        entryFragment.arguments = fragmentBundle
-
-        return entryFragment
-        //return ArticleEntryFragment1()
-    }
-
-}
-
-
-/*class ArticleEntryAdapter(private val articles: List<Article>?):
-    ListAdapter<Article, ArticleEntryAdapter.ArticleEntryViewHolder>(DiffCallback) {
+class ArticleEntryAdapterOrig(private val articles: List<Article>?):
+    ListAdapter<Article, ArticleEntryAdapterOrig.ArticleEntryViewHolder>(DiffCallback) {
 
     class ArticleEntryViewHolder(private var binding: FragmentArticleEntryViewpagerBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -114,5 +92,5 @@ FragmentStateAdapter(fragmentManager, lifecycle){
 
 
 
-}*/
+}
 

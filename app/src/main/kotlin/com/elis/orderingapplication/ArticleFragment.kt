@@ -63,16 +63,8 @@ class ArticleFragment : Fragment() {
         recyclerView = binding.articleEntry
         viewPager = binding.articleEntryViewpager
 
-
-
-        //val spacingInPixels = resources.getDimensionPixelSize(R.dimen.spacing)
-        //val itemSpacingDecoration = CardViewDecoration(spacingInPixels)
-        //recyclerView.addItemDecoration(itemSpacingDecoration)
-
         val order = sharedViewModel.getFilteredOrders()
-
         val articles: List<Article>? = order?.flatMap { it.articles!!.toList() }
-
         sharedViewModel.setArticleTotal(articles?.size)
 
         val iterator = articles?.listIterator()
@@ -81,12 +73,14 @@ class ArticleFragment : Fragment() {
             i.totalArticles = articles.size
         }
 
-        val viewPagerAdapter = ArticleEntryAdapter(articles)
+        /*val viewPagerAdapter = ArticleEntryAdapter(articles)
         viewPagerAdapter.submitList(articles)
         viewPager = binding.articleEntryViewpager
-        //binding.articleEntryViewpager.adapter = viewPagerAdapter
         viewPager.adapter = viewPagerAdapter
-        viewPagerAdapter.submitList(articles)
+        viewPagerAdapter.submitList(articles)*/
+        val viewPager2: ViewPager2 = binding.articleEntryViewpager
+        val viewPagerAdapter = ArticleEntryAdapter(childFragmentManager,lifecycle,articles)
+        viewPager2.adapter = viewPagerAdapter
 
         val adapter =
             ArticleAdapter(ArticleAdapter.ArticleListener { article ->
@@ -106,6 +100,7 @@ class ArticleFragment : Fragment() {
 
         binding.articleEntry.adapter = adapter
         recyclerView.adapter = adapter
+
 
 
     }
