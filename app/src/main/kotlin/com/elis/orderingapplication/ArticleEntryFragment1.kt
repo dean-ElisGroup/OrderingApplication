@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.core.view.marginTop
 import androidx.core.widget.doAfterTextChanged
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -33,6 +34,8 @@ import com.elis.orderingapplication.viewModels.ArticleViewModel
 import com.elis.orderingapplication.viewModels.LoginViewModel
 import com.elis.orderingapplication.viewModels.LoginViewModelFactory
 import com.elis.orderingapplication.viewModels.ParamsViewModel
+import java.util.UUID
+import kotlin.math.abs
 
 class ArticleEntryFragment1 : Fragment() {
 
@@ -80,7 +83,6 @@ class ArticleEntryFragment1 : Fragment() {
             binding.orderQty.text = "$resultOrderQty"
         }
 
-
         // Inflate the layout for this fragment
         return binding.root
     }
@@ -113,21 +115,12 @@ class ArticleEntryFragment1 : Fragment() {
         val numberOfArticles = arguments?.getString("numberOfArticles")
         val currentArticlePosition = arguments?.getString("currentArticlePosition")
 
+        articleEntryViewModel.show(currentArticlePosition, numberOfArticles)
+
         if (currentArticlePosition == numberOfArticles) {
             binding.lastArticleText.visibility = View.VISIBLE
             binding.sendOrderButton.visibility = View.VISIBLE
         }
-
-        val sendOrderLines = OrderRowsItem(articleSize, 3, articleNo)
-        //val sendOrderLinesList: List<OrderRowsItem> = listOf(sendOrderLines)
-        //articleSendViewModel.addArticleToSendBody(sendOrderLines)
-        sharedViewModel.setOrderRowsItem(sendOrderLines)
-        //articleSendViewModel.sendOrderBody.observe(viewLifecycleOwner, Observer {newList ->
-        //    val newListSize = newList?.size
-        //})
-        val test = SendOrder(1, 3350238, "deano", currentOrder?.orderDate, "deano", sharedViewModel.getOrderRowsItem())
-        val test1 = OrderEvent(sharedViewModel.getSessionKey(), test)
-
         if (arguments != null) {
             binding.articleNo.text = articleNo
             binding.articleDescription.text = articleDescription
@@ -141,15 +134,26 @@ class ArticleEntryFragment1 : Fragment() {
                 Toast.LENGTH_LONG
             ).show()
 
-
-
-
-
-
-
+        binding.countedQty.doAfterTextChanged {
+            val solCountedQty = binding.orderQty.text.toString().toIntOrNull()
+            val sendOrderLines = OrderRowsItem(articleSize, solCountedQty, articleNo)
+            sharedViewModel.setOrderRowsItem(sendOrderLines)
+            //val testing = sharedViewModel.getOrderRowsItem()
+        }
 
         binding.sendOrderButton.setOnClickListener {
-            articleEntryViewModel.orderEvent(test1)
+            //val sendOrderExternalOrderId = UUID.randomUUID().toString()
+            val sendOrderExternalOrderId = abs((0..999999999999999999).random()).toString()
+            val sendOrder = SendOrder(
+                sharedViewModel.getPointOfServiceNo().toIntOrNull(),
+                sharedViewModel.getDeliveryAddressNo().toIntOrNull(),
+                sendOrderExternalOrderId,
+                currentOrder?.orderDate,
+                sendOrderExternalOrderId,
+                sharedViewModel.getOrderRowsItem()
+            )
+            val sendOrderEvent = OrderEvent(sharedViewModel.getSessionKey(), sendOrder)
+            articleEntryViewModel.orderEvent(sendOrderEvent)
             articleEntryViewModel.orderEventResponse.observe(viewLifecycleOwner) { response ->
                 when (response) {
                     is ApiResponse.Success -> {

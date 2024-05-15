@@ -17,6 +17,9 @@ class ParamsViewModel : ViewModel() {
 
     private lateinit var _sessionKey: String
 
+    private var _deliveryAddressNo: String = ""
+    private var _pointOfServiceNo: String = ""
+
     private val _posTotal = MutableLiveData<Int>()
     val posTotal: LiveData<Int> = _posTotal
 
@@ -71,6 +74,22 @@ class ParamsViewModel : ViewModel() {
 
     fun getSessionKey(): String {
         return _sessionKey
+    }
+
+    fun setDeliveryAddressNo(deliveryAddressNo: String) {
+        _deliveryAddressNo = deliveryAddressNo
+    }
+
+    fun getDeliveryAddressNo(): String {
+        return _deliveryAddressNo
+    }
+
+    fun setPointOfServiceNo(pointOfServiceNo: String) {
+        _pointOfServiceNo = pointOfServiceNo
+    }
+
+    fun getPointOfServiceNo(): String {
+        return _pointOfServiceNo
     }
 
     fun setPOSTotal(posTotal: Int) {
@@ -144,9 +163,19 @@ class ParamsViewModel : ViewModel() {
 
     fun setOrderRowsItem(orderRow: OrderRowsItem) {
         _orderRowsItem.value = _orderRowsItem.value ?: ArrayList()
-        val currentList = _orderRowsItem.value?.toMutableList()
-        currentList?.add(orderRow)
-        _orderRowsItem.value = currentList
+        // performs find to check if the current OrderRow already exists in the list.
+        val articleExits = _orderRowsItem.value?.find { it?.articleNo == orderRow.articleNo }
+        // applies change to already existing record
+        articleExits?.apply {
+            qty = orderRow.qty
+            _orderRowsItem.value = _orderRowsItem.value
+        }
+        // inserts OrderRow if it does not already exist.
+        if (articleExits?.articleNo == null) {
+            val currentList = _orderRowsItem.value?.toMutableList()
+            currentList?.add(orderRow)
+            _orderRowsItem.value = currentList
+        }
     }
 
     fun getOrderRowsItem(): List<OrderRowsItem?>? {

@@ -61,7 +61,7 @@
     <string name="enter_county_qty_hint">Qty</string>
     <string name="article_entry_of">of</string>
     <string name="article_entry_last_article_text">You are entering the last article</string>
-    <string name="article_entry_article_position_text">Article</string>
+    <string name="article_entry_article_position_text">Entering Article</string>
     <string name="article_entry_counted_qty_speakable">Counted qty field</string>
     <string name="article_entry_send_order_button">Send order</string>
 

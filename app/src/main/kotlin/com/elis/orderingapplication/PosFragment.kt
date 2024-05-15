@@ -103,6 +103,11 @@ class PosFragment : Fragment() {
                                 PosFragmentDirections.actionPosFragmentToOrderFragment(pos.pointOfServiceNo
                                 )
                             )
+                            pos.pointOfServiceNo?.let { it1 ->
+                                sharedViewModel.setPointOfServiceNo(
+                                    it1
+                                )
+                            }
                             posViewModel.onPosNavigated()
                         }
                     })

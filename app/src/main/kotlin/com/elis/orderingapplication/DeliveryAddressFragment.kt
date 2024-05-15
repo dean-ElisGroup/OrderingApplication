@@ -53,6 +53,8 @@ class DeliveryAddressFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        var selectedDeliveryAddressNo: String? = null
+
         val recyclerView: RecyclerView = binding.deliveryAddressSelection
         val spacingInPixels = resources.getDimensionPixelSize(R.dimen.spacing)
         val itemSpacingDecoration = CardViewDecoration(spacingInPixels)
@@ -73,6 +75,7 @@ class DeliveryAddressFragment : Fragment() {
                                     deliveryAddressNo
                                 )
                             )
+                            deliveryAddressNo.let { sharedViewModel.setDeliveryAddressNo(it) }
                             deliveryAddressViewModel.onDeliveryAddressNavigated()
                         }
                     })
@@ -81,6 +84,8 @@ class DeliveryAddressFragment : Fragment() {
 
         binding.deliveryAddressSelection.adapter = adapter
         recyclerView.adapter = adapter
+        // sets selected delivery address number to the shared view model.
+
 
 
     }

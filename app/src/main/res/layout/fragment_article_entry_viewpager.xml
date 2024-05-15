@@ -15,6 +15,10 @@
             type="com.elis.orderingapplication.viewModels.ArticleViewModel" />
 
         <variable
+            name="articleEntryViewModel"
+            type="com.elis.orderingapplication.viewModels.ArticleEntryViewModel" />
+
+        <variable
             name="deliveryAddressName"
             type="String" />
 
@@ -68,9 +72,7 @@
             android:id="@+id/entercountedqty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="3dp"
-            android:layout_marginEnd="8dp"
+            app:conditionalMargin="@{articleEntryViewModel.changeMargin}"
             android:fontFamily="@font/sharpsans_medium"
             android:text="@string/Enter_Counted_Qty"
             android:textColor="@color/elis_black"
@@ -78,7 +80,7 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/divider" />
+            app:layout_constraintTop_toBottomOf="@id/divider"/>
 
         <TextView
             android:id="@+id/target_qty_text"
@@ -171,7 +173,7 @@
             android:padding="10dp"
             android:textAlignment="center"
             android:textColor="@color/elis_black"
-            android:textSize="18sp"
+            android:textSize="15sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@+id/order_qty"
             app:layout_constraintStart_toStartOf="@+id/target_qty"
@@ -271,8 +273,8 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/send_order_button"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginTop="20dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:layout_marginBottom="15dp"
             android:clickable="true"
             android:text="@string/article_entry_send_order_button"
