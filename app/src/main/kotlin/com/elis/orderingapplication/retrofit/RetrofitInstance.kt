@@ -1,20 +1,22 @@
 package com.elis.orderingapplication.retrofit
 
+import com.elis.orderingapplication.interfaces.OrderEvent
 import com.elis.orderingapplication.interfaces.OrderInfo
 import com.elis.orderingapplication.interfaces.UserLogin
-import com.elis.orderingapplication.interfaces.OrderEvent
+import com.solstockorder.dev.utils.ApiUrls.Companion.BASE_URL
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import com.solstockorder.dev.utils.ApiUrls.Companion.BASE_URL
 import java.time.Duration
 import java.util.concurrent.TimeUnit
+
 
 class RetroFitInstance {
     companion object {
         private val retrofit: Retrofit by lazy {
             val logger = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+
 
             val client = OkHttpClient.Builder()
                 .addInterceptor(logger)

@@ -4,8 +4,14 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.elis.orderingapplication.pojo2.DeliveryAddress
+import com.elis.orderingapplication.pojo2.OrderInfo
+import com.elis.orderingapplication.pojo2.PointsOfService
+import com.elis.orderingapplication.pojo2.Order
+import com.elis.orderingapplication.pojo2.Article
 
-@Database(entities = [OrderInfo::class], version = 1, exportSchema = false)
+//@Database(entities = [OrderInfo::class], version = 1, exportSchema = false)
+@Database(entities = [DeliveryAddress::class, PointsOfService::class, Order::class, Article::class], version = 10, exportSchema = false)
 abstract class OrderInfoDatabase : RoomDatabase() {
 
     abstract val orderInfoDao: OrderInfoDao

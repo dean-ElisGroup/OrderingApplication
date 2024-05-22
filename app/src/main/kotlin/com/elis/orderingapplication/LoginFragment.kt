@@ -30,10 +30,13 @@ import android.widget.ProgressBar
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation.findNavController
 import com.elis.orderingapplication.adapters.LoginAdapter
+import com.elis.orderingapplication.database.OrderInfoDatabase
 import com.elis.orderingapplication.databinding.FragmentLoginBinding
 import com.elis.orderingapplication.repositories.UserLoginRepository
 import com.elis.orderingapplication.utils.ApiResponse
 import com.elis.orderingapplication.viewModels.LoginViewModelFactory
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
 
 class LoginFragment : Fragment() {
 
@@ -111,6 +114,19 @@ class LoginFragment : Fragment() {
                                     when (orderInfoResponse) {
                                         is ApiResponse.Success -> {
                                             sharedViewModel.setOrderInfo(loginView.orderInfoResponse.value)
+
+                                                val testAddressList =
+                                                    loginView.orderInfoResponse.value?.data?.deliveryAddresses //sharedViewModel!!.orderInfo?.data?.deliveryAddresses
+
+                                            context?.let { it1 -> loginView.insertToDatabase(it1,testAddressList) }
+
+                                                /*if (testAddressList != null) {
+                                                    context?.let { it1 ->
+                                                        OrderInfoDatabase.getInstance(
+                                                            it1
+                                                        ).orderInfoDao.insert(testAddressList)
+                                                    }
+                                                }*/
                                             findNavController(view).navigate(R.id.action_loginFragment_to_landingPageFragment)
                                         }
 

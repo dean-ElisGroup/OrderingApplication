@@ -10,10 +10,12 @@ import com.elis.orderingapplication.pojo2.SendOrder
 import com.elis.orderingapplication.utils.ApiChannels.Companion.LOGIN
 import com.elis.orderingapplication.utils.ApiChannels.Companion.ORDER_EVENT
 import com.elis.orderingapplication.utils.ApiChannels.Companion.ORDER_INFO
+import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.Headers
 import retrofit2.http.POST
+import retrofit2.http.Streaming
 
 interface UserLogin {
     @Headers("Content-Type: application/json")
@@ -30,7 +32,6 @@ interface OrderInfo {
         @Body sessionKey: OrderingRequest
     ): Response<OrderInfo>
 }
-
 interface OrderEvent {
     @Headers("Content-Type: application/json")
     @POST(ORDER_EVENT)

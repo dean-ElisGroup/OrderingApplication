@@ -1,22 +1,42 @@
 package com.elis.orderingapplication.pojo2
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.Ignore
+import com.google.gson.annotations.SerializedName
 import com.squareup.moshi.Json
-import javax.annotation.Generated
+import io.reactivex.annotations.NonNull
 
-@Generated("jsonschema2pojo")
-class PointsOfService {
+@Entity(
+    tableName = "points_of_service",
+    primaryKeys = ["point_of_service", "deliveryAddressNo"]
+)
+data class PointsOfService(
+    @NonNull
+    @ColumnInfo(name = "point_of_service")
     @Json(name = "pointOfServiceNo")
-    var pointOfServiceNo: String? = null
+    var pointOfServiceNo: String = "",
 
     @Json(name = "pointOfServiceName")
-    var pointOfServiceName: String? = null
+    var pointOfServiceName: String? = null,
 
     @Json(name = "pointOfServiceDescription")
-    var pointOfServiceDescription: String? = null
+    var pointOfServiceDescription: String? = null,
 
     @Json(name = "pointOfServiceOrderingGroupNo")
-    var pointOfServiceOrderingGroupNo: String? = null
+    var pointOfServiceOrderingGroupNo: String? = null,
 
+    @NonNull
+    @ColumnInfo(name = "deliveryAddressNo")
+    var deliveryAddressNo: String = "",
+
+    @ColumnInfo(name = "deliveryAddressName")
+    var deliveryAddressName: String? = "",
+
+    @Ignore
     @Json(name = "orders")
     var orders: List<Order>? = null
+) {
+    constructor() : this("", null, null, null, "", null)
 }
+
