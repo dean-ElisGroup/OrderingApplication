@@ -10,6 +10,7 @@ import com.elis.orderingapplication.model.OrderingLoginResponseStruct
 import com.elis.orderingapplication.model.OrderingRequest
 import com.elis.orderingapplication.pojo2.DeliveryAddress
 import com.elis.orderingapplication.pojo2.OrderInfo
+import com.elis.orderingapplication.pojo2.OrderingGroup
 import com.elis.orderingapplication.repositories.UserLoginRepository
 import com.elis.orderingapplication.utils.ApiResponse
 import com.google.common.reflect.TypeToken
@@ -39,24 +40,30 @@ class LoginViewModel(private val loginRep: UserLoginRepository) : ViewModel() {
         orderInfoResponse.postValue(ApiResponse.Loading())
         val response = loginRep.getOrderInfo(sessionKey)
 
+        val orderingGroupResponse = response?.body()?.orderingGroups
+
         response?.body()?.deliveryAddresses?.forEach { deliveryAddress ->
             deliveryAddress.pointsOfService?.forEach { pointsOfService ->
                 // Update fields within the PointsOfService object
                 pointsOfService.deliveryAddressNo = deliveryAddress.deliveryAddressNo
                 pointsOfService.deliveryAddressName = deliveryAddress.deliveryAddressName
-
+                pointsOfService.orderingGroupDescription = orderingGroupResponse?.firstOrNull{it.orderingGroupNo == pointsOfService.pointOfServiceOrderingGroupNo}?.orderingGroupDescription
                 // Iterate over the orders list within each PointsOfService
                 pointsOfService.orders?.forEach { order ->
                     // Update fields within the Order object
                     order.totalArticles = order.articles?.size
                     order.appPosNo = pointsOfService.pointOfServiceNo
                     order.posName = pointsOfService.pointOfServiceName
+                    order.deliveryAddressNo = pointsOfService.deliveryAddressNo
+                    order.deliveryAddressName = pointsOfService.deliveryAddressName
 
                     // Iterate over the articles list within each Order
                     order.articles?.forEach { article ->
                         // Update fields within the Article object
                         article.pointOfService = order.appPosNo
                         article.deliveryDate = order.deliveryDate
+                        article.deliveryAddressNo = order.deliveryAddressNo
+                        article.deliveryAddressName = order.deliveryAddressName
                     }
                 }
             }
@@ -65,13 +72,14 @@ class LoginViewModel(private val loginRep: UserLoginRepository) : ViewModel() {
         orderInfoResponse.postValue(handleOrderInfoResponse(response))
     }
 
-    fun insertToDatabase(context: Context, addressList: List<DeliveryAddress>?) {
+    fun insertToDatabase(context: Context, addressList: List<DeliveryAddress>?, orderingGroupList: List<OrderingGroup>) {
         coroutineScope.launch {
             if (addressList != null) {
                 val database = OrderInfoDatabase.getInstance(context)
                 val dao = database.orderInfoDao
 
                 dao.insert(addressList)
+                dao.insertOrderingGroup(orderingGroupList)
 
                 addressList.forEach { deliveryAddress ->
                     deliveryAddress.pointsOfService?.let { pointsOfServiceList ->
@@ -93,7 +101,6 @@ class LoginViewModel(private val loginRep: UserLoginRepository) : ViewModel() {
             }
         }
     }
-
     private fun handleUserLoginResponse(response: Response<OrderingLoginResponseStruct>): ApiResponse<OrderingLoginResponseStruct> {
         if (response.isSuccessful && response.body()?.message == "") {
             response.body()?.let { resultResponse ->

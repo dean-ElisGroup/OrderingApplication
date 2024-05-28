@@ -8,9 +8,8 @@ import com.squareup.moshi.Json
 import javax.annotation.Generated
 import javax.annotation.Nonnull
 
-@Generated("jsonschema2pojo")
 @Entity(tableName = "article",
-    primaryKeys = ["articleNo","delivery_date_article", "point_of_service"])
+    primaryKeys = ["articleNo","delivery_date_article", "point_of_service", "deliveryAddressNo"])
 data class Article (
     @Nonnull
     @Json(name = "articleNo")
@@ -50,6 +49,13 @@ data class Article (
 
     @Nonnull
     @ColumnInfo(name = "delivery_date_article")
-    var deliveryDate: String = ""
+    var deliveryDate: String = "",
+
+    @Nonnull
+    @ColumnInfo(name = "deliveryAddressNo")
+    var deliveryAddressNo: String = "",
+
+    @ColumnInfo(name = "deliveryAddressName")
+    var deliveryAddressName: String? = "",
 )
 

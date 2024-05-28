@@ -7,11 +7,11 @@
 
         <variable
             name="orderingGroup"
-            type="com.elis.orderingapplication.pojo2.OrderingGroup" />
+            type="com.elis.orderingapplication.pojo2.JoinOrderingGroup" />
 
         <variable
             name="clickListener"
-            type="com.elis.orderingapplication.adapters.OrderingGroupAdapter.OrderingGroupListener" />
+            type="com.elis.orderingapplication.adapters.listAdapters.OrderingGroupAdapter.MyClickListener" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -31,7 +31,7 @@
             android:backgroundTint="@color/white"
             android:gravity="center|fill"
             android:minHeight="100dp"
-            android:onClick="@{() -> clickListener.onClick(orderingGroup)}"
+            android:onClick="@{() -> clickListener.onItemClick(orderingGroup)}"
             android:orientation="vertical"
             android:padding="5dp">
 

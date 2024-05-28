@@ -14,8 +14,10 @@ class DeliveryAddressAdapter(private val clickListener: DeliveryAddressListener)
     class DeliveryAddressViewHolder(private var binding: DeliveryAddressCardviewBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(clickListener: DeliveryAddressListener, orderInfo: DeliveryAddress) {
-            binding.deliveryAddress = orderInfo
-            binding.clickListener = clickListener
+            //binding.deliveryAddress = orderInfo
+            binding.deliveryAddressNo.text = orderInfo.deliveryAddressNo
+            binding.deliveryAddressName.text = orderInfo.deliveryAddressName
+            //binding.clickListener = clickListener
             binding.executePendingBindings()
         }
     }

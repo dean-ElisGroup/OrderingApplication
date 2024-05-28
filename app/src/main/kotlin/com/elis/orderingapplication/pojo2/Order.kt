@@ -11,7 +11,7 @@ import javax.annotation.Nonnull
 
 @Generated("jsonschema2pojo")
 @Entity(tableName = "order",
-        primaryKeys = ["delivery_date", "point_of_service_no"])
+        primaryKeys = ["delivery_date", "point_of_service_no", "deliveryAddressNo"])
 
 data class Order (
     @Json(name = "orderType")
@@ -43,8 +43,13 @@ data class Order (
     @Json(name = "totalArticles")
     var totalArticles: Int? = null,
 
-    //@Relation(parentColumn = "delivery_date",
-    //    entityColumn = "delivery_date_article")
+    @Nonnull
+    @ColumnInfo(name = "deliveryAddressNo")
+    var deliveryAddressNo: String = "",
+
+    @ColumnInfo(name = "deliveryAddressName")
+    var deliveryAddressName: String? = "",
+
     @Ignore
     @Json(name = "articles")
     var articles: List<Article>? = null

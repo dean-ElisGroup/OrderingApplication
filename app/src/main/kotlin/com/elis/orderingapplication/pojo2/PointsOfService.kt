@@ -3,7 +3,6 @@ package com.elis.orderingapplication.pojo2
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
-import com.google.gson.annotations.SerializedName
 import com.squareup.moshi.Json
 import io.reactivex.annotations.NonNull
 
@@ -23,8 +22,12 @@ data class PointsOfService(
     @Json(name = "pointOfServiceDescription")
     var pointOfServiceDescription: String? = null,
 
+    @ColumnInfo(name = "orderingGroupNo")
     @Json(name = "pointOfServiceOrderingGroupNo")
     var pointOfServiceOrderingGroupNo: String? = null,
+
+    @ColumnInfo(name = "orderingGroupDescription")
+    var orderingGroupDescription: String? = null,
 
     @NonNull
     @ColumnInfo(name = "deliveryAddressNo")
@@ -37,6 +40,6 @@ data class PointsOfService(
     @Json(name = "orders")
     var orders: List<Order>? = null
 ) {
-    constructor() : this("", null, null, null, "", null)
+    constructor() : this("", null, null, null, null, "")
 }
 

@@ -7,22 +7,33 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
-import com.elis.orderingapplication.adapters.OrderingGroupAdapter
+import com.elis.orderingapplication.adapters.DeliveryAdapter
+//import com.elis.orderingapplication.adapters.OrderingGroupAdapter
 import com.elis.orderingapplication.databinding.FragmentPosGroupBinding
 import com.elis.orderingapplication.pojo2.PointsOfService
+import com.elis.orderingapplication.viewModels.DeliveryAddressViewModel
 import com.elis.orderingapplication.viewModels.OrderingGroupViewModel
 import com.elis.orderingapplication.viewModels.ParamsViewModel
+import com.google.common.collect.Ordering
+import com.elis.orderingapplication.adapters.listAdapters.OrderingGroupAdapter
+import com.elis.orderingapplication.pojo2.DeliveryAddress
+import com.elis.orderingapplication.pojo2.JoinOrderingGroup
 
 class PosGroupFragment : Fragment() {
 
     private lateinit var binding: FragmentPosGroupBinding
     private val sharedViewModel: ParamsViewModel by activityViewModels()
-    private val orderingGroupViewModel: OrderingGroupViewModel by activityViewModels()
+    //private val orderingGroupViewModel: OrderingGroupViewModel by activityViewModels()
     private val args: PosGroupFragmentArgs by navArgs()
+    private lateinit var orderingGroupAdapter: OrderingGroupAdapter
+    private val orderingGroupViewModel: OrderingGroupViewModel by lazy {
+        ViewModelProvider(this)[OrderingGroupViewModel::class.java]
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -70,6 +81,39 @@ class PosGroupFragment : Fragment() {
                 it
             )
         }
+        // Observe the LiveData from the ViewModel
+        //orderingGroupViewModel.orderingGroup.observe(viewLifecycleOwner) { joinOrderingGroup ->
+        //    val test5 = joinOrderingGroup
+
+        //}
+
+        orderingGroupAdapter = OrderingGroupAdapter(object : OrderingGroupAdapter.MyClickListener {
+            override fun onItemClick(myData: JoinOrderingGroup) {
+                orderingGroupViewModel.onOrderingGroupClicked(myData)
+                orderingGroupViewModel.navigateToOrderingGroup.observe(
+                    viewLifecycleOwner,
+                    Observer { orderingGroup ->
+                        orderingGroup?.let {
+                            findNavController().navigate(
+                                PosGroupFragmentDirections.actionPosGroupFragmentToPosFragment(
+                                    orderingGroup.orderingGroupNo, orderingGroup.orderingGroupDescription
+                                )
+                            )
+                            orderingGroupViewModel.onOrderingGroupNavigated()
+                        }
+                    })
+
+            }
+        })
+
+        binding.orderingGroupSelection .adapter = orderingGroupAdapter
+
+        // Observe the LiveData from the ViewModel
+        orderingGroupViewModel.orderingGroup.observe(viewLifecycleOwner) { orderingGroup ->
+            orderingGroupAdapter.setData(orderingGroup)
+        }
+
+/*
         // Sets OrderingGroups data
         sharedViewModel.setOrderingGroups(sharedViewModel.getOrder())
         val orderingGroupList: List<PointsOfService>? =
@@ -107,6 +151,6 @@ class PosGroupFragment : Fragment() {
 
         binding.orderingGroupSelection.adapter = adapter
         recyclerView.adapter = adapter
-
+*/
     }
 }

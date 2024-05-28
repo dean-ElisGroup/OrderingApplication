@@ -115,18 +115,28 @@ class LoginFragment : Fragment() {
                                         is ApiResponse.Success -> {
                                             sharedViewModel.setOrderInfo(loginView.orderInfoResponse.value)
 
-                                                val testAddressList =
-                                                    loginView.orderInfoResponse.value?.data?.deliveryAddresses //sharedViewModel!!.orderInfo?.data?.deliveryAddresses
+                                            val deliveryAddressList =
+                                                loginView.orderInfoResponse.value?.data?.deliveryAddresses
+                                            val orderingGroupList =
+                                                loginView.orderInfoResponse.value?.data?.orderingGroups
 
-                                            context?.let { it1 -> loginView.insertToDatabase(it1,testAddressList) }
+                                            context?.let { it1 ->
+                                                if (orderingGroupList != null) {
+                                                    loginView.insertToDatabase(
+                                                        it1,
+                                                        deliveryAddressList,
+                                                        orderingGroupList
+                                                    )
+                                                }
+                                            }
 
-                                                /*if (testAddressList != null) {
-                                                    context?.let { it1 ->
-                                                        OrderInfoDatabase.getInstance(
-                                                            it1
-                                                        ).orderInfoDao.insert(testAddressList)
-                                                    }
-                                                }*/
+                                            /*if (testAddressList != null) {
+                                                context?.let { it1 ->
+                                                    OrderInfoDatabase.getInstance(
+                                                        it1
+                                                    ).orderInfoDao.insert(testAddressList)
+                                                }
+                                            }*/
                                             findNavController(view).navigate(R.id.action_loginFragment_to_landingPageFragment)
                                         }
 

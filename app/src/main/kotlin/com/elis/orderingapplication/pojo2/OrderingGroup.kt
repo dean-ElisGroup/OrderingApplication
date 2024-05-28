@@ -1,18 +1,20 @@
 package com.elis.orderingapplication.pojo2
 
 import androidx.room.ColumnInfo
-import androidx.room.PrimaryKey
+import androidx.room.Entity
 import com.squareup.moshi.Json
-import javax.annotation.Generated
+import javax.annotation.Nonnull
 
-@Generated("jsonschema2pojo")
-class OrderingGroup {
-    @PrimaryKey(autoGenerate = true)
+@Entity(
+    tableName = "ordering_group",
+    primaryKeys = ["order_group_id"]
+)
+data class OrderingGroup(
+    @Nonnull
     @ColumnInfo(name = "order_group_id")
-    val uId = 0
-    @Json(name = "orderingGroupNo")
-    var orderingGroupNo: String? = null
+    //@Json(name = "orderingGroupNo")
+    var orderingGroupNo: String,
 
     @Json(name = "orderingGroupDescription")
-    var orderingGroupDescription: String? = null
-}
+    var orderingGroupDescription: String?
+)

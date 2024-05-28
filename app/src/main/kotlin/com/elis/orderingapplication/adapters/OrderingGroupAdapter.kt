@@ -16,8 +16,8 @@ class OrderingGroupAdapter(private val clickListener: OrderingGroupListener) :
     class OrderingGroupViewHolder(private var binding: OrderingGroupCardviewBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(clickListener: OrderingGroupListener, orderingGroup: OrderingGroup) {
-            binding.orderingGroup = orderingGroup
-            binding.clickListener = clickListener
+           // binding.orderingGroup = orderingGroup
+            //binding.clickListener = clickListener
             binding.executePendingBindings()
         }
     }

@@ -7,7 +7,7 @@
             name="deliveryAddress"
             type="com.elis.orderingapplication.pojo2.DeliveryAddress" />
         <variable
-            name="clickListener" type="com.elis.orderingapplication.adapters.DeliveryAddressAdapter.DeliveryAddressListener"/>
+            name="clickListener" type="com.elis.orderingapplication.adapters.DeliveryAdapter.MyClickListener"/>
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -27,7 +27,7 @@
             android:backgroundTint="@color/white"
             android:gravity="center|fill"
             android:minHeight="100dp"
-            android:onClick="@{() -> clickListener.onClick(deliveryAddress)}"
+            android:onClick="@{() -> clickListener.onitemClick(deliveryAddress)}"
             android:orientation="vertical"
             android:padding="5dp">
 
@@ -70,7 +70,6 @@
                 android:fontFamily="@font/elis_sharpsans"
                 android:gravity="center_vertical"
                 android:maxLines="1"
-                android:text="@{deliveryAddress.deliveryAddressName}"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/deliveryAddressNo"
@@ -89,7 +88,6 @@
                 android:layout_marginEnd="5dp"
                 android:fontFamily="@font/elis_sharpsans"
                 android:gravity="top"
-                android:text="@{deliveryAddress.deliveryAddressNo}"
                 android:textAlignment="viewStart"
                 android:textColor="@color/elis_blue"
                 android:textSize="14sp"

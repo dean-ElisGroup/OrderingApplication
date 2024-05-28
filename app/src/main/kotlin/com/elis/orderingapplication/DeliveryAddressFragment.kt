@@ -5,25 +5,23 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.elis.orderingapplication.adapters.DeliveryAddressAdapter
+import com.elis.orderingapplication.adapters.DeliveryAdapter
 import com.elis.orderingapplication.databinding.FragmentDeliveryAddressBinding
 import com.elis.orderingapplication.pojo2.DeliveryAddress
 import com.elis.orderingapplication.viewModels.DeliveryAddressViewModel
 import com.elis.orderingapplication.viewModels.ParamsViewModel
 
-
 class DeliveryAddressFragment : Fragment() {
 
     private lateinit var binding: FragmentDeliveryAddressBinding
     private val sharedViewModel: ParamsViewModel by activityViewModels()
-
+    private lateinit var deliveryAdapter: DeliveryAdapter
     private val deliveryAddressViewModel: DeliveryAddressViewModel by lazy {
         ViewModelProvider(this)[DeliveryAddressViewModel::class.java]
     }
@@ -35,7 +33,6 @@ class DeliveryAddressFragment : Fragment() {
 
         binding = FragmentDeliveryAddressBinding.inflate(inflater)
         binding.lifecycleOwner = this
-        binding.deliveryAddressModel = deliveryAddressViewModel
         binding.viewModel = sharedViewModel
 
         binding.toolbar.title = getString(R.string.delivery_address_title)
@@ -46,14 +43,11 @@ class DeliveryAddressFragment : Fragment() {
                     .navigate(R.id.action_deliveryAddressFragment_to_landingPageFragment)
             }
         }
-        // Inflate the layout for this fragment
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        var selectedDeliveryAddressNo: String? = null
 
         val recyclerView: RecyclerView = binding.deliveryAddressSelection
         val spacingInPixels = resources.getDimensionPixelSize(R.dimen.spacing)
@@ -61,33 +55,31 @@ class DeliveryAddressFragment : Fragment() {
         recyclerView.addItemDecoration(itemSpacingDecoration)
         sharedViewModel.setDeliveryAddress(sharedViewModel.getOrder())
 
-        val deliveryAddressList: List<DeliveryAddress>? = sharedViewModel.getDeliveryAddresses()
-
-        val adapter =
-            DeliveryAddressAdapter(DeliveryAddressAdapter.DeliveryAddressListener { deliveryAddressNo ->
-                deliveryAddressViewModel.onDeliveryAddressClicked(deliveryAddressNo)
+        deliveryAdapter = DeliveryAdapter(object : DeliveryAdapter.MyClickListener {
+            override fun onitemClick(myData: DeliveryAddress) {
+                deliveryAddressViewModel.onDeliveryAddressClicked(myData.deliveryAddressNo)
                 deliveryAddressViewModel.navigateToOrderingGroup.observe(
                     viewLifecycleOwner,
                     Observer { deliveryAddressNo ->
                         deliveryAddressNo?.let {
-                            this.findNavController().navigate(
+                            findNavController().navigate(
                                 DeliveryAddressFragmentDirections.actionDeliveryAddressFragmentToPosGroupFragment(
                                     deliveryAddressNo
                                 )
                             )
-                            deliveryAddressNo.let { sharedViewModel.setDeliveryAddressNo(it) }
                             deliveryAddressViewModel.onDeliveryAddressNavigated()
                         }
                     })
-            })
-        adapter.submitList(deliveryAddressList)
 
-        binding.deliveryAddressSelection.adapter = adapter
-        recyclerView.adapter = adapter
-        // sets selected delivery address number to the shared view model.
+            }
+        })
 
+        binding.deliveryAddressSelection.adapter = deliveryAdapter
 
-
+        // Observe the LiveData from the ViewModel
+        deliveryAddressViewModel.entities.observe(viewLifecycleOwner) { deliveryAddresses ->
+            deliveryAdapter.setData(deliveryAddresses)
+        }
     }
 }
 
