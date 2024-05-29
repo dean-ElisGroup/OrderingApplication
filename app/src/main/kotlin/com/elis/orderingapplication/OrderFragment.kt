@@ -7,17 +7,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import com.elis.orderingapplication.viewModels.ParamsViewModel
-import com.elis.orderingapplication.adapters.OrderAdapter
+import com.elis.orderingapplication.adapters.listAdapters.OrdersAdapter
 import com.elis.orderingapplication.databinding.FragmentOrderBinding
-import com.elis.orderingapplication.pojo2.Article
 import com.elis.orderingapplication.pojo2.Order
 import com.elis.orderingapplication.viewModels.OrderViewModel
+import com.elis.orderingapplication.viewModels.SharedViewModelFactory
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -25,9 +26,12 @@ class OrderFragment : Fragment() {
 
     private lateinit var binding: FragmentOrderBinding
     private val sharedViewModel: ParamsViewModel by activityViewModels()
-    private val orderViewModel: OrderViewModel by activityViewModels()
     private val args: OrderFragmentArgs by navArgs()
     private lateinit var recyclerView: RecyclerView
+    private lateinit var ordersAdapter: OrdersAdapter
+    private val orderViewModel: OrderViewModel by viewModels {
+        SharedViewModelFactory(sharedViewModel, requireActivity().application)
+    }
 
 
     override fun onCreateView(
@@ -63,47 +67,32 @@ class OrderFragment : Fragment() {
         val itemSpacingDecoration = CardViewDecoration(spacingInPixels)
         recyclerView.addItemDecoration(itemSpacingDecoration)
 
-        val posList =
-            sharedViewModel.getFilteredPointsOfService()?.filter { it.pointOfServiceNo == args.pos }
+        ordersAdapter =
+            OrdersAdapter(object : OrdersAdapter.MyClickListener {
+                override fun onItemClick(myData: Order) {
+                    orderViewModel.onOrderClicked(myData)
+                    //sharedViewModel.setPosNum(myData.pointOfServiceNo)
+                    orderViewModel.navigateToOrder.observe(
+                        viewLifecycleOwner,
+                        Observer { order ->
+                            order?.let {
+                                findNavController().navigate(
+                                    OrderFragmentDirections.actionOrderFragmentToArticleFragment(
+                                        order.orderDate,
+                                    )
+                                )
+                                orderViewModel.onOrderNavigated()
+                            }
+                        })
 
-        val orders: List<Order>? = posList?.flatMap { it.orders!!.toList() }
-        val filteredOrders =
-            orders?.filter { it.orderDate == getOrderDate() && it.orderType == "inventory" }
-                ?.toMutableList()
-        // Sets filtered order data to global shared view model.
-        sharedViewModel.setFilteredOrders(filteredOrders)
-
-        val articles: List<Article>? = filteredOrders?.flatMap { it.articles!!.toMutableList() }
-        val totalArticles = articles?.size
-
-        val iterator = filteredOrders?.listIterator()
-        while(iterator!!.hasNext()) {
-            val i = iterator.next()
-            i.totalArticles = totalArticles
-        }
-
-
-        //sharedViewModel.setArticleTotal(testing)
-        //articles?.size?.let { sharedViewModel.setArticleTotal(it) }
-
-        val adapter =
-            OrderAdapter(OrderAdapter.OrderListener { order ->
-                orderViewModel.onOrderClicked(order)
-                orderViewModel.navigateToOrder.observe(
-                    viewLifecycleOwner,
-                    Observer { order ->
-                        order?.let {
-                            this.findNavController().navigate(
-                                OrderFragmentDirections.actionOrderFragmentToArticleFragment(order.orderDate)
-                            )
-                            orderViewModel.onOrderNavigated()
-                        }
-                    })
+                }
             })
-        adapter.submitList(filteredOrders)
 
-        binding.orderSelection.adapter = adapter
-        recyclerView.adapter = adapter
+        binding.orderSelection.adapter = ordersAdapter
+        // Observe the LiveData from the ViewModel
+        orderViewModel.orders.observe(viewLifecycleOwner) { orders ->
+            ordersAdapter.setData(orders)
+        }
 
     }
 

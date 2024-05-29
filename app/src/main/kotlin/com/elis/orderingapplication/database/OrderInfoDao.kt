@@ -9,7 +9,6 @@ import androidx.room.Transaction
 import androidx.room.Update
 import com.elis.orderingapplication.pojo2.Article
 import com.elis.orderingapplication.pojo2.DeliveryAddress
-import com.elis.orderingapplication.pojo2.DelvPosJoin
 import com.elis.orderingapplication.pojo2.JoinOrderingGroup
 import com.elis.orderingapplication.pojo2.Order
 import com.elis.orderingapplication.pojo2.OrderingGroup
@@ -54,4 +53,11 @@ interface OrderInfoDao {
     @Query("SELECT deliveryAddressNo, orderingGroupNo, orderingGroupDescription FROM points_of_service WHERE deliveryAddressNo = :deliveryAddressNo GROUP BY orderingGroupNo")
     fun getOrderingGroupList(deliveryAddressNo: String): LiveData<List<JoinOrderingGroup>>
 
+    @Transaction
+    @Query("SELECT * FROM points_of_service WHERE deliveryAddressNo = :deliveryAddressNo AND orderingGroupNo = :orderingGroup ")
+    fun getPointsOfService(deliveryAddressNo: String, orderingGroup: String) : LiveData<List<PointsOfService>>
+
+    @Transaction
+    @Query("SELECT * FROM pos_order WHERE deliveryAddressNo = :deliveryAddressNo AND point_of_service_no = :posNumber AND delivery_date = :deliveryDate AND orderStatus ")
+    fun getOrders(deliveryAddressNo: String, posNumber: String, deliveryDate: String, orderStatus: Int) : LiveData<List<Order>>
 }

@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.elis.orderingapplication.adapters.DeliveryAdapter
+import com.elis.orderingapplication.adapters.listAdapters.DeliveryAdapter
 import com.elis.orderingapplication.databinding.FragmentDeliveryAddressBinding
 import com.elis.orderingapplication.pojo2.DeliveryAddress
 import com.elis.orderingapplication.viewModels.DeliveryAddressViewModel
@@ -56,8 +56,10 @@ class DeliveryAddressFragment : Fragment() {
         sharedViewModel.setDeliveryAddress(sharedViewModel.getOrder())
 
         deliveryAdapter = DeliveryAdapter(object : DeliveryAdapter.MyClickListener {
-            override fun onitemClick(myData: DeliveryAddress) {
+            override fun onItemClick(myData: DeliveryAddress) {
                 deliveryAddressViewModel.onDeliveryAddressClicked(myData.deliveryAddressNo)
+                // Stores the selected delivery address no to the shared view model as a LiveData string
+                sharedViewModel.setDeliveryAddressNum(myData.deliveryAddressNo)
                 deliveryAddressViewModel.navigateToOrderingGroup.observe(
                     viewLifecycleOwner,
                     Observer { deliveryAddressNo ->

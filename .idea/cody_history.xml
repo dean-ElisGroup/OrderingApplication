@@ -403,6 +403,23 @@
           </messages>
           <updatedAt value="2024-05-15T14:13:04.6636117" />
         </chat>
+        <chat>
+          <accountId value="VXNlcjozMDUxMTg=" />
+          <internalId value="e11a76ad-f8ee-4e92-b8d2-f2870a22d398" />
+          <messages>
+            <list>
+              <message>
+                <speaker value="HUMAN" />
+                <text value="I get the error java.lang.RuntimeException: Cannot create an instance of class com.elis.orderingapplication.viewModels.OrderingGroupViewModel" />
+              </message>
+              <message>
+                <speaker value="ASSISTANT" />
+                <text value="&lt;html&gt;&lt;b&gt; Cody encountered an error when processing your message:&lt;/b&gt;&lt;br&gt;&lt;div marginwidth=10&quot; marginheight=&quot;10&quot;&gt;&amp;#9888;  unable to get local issuer certificate&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/html&gt;" />
+              </message>
+            </list>
+          </messages>
+          <updatedAt value="2024-05-29T09:22:40.5729983" />
+        </chat>
       </list>
     </chats>
     <defaultLlm>

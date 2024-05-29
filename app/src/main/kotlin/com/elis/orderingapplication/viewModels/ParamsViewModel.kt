@@ -18,7 +18,7 @@ class ParamsViewModel : ViewModel() {
     private lateinit var _sessionKey: String
 
     private var _deliveryAddressNo: String = ""
-    private var _pointOfServiceNo: String = ""
+    //private var _pointOfServiceNo: String = ""
 
     private val _posTotal = MutableLiveData<Int>()
     val posTotal: LiveData<Int> = _posTotal
@@ -51,18 +51,20 @@ class ParamsViewModel : ViewModel() {
     private val _orderRowsItem = MutableLiveData<List<OrderRowsItem?>?>()
     val orderRowsItem: MutableLiveData<List<OrderRowsItem?>?> = _orderRowsItem
 
-    //private var _orders = MutableLiveData<Order>(null)
-    //val order: LiveData<Order> = _orders
-
-
     private var _deliveryAddressName = MutableLiveData<String>("")
     val deliveryAddressName: LiveData<String> = _deliveryAddressName
+
+    private var _deliveryAddressNum = MutableLiveData<String>("")
+    val deliveryAddressNum: LiveData<String> = _deliveryAddressNum
 
     private var _orderingGroupName = MutableLiveData<String?>("")
     val orderingGroupName: MutableLiveData<String?> = _orderingGroupName
 
-    private var _orderingGroupNo = MutableLiveData<String?>("")
-    val orderingGroupNo: MutableLiveData<String?> = _orderingGroupNo
+    private var _orderingGroupNo = MutableLiveData<String>("")
+    val orderingGroupNo: LiveData<String> = _orderingGroupNo
+
+    private var _pointOfServiceNo = MutableLiveData<String>("")
+    val posNo: LiveData<String> = _pointOfServiceNo
 
     fun setOrderDate(orderDate: String) {
         _orderDate.value = orderDate
@@ -79,18 +81,31 @@ class ParamsViewModel : ViewModel() {
     fun setDeliveryAddressNo(deliveryAddressNo: String) {
         _deliveryAddressNo = deliveryAddressNo
     }
+    fun setDeliveryAddressNum(data: String) {
+        _deliveryAddressNum.value = data
+    }
+    fun getDeliveryAddressNumber(): LiveData<String> {
+        return deliveryAddressNum
+    }
+
+    fun setPosNum(data: String) {
+        _pointOfServiceNo.value = data
+    }
+    fun getPosNum(): LiveData<String> {
+        return posNo
+    }
 
     fun getDeliveryAddressNo(): String {
         return _deliveryAddressNo
     }
 
-    fun setPointOfServiceNo(pointOfServiceNo: String) {
-        _pointOfServiceNo = pointOfServiceNo
-    }
+    //fun setPointOfServiceNo(pointOfServiceNo: String) {
+    //    _pointOfServiceNo = pointOfServiceNo
+    //}
 
-    fun getPointOfServiceNo(): String {
-        return _pointOfServiceNo
-    }
+    //fun getPointOfServiceNo(): String {
+    //    return _pointOfServiceNo
+    //}
 
     fun setPOSTotal(posTotal: Int) {
         _posTotal.value = posTotal
@@ -148,9 +163,18 @@ class ParamsViewModel : ViewModel() {
         _orderingGroupName.value = orderingGroupName
     }
 
-    fun setOrderingGroupNo(orderingGroupNo: String?) {
-        _orderingGroupNo.value = orderingGroupNo
+    //fun setOrderingGroupNo(orderingGroupNo: String?) {
+    //    _orderingGroupNo.value = orderingGroupNo
+    //}
+
+    fun setOrderingGroupNo(data: String) {
+        _orderingGroupNo.value = data
     }
+
+    fun getOrderingGroupNum(): LiveData<String> {
+        return orderingGroupNo
+    }
+
 
 
     fun setOrderingGroups(orderingGroups: ApiResponse<OrderInfo>?) {

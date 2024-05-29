@@ -17,7 +17,7 @@ class PosAdapter(private val clickListener: PosListener) :
         RecyclerView.ViewHolder(binding.root) {
             fun bind(clickListener: PosListener, pointsOfService: PointsOfService) {
             binding.pos = pointsOfService
-            binding.clickListener = clickListener
+            //binding.clickListener = clickListener
             binding.executePendingBindings()
         }
     }

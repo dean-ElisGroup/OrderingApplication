@@ -10,7 +10,7 @@ import javax.annotation.Generated
 import javax.annotation.Nonnull
 
 @Generated("jsonschema2pojo")
-@Entity(tableName = "order",
+@Entity(tableName = "pos_order",
         primaryKeys = ["delivery_date", "point_of_service_no", "deliveryAddressNo"])
 
 data class Order (

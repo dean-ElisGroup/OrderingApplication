@@ -12,7 +12,7 @@ import com.elis.orderingapplication.pojo2.Article
 import com.elis.orderingapplication.pojo2.OrderingGroup
 
 //@Database(entities = [OrderInfo::class], version = 1, exportSchema = false)
-@Database(entities = [DeliveryAddress::class, PointsOfService::class, Order::class, Article::class, OrderingGroup::class], version = 19, exportSchema = false)
+@Database(entities = [DeliveryAddress::class, PointsOfService::class, Order::class, Article::class, OrderingGroup::class], version = 20, exportSchema = false)
 abstract class OrderInfoDatabase : RoomDatabase() {
 
     abstract val orderInfoDao: OrderInfoDao

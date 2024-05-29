@@ -7,7 +7,7 @@
             name="deliveryAddress"
             type="com.elis.orderingapplication.pojo2.DeliveryAddress" />
         <variable
-            name="clickListener" type="com.elis.orderingapplication.adapters.DeliveryAdapter.MyClickListener"/>
+            name="clickListener" type="com.elis.orderingapplication.adapters.listAdapters.DeliveryAdapter.MyClickListener"/>
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -27,7 +27,7 @@
             android:backgroundTint="@color/white"
             android:gravity="center|fill"
             android:minHeight="100dp"
-            android:onClick="@{() -> clickListener.onitemClick(deliveryAddress)}"
+            android:onClick="@{() -> clickListener.onItemClick(deliveryAddress)}"
             android:orientation="vertical"
             android:padding="5dp">
 

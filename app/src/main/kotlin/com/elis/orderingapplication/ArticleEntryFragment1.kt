@@ -145,7 +145,7 @@ class ArticleEntryFragment1 : Fragment() {
             //val sendOrderExternalOrderId = UUID.randomUUID().toString()
             val sendOrderExternalOrderId = abs((0..999999999999999999).random()).toString()
             val sendOrder = SendOrder(
-                sharedViewModel.getPointOfServiceNo().toIntOrNull(),
+                sharedViewModel.getPosNum().value?.toIntOrNull(),
                 sharedViewModel.getDeliveryAddressNo().toIntOrNull(),
                 sendOrderExternalOrderId,
                 currentOrder?.orderDate,

@@ -10,7 +10,7 @@
 
         <variable
             name="clickListener"
-            type="com.elis.orderingapplication.adapters.OrderAdapter.OrderListener" />
+            type="com.elis.orderingapplication.adapters.listAdapters.OrdersAdapter.MyClickListener" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -32,7 +32,7 @@
             android:elevation="5dp"
             android:gravity="fill"
             android:minHeight="80dp"
-            android:onClick="@{() -> clickListener.onClick(order)}"
+            android:onClick="@{() -> clickListener.onItemClick(order)}"
             android:orientation="horizontal"
             android:padding="5dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -52,49 +52,42 @@
                 android:id="@+id/totalArticles"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{order.totalArticles.toString()}"
+                android:text='@{"Total articles: " + order.totalArticles.toString()}'
                 android:textAlignment="center"
                 app:layout_constraintTop_toBottomOf="@+id/new_status"
+                android:textSize="16sp"
                 tools:layout_editor_absoluteX="7dp" />
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/orderingGroupName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginBottom="11dp"
-                android:orientation="horizontal"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginEnd="6dp"
+                android:autoSizeTextType="none"
+                android:fontFamily="@font/sharpsans_medium"
+                android:gravity="center|center_vertical"
+                android:maxLines="2"
+                android:minLines="1"
+                android:nestedScrollingEnabled="false"
+                android:singleLine="false"
+                android:text='@{"Delivery date: " + order.deliveryDate}'
+                android:textColor="@color/elis_black"
+                android:textSize="16sp"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/totalArticles">
+                app:layout_constraintTop_toBottomOf="@+id/totalArticles" />
 
-                <TextView
-                    android:id="@+id/orderingGroupName"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_marginStart="2dp"
-                    android:autoSizeTextType="none"
-                    android:fontFamily="@font/sharpsans_medium"
-                    android:gravity="center|center_vertical"
-                    android:maxLines="2"
-                    android:minLines="1"
-                    android:nestedScrollingEnabled="false"
-                    android:singleLine="false"
-                    android:text="@{order.deliveryDate}"
-                    android:textColor="@color/elis_black"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <ImageView
-                    android:id="@+id/proceed_arrow"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:foregroundGravity="right"
-                    android:scaleType="fitEnd"
-                    app:srcCompat="@drawable/baseline_arrow_right_24_black" />
-
-            </LinearLayout>
+            <ImageView
+                android:id="@+id/proceed_arrow"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:foregroundGravity="right"
+                android:scaleType="fitEnd"
+                app:srcCompat="@drawable/baseline_arrow_right_24_black"
+                tools:layout_editor_absoluteX="10dp"
+                tools:layout_editor_absoluteY="68dp" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>

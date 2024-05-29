@@ -10,7 +10,7 @@
 
         <variable
             name="clickListener"
-            type="com.elis.orderingapplication.adapters.PosAdapter.PosListener" />
+            type="com.elis.orderingapplication.adapters.listAdapters.PointOfServiceAdapter.MyClickListener" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:backgroundTint="@color/white"
             android:gravity="center|fill"
-            android:onClick="@{() -> clickListener.onClick(pos)}"
+            android:onClick="@{() -> clickListener.onItemClick(pos)}"
             android:orientation="horizontal"
             android:padding="5dp"
             app:layout_constraintEnd_toEndOf="parent"

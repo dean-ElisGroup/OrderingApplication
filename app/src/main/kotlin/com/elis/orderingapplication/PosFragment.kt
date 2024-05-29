@@ -18,7 +18,13 @@ import com.elis.orderingapplication.pojo2.PointsOfService
 import com.elis.orderingapplication.viewModels.ParamsViewModel
 import com.elis.orderingapplication.viewModels.PosViewModel
 import android.widget.SearchView
+import androidx.fragment.app.viewModels
+import com.elis.orderingapplication.adapters.listAdapters.OrderingGroupAdapter
+import com.elis.orderingapplication.adapters.listAdapters.PointOfServiceAdapter
+import com.elis.orderingapplication.pojo2.JoinOrderingGroup
 import com.elis.orderingapplication.pojo2.Order
+import com.elis.orderingapplication.viewModels.OrderingGroupViewModel
+import com.elis.orderingapplication.viewModels.SharedViewModelFactory
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -26,8 +32,13 @@ class PosFragment : Fragment() {
 
     private lateinit var binding: FragmentPosBinding
     private val sharedViewModel: ParamsViewModel by activityViewModels()
-    private val posViewModel: PosViewModel by activityViewModels()
+
+    //private val posViewModel: PosViewModel by activityViewModels()
     private val args: PosFragmentArgs by navArgs()
+    private lateinit var pointOfServiceAdapter: PointOfServiceAdapter
+    private val posViewModel: PosViewModel by viewModels {
+        SharedViewModelFactory(sharedViewModel, requireActivity().application)
+    }
 
     // private lateinit var searchView: SearchView
     private lateinit var recyclerView: RecyclerView
@@ -51,7 +62,7 @@ class PosFragment : Fragment() {
             }
         }
         // Sets ordering group and ordering name to shared ViewModel
-        sharedViewModel.setOrderingGroupNo(args.orderingGroupNo)
+        args.orderingGroupNo?.let { sharedViewModel.setOrderingGroupNo(it) }
         sharedViewModel.setOrderingGroupName(args.orderingGroupName)
         // Inflate the layout for this fragment
         return binding.root
@@ -66,56 +77,35 @@ class PosFragment : Fragment() {
         val itemSpacingDecoration = CardViewDecoration(spacingInPixels)
         recyclerView.addItemDecoration(itemSpacingDecoration)
 
-        val posList = sharedViewModel.getPos()
-        val filteredPosList: List<PointsOfService>? =
-            posList?.filter { it.pointOfServiceOrderingGroupNo == sharedViewModel.orderingGroupNo.value }
-        filteredPosList?.size?.let { sharedViewModel.setPOSTotal(it) }
-
-        sharedViewModel.setFilteredPointsOfService(filteredPosList)
-
-        var filteredOrders: List<Order>? = filteredPosList?.find { it.orders!!.isNotEmpty() }?.orders
-
-        var totalOrders: Int? = filteredOrders?.size
-
-        /*filteredOrders?.forEach { order ->
-            if (totalArticle != null) {
-                order.articles?.let {
-                    totalArticle += it.size
-                }
-            }
-        }*/
-
-        /*var orderDate = LocalDate.now()
-        var orderDateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-        var orderDateFormatted = orderDate.format(orderDateFormatter)
-
-        val orders: List<Order>? = filteredPosList?.flatMap { it.orders!!.toList()}
-        val filteredOrders = orders?.filter { it.orderDate == orderDateFormatted && it.orderType =="inventory" }
-        */
-        val adapter =
-            PosAdapter(PosAdapter.PosListener { pos ->
-                posViewModel.onPosClicked(pos)
-                posViewModel.navigateToPos.observe(
-                    viewLifecycleOwner,
-                    Observer { pos ->
-                        pos?.let {
-                            this.findNavController().navigate(
-                                PosFragmentDirections.actionPosFragmentToOrderFragment(pos.pointOfServiceNo
+        pointOfServiceAdapter =
+            PointOfServiceAdapter(object : PointOfServiceAdapter.MyClickListener {
+                override fun onItemClick(myData: PointsOfService) {
+                    posViewModel.onPosClicked(myData)
+                    sharedViewModel.setPosNum(myData.pointOfServiceNo)
+                    posViewModel.navigateToPos.observe(
+                        viewLifecycleOwner,
+                        Observer { pointOfService ->
+                            pointOfService?.let {
+                                findNavController().navigate(
+                                    PosFragmentDirections.actionPosFragmentToOrderFragment(
+                                        pointOfService.pointOfServiceNo,
+                                    )
                                 )
-                            )
-                            pos.pointOfServiceNo?.let { it1 ->
-                                sharedViewModel.setPointOfServiceNo(
-                                    it1
-                                )
+                                posViewModel.onPosNavigated()
                             }
-                            posViewModel.onPosNavigated()
-                        }
-                    })
-            })
-        adapter.submitList(filteredPosList)
+                        })
 
-        binding.posSelection.adapter = adapter
-        recyclerView.adapter = adapter
+                }
+            })
+        binding.posSelection.adapter = pointOfServiceAdapter
+        // Observe the LiveData from the ViewModel
+        posViewModel.pointOfService.observe(viewLifecycleOwner) { pointsOfService ->
+            pointOfServiceAdapter.setData(pointsOfService)
+            sharedViewModel.setPOSTotal(pointOfServiceAdapter.itemCount)
+        }
+        sharedViewModel.posTotal.observe(
+            viewLifecycleOwner,
+            Observer { totalPost -> binding.totalPOS.text = totalPost.toString() })
 
     }
 

@@ -229,7 +229,7 @@
                     android:background="@drawable/untitled_1_01"
                     android:fontFamily="@font/elis_sharpsans"
                     android:gravity="fill"
-                    android:text="@{sharedViewModel.posTotal.toString()}"
+
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="20sp"

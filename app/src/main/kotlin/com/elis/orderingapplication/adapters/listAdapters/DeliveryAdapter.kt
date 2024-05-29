@@ -1,4 +1,4 @@
-package com.elis.orderingapplication.adapters
+package com.elis.orderingapplication.adapters.listAdapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -42,7 +42,7 @@ class DeliveryAdapter(private val clickListener: MyClickListener) :
     //}
 
     interface MyClickListener {
-        fun onitemClick(myData: DeliveryAddress)
+        fun onItemClick(myData: DeliveryAddress)
     }
 
     class DeliveryViewHolder(private var binding: DeliveryAddressCardviewBinding) :
