@@ -19,13 +19,10 @@ import com.elis.orderingapplication.viewModels.ParamsViewModel
 class ArticleEntryAdapter(
     fragmentManager: FragmentManager,
     lifecycle: Lifecycle,
-    private val articles: List<Article>,
+    private var articles: List<Article>,
     private val articleEntryViewModel: ArticleEntryViewModel
 ) :
     FragmentStateAdapter(fragmentManager, lifecycle) {
-    //override fun getItemCount(): Int {
-    //    return articles.size
-    //}
 
     private var data: List<Article> = emptyList()
     override fun getItemCount(): Int = articles.size
@@ -58,11 +55,11 @@ class ArticleEntryAdapter(
 
         val fragmentBundle = Bundle().apply {
             putParcelable("article", articleParcelable)
+            putString("numberOfArticles", itemCount.toString())
+            putInt("currentArticlePosition", articlePosition)
+            putInt("currentArticle", position)
         }
         entryFragment.arguments = fragmentBundle
-
-        //val viewModel = articleEntryViewModel
-        //viewModel.updateArticleData(articles)
 
         //val fragmentBundle = Bundle()
         //fragmentBundle.putString("articleNo", articles.articleNo)
@@ -78,7 +75,7 @@ class ArticleEntryAdapter(
     }
 
     fun updateData(newData: List<Article>) {
-        data = newData
+        articles = newData
         notifyDataSetChanged()
     }
 }

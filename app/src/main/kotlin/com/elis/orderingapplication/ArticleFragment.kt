@@ -57,7 +57,6 @@ class ArticleFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //viewPager = binding.articleEntryViewpager
         val userLoginRepository = UserLoginRepository()
         val articleEntryViewModel: ArticleEntryViewModel by viewModels {
             ArticleEntryViewModelFactory(
@@ -66,12 +65,12 @@ class ArticleFragment : Fragment() {
                 userLoginRepository
             )
         }
-
-        //viewPager = binding.articleEntryViewpager
+        viewPager = binding.articleEntryViewpager
         viewPagerAdapter = ArticleEntryAdapter(
             childFragmentManager,
             lifecycle,
-            articleViewModel.articles.value ?: emptyList(),
+            //articleViewModel.articles.value ?: emptyList(),
+            emptyList(),
             articleEntryViewModel
         )
         viewPager.adapter = viewPagerAdapter
@@ -81,10 +80,8 @@ class ArticleFragment : Fragment() {
             //val viewPagerAdapter = ArticleEntryAdapter(childFragmentManager, lifecycle, articles)
             //viewPager2.adapter = viewPagerAdapter
             //viewPagerAdapter = ArticleEntryAdapter(childFragmentManager, lifecycle, articles, articleEntryViewModel)
-            //viewPagerAdapter.updateData(articles)
             //viewPager.adapter = viewPagerAdapter
             viewPagerAdapter.updateData(articles)
-
             sharedViewModel.setArticleTotal(articles.size)
         }
 

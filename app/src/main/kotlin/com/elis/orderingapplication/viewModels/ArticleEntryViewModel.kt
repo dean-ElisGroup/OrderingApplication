@@ -36,17 +36,10 @@ class ArticleEntryViewModel(application: Application, private val loginRep: User
     private val _uiState = MutableLiveData<String>()
     val uiState: LiveData<String> = _uiState
 
-    private val _articleData = MutableLiveData<Article>()
-    val articleData: LiveData<Article> = _articleData
-
     val database = OrderInfoDatabase.getInstance(application)
     val articles: LiveData<List<Article>> = database.orderInfoDao.getArticles(getDeliveryDate().value.toString(),getOrderId().value.toString())
     val order: LiveData<List<Order>> = database.orderInfoDao.getOrderByOrderId(getOrderId().value.toString())
 
-
-    fun updateArticleData(data: Article) {
-        _articleData.value = data
-    }
     private fun getDeliveryDate(): LiveData<String> {
         return sharedViewModel.getArticleDeliveryDate()
     }

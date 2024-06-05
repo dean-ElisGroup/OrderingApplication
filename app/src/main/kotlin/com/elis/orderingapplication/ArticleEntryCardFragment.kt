@@ -51,8 +51,7 @@ class ArticleEntryCardFragment : Fragment() {
     private val articleEntryViewModel: ArticleEntryViewModel by viewModels {
         SharedViewModelFactory(sharedViewModel, requireActivity().application)
     }
-
-
+    private lateinit var article: Article
 
     private var currentOrderData: Order? = null
     private var currentArticle: Article? = null
@@ -67,6 +66,7 @@ class ArticleEntryCardFragment : Fragment() {
 
         _binding = FragmentArticleEntryViewpagerBinding.inflate(inflater, container, false)
         binding.sharedViewModel = sharedViewModel
+
         return binding.root
     }
 
@@ -139,10 +139,6 @@ private fun observeArticleData() {
         currentArticle = articles.getOrNull(currentArticleOrder ?: 0)
         updateUI(currentArticle)
     }
-    //articleEntryViewModel.articleData.observe(viewLifecycleOwner) { articles ->
-    //    currentArticle = articles // articles.getOrNull(currentArticleOrder ?: 0)
-    //    updateUI(currentArticle)
-   // }
 }
 
 private fun updateUI(article: Article?) {
