@@ -11,7 +11,7 @@
 
         <variable
             name="clickListener"
-            type="com.elis.orderingapplication.adapters.ArticleAdapter.ArticleListener" />
+            type="com.elis.orderingapplication.adapters.listAdapters.ArticleAdapter.MyClickListener" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -29,7 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/white"
-            android:onClick="@{() -> clickListener.onClick(article)}"
+            android:onClick="@{() -> clickListener.onItemClick(article)}"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"

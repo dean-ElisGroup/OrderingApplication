@@ -4,32 +4,34 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
+import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
-import com.elis.orderingapplication.adapters.ArticleAdapter
 import com.elis.orderingapplication.adapters.ArticleEntryAdapter
 import com.elis.orderingapplication.databinding.FragmentArticleBinding
-import com.elis.orderingapplication.pojo2.Article
+import com.elis.orderingapplication.repositories.UserLoginRepository
+import com.elis.orderingapplication.viewModels.ArticleEntryViewModel
+import com.elis.orderingapplication.viewModels.ArticleEntryViewModelFactory
 import com.elis.orderingapplication.viewModels.ArticleViewModel
 import com.elis.orderingapplication.viewModels.ParamsViewModel
+import com.elis.orderingapplication.viewModels.SharedViewModelFactory
 
 
 class ArticleFragment : Fragment() {
 
     private lateinit var binding: FragmentArticleBinding
     private val sharedViewModel: ParamsViewModel by activityViewModels()
-    private val articleViewModel: ArticleViewModel by activityViewModels()
-    private val args: ArticleFragmentArgs by navArgs()
-    private lateinit var recyclerView: RecyclerView
     private lateinit var viewPager: ViewPager2
+    private lateinit var viewPagerAdapter: ArticleEntryAdapter
+    private val articleViewModel: ArticleViewModel by viewModels {
+        SharedViewModelFactory(sharedViewModel, requireActivity().application)
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,7 +41,6 @@ class ArticleFragment : Fragment() {
             DataBindingUtil.inflate(inflater, R.layout.fragment_article, container, false)
 
         binding.sharedViewModel = sharedViewModel
-        binding.articleViewModel = articleViewModel
         binding.toolbar.title = getString(R.string.article_title)
         binding.toolbar.setNavigationIcon(R.drawable.ic_back)
         binding.toolbar.setNavigationOnClickListener {
@@ -49,10 +50,6 @@ class ArticleFragment : Fragment() {
             }
         }
         viewPager = binding.articleEntryViewpager
-
-        // Sets ordering group and ordering name to shared ViewModel
-        //sharedViewModel.setOrderingGroupNo(args.orderingGroupNo)
-        //sharedViewModel.setOrderingGroupName(args.orderingGroupName)
         // Inflate the layout for this fragment
         return binding.root
     }
@@ -60,51 +57,36 @@ class ArticleFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recyclerView = binding.articleEntry
-        viewPager = binding.articleEntryViewpager
-
-        val order = sharedViewModel.getFilteredOrders()
-        val articles: List<Article>? = order?.flatMap { it.articles!!.toList() }
-        sharedViewModel.setArticleTotal(articles?.size)
-
-        val iterator = articles?.listIterator()
-        while(iterator!!.hasNext()) {
-            val i = iterator.next()
-            i.totalArticles = articles.size
+        //viewPager = binding.articleEntryViewpager
+        val userLoginRepository = UserLoginRepository()
+        val articleEntryViewModel: ArticleEntryViewModel by viewModels {
+            ArticleEntryViewModelFactory(
+                sharedViewModel,
+                requireActivity().application,
+                userLoginRepository
+            )
         }
 
-        /*val viewPagerAdapter = ArticleEntryAdapter(articles)
-        viewPagerAdapter.submitList(articles)
-        viewPager = binding.articleEntryViewpager
+        //viewPager = binding.articleEntryViewpager
+        viewPagerAdapter = ArticleEntryAdapter(
+            childFragmentManager,
+            lifecycle,
+            articleViewModel.articles.value ?: emptyList(),
+            articleEntryViewModel
+        )
         viewPager.adapter = viewPagerAdapter
-        viewPagerAdapter.submitList(articles)*/
-        val viewPager2: ViewPager2 = binding.articleEntryViewpager
-        val viewPagerAdapter = ArticleEntryAdapter(childFragmentManager,lifecycle,articles)
-        viewPager2.adapter = viewPagerAdapter
 
-        val adapter =
-            ArticleAdapter(ArticleAdapter.ArticleListener { article ->
-                articleViewModel.onArticleClicked(article)
-                articleViewModel.navigateToArticle.observe(
-                    viewLifecycleOwner,
-                    Observer { article ->
-                        article?.let {
-                            this.findNavController().navigate(
-                                ArticleFragmentDirections.actionArticleFragmentToOrderFragment()
-                            )
-                            articleViewModel.onArticleNavigated()
-                        }
-                    })
-            })
-        adapter.submitList(articles)
+        articleViewModel.articles.observe(viewLifecycleOwner) { articles ->
+            //val viewPager2: ViewPager2 = binding.articleEntryViewpager
+            //val viewPagerAdapter = ArticleEntryAdapter(childFragmentManager, lifecycle, articles)
+            //viewPager2.adapter = viewPagerAdapter
+            //viewPagerAdapter = ArticleEntryAdapter(childFragmentManager, lifecycle, articles, articleEntryViewModel)
+            //viewPagerAdapter.updateData(articles)
+            //viewPager.adapter = viewPagerAdapter
+            viewPagerAdapter.updateData(articles)
 
-        binding.articleEntry.adapter = adapter
-        recyclerView.adapter = adapter
-
-
+            sharedViewModel.setArticleTotal(articles.size)
+        }
 
     }
-
-
-
 }

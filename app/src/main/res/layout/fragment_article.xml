@@ -9,9 +9,6 @@
             name="sharedViewModel"
             type="com.elis.orderingapplication.viewModels.ParamsViewModel" />
         <variable
-            name="articleViewModel"
-            type="com.elis.orderingapplication.viewModels.ArticleViewModel" />
-        <variable
             name="deliveryAddressName"
             type="String" />
 
@@ -19,7 +16,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:focusable="false">
 
         <ImageView
             android:id="@+id/imageView"
@@ -32,6 +30,7 @@
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
+            style="@style/overflowMenuColour"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/elis_blue"
@@ -39,9 +38,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:navigationContentDescription="@string/go_back_to_options"
-            app:titleTextAppearance="@style/Toolbar.TitleText"
-            style="@style/overflowMenuColour"
-            />
+            app:titleTextAppearance="@style/Toolbar.TitleText" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/button_layout"
@@ -72,6 +69,7 @@
                 android:layout_marginEnd="8dp"
                 android:background="@drawable/instruction_background_v3"
                 android:elevation="2dp"
+                android:focusable="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/guideline2">
@@ -83,6 +81,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="4dp"
                     android:layout_marginEnd="8dp"
+                    android:focusable="false"
                     android:text="@string/order_date_text"
                     android:textAlignment="center"
                     android:textColor="@color/elis_blue"
@@ -97,6 +96,7 @@
                     android:layout_height="0dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
+                    android:focusable="false"
                     android:fontFamily="@font/sharpsans_medium"
                     android:text="@{sharedViewModel.orderDate}"
                     android:textFontWeight="800"
@@ -111,6 +111,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
+                    android:focusable="false"
                     android:fontFamily="@font/sharpsans_medium"
                     android:text="@{sharedViewModel.deliveryAddressName}"
                     android:textFontWeight="800"
@@ -126,6 +127,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="2dp"
                     android:layout_marginEnd="8dp"
+                    android:focusable="false"
                     android:text="@string/delivery_address_text"
                     android:textAlignment="center"
                     android:textColor="@color/elis_blue"
@@ -140,6 +142,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
+                    android:focusable="false"
                     android:fontFamily="@font/sharpsans_medium"
                     android:text="@{sharedViewModel.orderingGroupName}"
                     android:textFontWeight="800"
@@ -155,6 +158,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="2dp"
                     android:layout_marginEnd="8dp"
+                    android:focusable="false"
                     android:text="@string/pos_text"
                     android:textAlignment="center"
                     android:textColor="@color/elis_blue"
@@ -165,32 +169,6 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:clickable="false"
-                android:orientation="horizontal"
-                android:visibility="gone"
-                app:layout_constraintBottom_toTopOf="@+id/guideline6"
-                app:layout_constraintEnd_toStartOf="@+id/guideline4"
-                app:layout_constraintStart_toStartOf="@+id/guideline3"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/article_entry"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:listitem="@layout/article_cardview">
-
-                </androidx.recyclerview.widget.RecyclerView>
-            </LinearLayout>
-
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/article_entry_viewpager"
                 android:layout_width="match_parent"
@@ -199,6 +177,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
+                android:focusable="false"
                 app:layout_constraintBottom_toTopOf="@+id/guideline6"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -225,6 +204,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="8dp"
                 android:contentDescription="@string/elis_logo_bottom"
+                android:focusable="false"
                 android:src="@drawable/elis_logo_white_circular_services_01"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/guideline4"
@@ -236,19 +216,20 @@
                 style="@style/Widget.Material3.Button.Icon"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:backgroundTint="#00FFFFFF"
                 android:contentDescription="@string/overflow_menu_text"
+                android:focusable="false"
+                android:gravity="center_vertical"
                 android:paddingTop="1dp"
                 android:paddingEnd="1dp"
-                android:layout_marginTop="8dp"
                 android:translationZ="90dp"
                 app:icon="@drawable/ic_more_vert"
                 app:iconGravity="start|end"
                 app:iconSize="30dp"
                 app:iconTint="@color/white"
                 app:layout_constraintEnd_toStartOf="@+id/guideline4"
-                app:layout_constraintTop_toTopOf="parent"
-                android:gravity="center_vertical"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

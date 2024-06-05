@@ -45,6 +45,10 @@ interface OrderInfoDao {
     //@Query("SELECT * FROM delivery_address")
     //fun getAllOrderingGroups(): LiveData<List<OrderingGroup>>
 
+
+    @Query("UPDATE article SET solOrderQty = :newOrderQty WHERE articleNo = :articleId AND app_order_id = :appOrderId")
+    fun updateOrderQty(newOrderQty: Int, articleId: String, appOrderId: String)
+
     @Transaction
     @Query("SELECT  * FROM ordering_group WHERE order_group_id = :orderGroupId")
     fun getOrderingGroupDescription(orderGroupId: String): List<OrderingGroup>
@@ -58,6 +62,14 @@ interface OrderInfoDao {
     fun getPointsOfService(deliveryAddressNo: String, orderingGroup: String) : LiveData<List<PointsOfService>>
 
     @Transaction
-    @Query("SELECT * FROM pos_order WHERE deliveryAddressNo = :deliveryAddressNo AND point_of_service_no = :posNumber AND delivery_date = :deliveryDate AND orderStatus ")
+    @Query("SELECT * FROM pos_order WHERE deliveryAddressNo = :deliveryAddressNo AND point_of_service_no = :posNumber AND delivery_date = :deliveryDate AND orderStatus = :orderStatus ")
     fun getOrders(deliveryAddressNo: String, posNumber: String, deliveryDate: String, orderStatus: Int) : LiveData<List<Order>>
+
+    @Transaction
+    @Query("SELECT * FROM article WHERE order_date = :orderDate AND app_order_id = :appOrderId")
+    fun getArticles(orderDate: String, appOrderId: String) : LiveData<List<Article>>
+
+    @Transaction
+    @Query("SELECT * FROM pos_order WHERE appOrderId = :appOrderId")
+    fun getOrderByOrderId(appOrderId: String) : LiveData<List<Order>>
 }

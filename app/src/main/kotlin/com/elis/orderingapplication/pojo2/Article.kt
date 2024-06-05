@@ -9,7 +9,7 @@ import javax.annotation.Generated
 import javax.annotation.Nonnull
 
 @Entity(tableName = "article",
-    primaryKeys = ["articleNo","delivery_date_article", "point_of_service", "deliveryAddressNo"])
+    primaryKeys = ["articleNo","delivery_date_article", "order_date", "point_of_service", "deliveryAddressNo"])
 data class Article (
     @Nonnull
     @Json(name = "articleNo")
@@ -52,10 +52,19 @@ data class Article (
     var deliveryDate: String = "",
 
     @Nonnull
+    @ColumnInfo(name = "order_date")
+    var orderDate: String = "",
+
+    @ColumnInfo(name = "app_order_id")
+    var appOrderId: String = "",
+
+    @Nonnull
     @ColumnInfo(name = "deliveryAddressNo")
     var deliveryAddressNo: String = "",
 
     @ColumnInfo(name = "deliveryAddressName")
-    var deliveryAddressName: String? = "",
+    var deliveryAddressName: String? = ""
 )
+
+
 

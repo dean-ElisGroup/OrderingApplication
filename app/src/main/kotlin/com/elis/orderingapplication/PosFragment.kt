@@ -1,5 +1,6 @@
 package com.elis.orderingapplication
 
+import android.app.AlertDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -91,6 +92,7 @@ class PosFragment : Fragment() {
                                         pointOfService.pointOfServiceNo,
                                     )
                                 )
+                                //}
                                 posViewModel.onPosNavigated()
                             }
                         })
@@ -108,5 +110,4 @@ class PosFragment : Fragment() {
             Observer { totalPost -> binding.totalPOS.text = totalPost.toString() })
 
     }
-
 }

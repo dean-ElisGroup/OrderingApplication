@@ -15,7 +15,7 @@ class OrderViewModel(application: Application, private val sharedViewModel: Para
     private val _navigateToOrder = MutableLiveData<Order?>()
 
     val database = OrderInfoDatabase.getInstance(application)
-    val orders: LiveData<List<Order>> = database.orderInfoDao.getOrders(getDeliveryAddressNum().value.toString(),getPointOfServiceNum().value.toString(),getOrderDate(), Constants.ORDER_STATUS_NEW)
+    val orders: LiveData<List<Order>> = database.orderInfoDao.getOrders(getDeliveryAddressNum().value.toString(),getPointOfServiceNum().value.toString(),getOrderDate(), Constants.ORDER_STATUS_ORDER_TOO_LATE)
 
     private fun getOrderDate(): String {
         var orderDateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")

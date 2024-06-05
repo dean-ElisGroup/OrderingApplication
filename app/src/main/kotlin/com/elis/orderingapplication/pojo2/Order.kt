@@ -6,6 +6,7 @@ import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import androidx.room.Relation
 import com.squareup.moshi.Json
+import java.util.UUID
 import javax.annotation.Generated
 import javax.annotation.Nonnull
 
@@ -50,10 +51,13 @@ data class Order (
     @ColumnInfo(name = "deliveryAddressName")
     var deliveryAddressName: String? = "",
 
+    @ColumnInfo(name = "appOrderId")
+    var appOrderId: String = UUID.randomUUID().toString(),
+
     @Ignore
     @Json(name = "articles")
     var articles: List<Article>? = null
 )
 {
-    constructor(orderType: String, orderDate: String, deliveryDate: String,orderStatus: Int, appOrderStatus: String, appPosNo: String, totalArticles: Int) : this(orderType,orderDate,deliveryDate,orderStatus,appOrderStatus, appPosNo)
+    constructor(orderType: String, orderDate: String, deliveryDate: String,orderStatus: Int, appOrderStatus: String, appPosNo: String, totalArticles: Int, appOrderId: String) : this(orderType,orderDate,deliveryDate,orderStatus,appOrderStatus, appPosNo)
 }

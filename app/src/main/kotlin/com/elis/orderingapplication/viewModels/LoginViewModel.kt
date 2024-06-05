@@ -61,7 +61,9 @@ class LoginViewModel(private val loginRep: UserLoginRepository) : ViewModel() {
                     order.articles?.forEach { article ->
                         // Update fields within the Article object
                         article.pointOfService = order.appPosNo
+                        article.appOrderId = order.appOrderId
                         article.deliveryDate = order.deliveryDate
+                        article.orderDate = order.orderDate.toString()
                         article.deliveryAddressNo = order.deliveryAddressNo
                         article.deliveryAddressName = order.deliveryAddressName
                     }

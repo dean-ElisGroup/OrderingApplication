@@ -89,7 +89,7 @@
     </fragment>
     <fragment
         android:id="@+id/articleEntryFragment"
-        android:name="com.elis.orderingapplication.ArticleEntryFragment1"
+        android:name="com.elis.orderingapplication.ArticleEntryCardFragment"
         android:label="fragment_article_entry"
         tools:layout="@layout/fragment_article_entry" />
     <argument
@@ -126,6 +126,11 @@
             app:destination="@id/orderFragment" />
         <argument
             android:name="order"
+            app:argType="string"
+            android:defaultValue="@null"
+            app:nullable="true"/>
+        <argument
+            android:name="app_order_id"
             app:argType="string"
             android:defaultValue="@null"
             app:nullable="true"/>

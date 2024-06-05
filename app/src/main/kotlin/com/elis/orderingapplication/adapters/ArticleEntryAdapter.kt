@@ -3,116 +3,82 @@ package com.elis.orderingapplication.adapters
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LiveData
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.elis.orderingapplication.ArticleEntryFragment1
-import com.elis.orderingapplication.model.Articles
+import com.elis.orderingapplication.ArticleEntryCardFragment
+import com.elis.orderingapplication.database.OrderInfoDatabase
 import com.elis.orderingapplication.pojo2.Article
+import com.elis.orderingapplication.pojo2.ArticleParcelable
+import com.elis.orderingapplication.viewModels.ArticleEntryViewModel
+import com.elis.orderingapplication.viewModels.ArticleViewModel
+import com.elis.orderingapplication.viewModels.ParamsViewModel
 
 
-class ArticleEntryAdapter (fragmentManager: FragmentManager, lifecycle: Lifecycle, private val articles: List<Article>) :
-FragmentStateAdapter(fragmentManager, lifecycle){
-    override fun getItemCount(): Int {
-        return articles.size
+class ArticleEntryAdapter(
+    fragmentManager: FragmentManager,
+    lifecycle: Lifecycle,
+    private val articles: List<Article>,
+    private val articleEntryViewModel: ArticleEntryViewModel
+) :
+    FragmentStateAdapter(fragmentManager, lifecycle) {
+    //override fun getItemCount(): Int {
+    //    return articles.size
+    //}
 
-    }
+    private var data: List<Article> = emptyList()
+    override fun getItemCount(): Int = articles.size
 
     override fun createFragment(position: Int): Fragment {
+
+
         val articles = articles[position]
-        val entryFragment = ArticleEntryFragment1()
+        val entryFragment = ArticleEntryCardFragment()
         val articlePosition = position+1
 
-        val fragmentBundle = Bundle()
-        fragmentBundle.putString("articleNo", articles.articleNo)
-        fragmentBundle.putString("articleDescription", articles.articleDescription)
-        fragmentBundle.putString("articleTargetQty", articles.articleTargetQty.toString())
-        fragmentBundle.putString("articleSize", articles.articleSize)
-        fragmentBundle.putString("numberOfArticles", itemCount.toString())
-        fragmentBundle.putString("currentArticlePosition", articlePosition.toString())
+        val articleParcelable = ArticleParcelable(
+            articles.articleNo,
+            articles.articleDescription,
+            articles.articleSize,
+            articles.articleTargetQty,
+            articles.articleMinQty,
+            articles.articleMaxQty,
+            articles.articleIntervalQty,
+            articles.solOrderQty,
+            articles.solCountedQty,
+            articles.totalArticles,
+            articles.pointOfService,
+            articles.deliveryDate,
+            articles.orderDate,
+            articles.appOrderId,
+            articles.deliveryAddressNo,
+            articles.deliveryAddressName)
+
+
+        val fragmentBundle = Bundle().apply {
+            putParcelable("article", articleParcelable)
+        }
         entryFragment.arguments = fragmentBundle
 
+        //val viewModel = articleEntryViewModel
+        //viewModel.updateArticleData(articles)
+
+        //val fragmentBundle = Bundle()
+        //fragmentBundle.putString("articleNo", articles.articleNo)
+        //fragmentBundle.putString("articleDescription", articles.articleDescription)
+        //fragmentBundle.putString("articleTargetQty", articles.articleTargetQty.toString())
+        //fragmentBundle.putString("articleSize", articles.articleSize)
+        //fragmentBundle.putString("numberOfArticles", itemCount.toString())
+        //fragmentBundle.putInt("currentArticlePosition", articlePosition)
+        //fragmentBundle.putInt("currentArticle", position)
+        //entryFragment.arguments = fragmentBundle
+
         return entryFragment
-        //return ArticleEntryFragment1()
     }
 
+    fun updateData(newData: List<Article>) {
+        data = newData
+        notifyDataSetChanged()
+    }
 }
-
-
-/*class ArticleEntryAdapter(private val articles: List<Article>?):
-    ListAdapter<Article, ArticleEntryAdapter.ArticleEntryViewHolder>(DiffCallback) {
-
-    class ArticleEntryViewHolder(private var binding: FragmentArticleEntryViewpagerBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-
-        fun bind(articles: Article) {
-            binding.article = articles
-            binding.articleDescription.text = articles.articleDescription
-            binding.articleNo.text = articles.articleNo
-            val articlePosition = layoutPosition + 1
-            val articleSize = articles.totalArticles
-            binding.articlePosition.text = articlePosition.toString()
-            binding.ofArticlePosition.text = articleSize.toString()
-            binding.executePendingBindings()
-
-            binding.countedQty.doAfterTextChanged {
-                articles.solCountedQty = binding.countedQty.text.toString().toIntOrNull()
-                val resultOrderQty = articles.articleTargetQty?.let { targetQty ->
-                    articles.solCountedQty?.let { countedQty ->
-                        //binding.countedQty.text.toString().toIntOrNull()?.let { countedQty ->
-                        targetQty - countedQty
-                    } ?: run {
-                        targetQty
-                    }
-                } ?: run {
-                    0
-                }
-                binding.orderQty.text = "$resultOrderQty"
-                articles.solOrderQty = "$resultOrderQty".toIntOrNull()
-            }
-
-            if(articlePosition == articleSize) {
-                binding.lastArticleText.visibility = View.VISIBLE
-                binding.sendOrderButton.visibility = View.VISIBLE
-            }
-
-            val articleToSend = OrderRowsItem(articles.articleSize,articles.solOrderQty,articles.articleNo)
-            //articleList.add(articleToSend)
-        }
-    }
-
-    companion object DiffCallback : DiffUtil.ItemCallback<Article>() {
-        override fun areItemsTheSame(oldItem: Article, newItem: Article): Boolean {
-            return oldItem === newItem
-        }
-
-        override fun areContentsTheSame(
-            oldItem: Article,
-            newItem: Article
-        ): Boolean {
-            return oldItem.articleNo == newItem.articleNo
-        }
-    }
-
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): ArticleEntryViewHolder {
-        return ArticleEntryViewHolder(
-            FragmentArticleEntryViewpagerBinding.inflate(
-                LayoutInflater.from(
-                    parent.context
-                ), parent, false
-            )
-        )
-    }
-
-    override fun getItemCount(): Int = articles!!.size
-    override fun onBindViewHolder(holder: ArticleEntryViewHolder, position: Int) {
-        val article = getItem(position)
-        holder.bind(article)
-    }
-
-
-
-}*/
-

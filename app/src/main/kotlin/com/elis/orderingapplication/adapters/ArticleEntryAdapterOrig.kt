@@ -4,17 +4,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.doAfterTextChanged
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.elis.orderingapplication.ArticleEntryFragment1
 import com.elis.orderingapplication.pojo2.Article
 import com.elis.orderingapplication.databinding.FragmentArticleEntryViewpagerBinding
 import com.elis.orderingapplication.pojo2.OrderRowsItem
-import com.elis.orderingapplication.pojo2.SendOrder
 
 class ArticleEntryAdapterOrig(private val articles: List<Article>?):
     ListAdapter<Article, ArticleEntryAdapterOrig.ArticleEntryViewHolder>(DiffCallback) {

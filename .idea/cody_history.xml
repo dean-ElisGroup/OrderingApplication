@@ -1,6 +1,547 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChatHistory">
+    <accountData>
+      <list>
+        <AccountData>
+          <accountId value="VXNlcjozMDUxMTg=" />
+          <chats>
+            <list>
+              <chat>
+                <internalId value="8a9eb07a-939f-4d73-a7bc-813fd34e0392" />
+                <messages>
+                  <list>
+                    <message>
+                      <speaker value="ASSISTANT" />
+                      <text value="&lt;html&gt;&lt;b&gt;&amp;#9888; Error performing this action&lt;/b&gt;&lt;br&gt;&lt;br&gt;Please retry sending your message. If you tried to run a command, try it again.&lt;br&gt;If the issue persists, please &lt;a href=&quot;https://github.com/sourcegraph/jetbrains/issues/new?template=bug_report.yml&amp;labels=bug,clients/jetbrains&amp;projects=sourcegraph/381&amp;title=bug%3A+java.util.concurrent.ExecutionException%3A+org.eclipse.lsp4j.jsonrpc.ResponseErrorException%3A+No+default+chat+model+found&amp;version=IDE+version%3A+%60%60%60AI-233.14808.21.2331.11709847%60%60%60&amp;logs=Stacktrace%3A%0A%60%60%60text%0Ajava.util.concurrent.ExecutionException%3A+org.eclipse.lsp4j.jsonrpc.ResponseErrorException%3A+No+default+chat+model+found%0A%0AError%3A+No+default+chat+model+found%0A++++at+C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A112496%3A19%0D%0A%09at+java.base%2Fjava.util.concurrent.CompletableFuture.reportGet%28CompletableFuture.java%3A396%29%0D%0A%09at+java.base%2Fjava.util.concurrent.CompletableFuture.get%28CompletableFuture.java%3A2073%29%0D%0A%09at+com.sourcegraph.cody.chat.AgentChatSession.submitMessageToAgent%24lambda%240%28AgentChatSession.kt%3A121%29%0D%0A%09at+com.sourcegraph.cody.agent.CodyAgentService%24Companion%24withAgent%242%241%24task%241.invokeSuspend%28CodyAgentService.kt%3A260%29%0D%0A%09at+com.sourcegraph.cody.agent.CodyAgentService%24Companion%24withAgent%242%241%24task%241.invoke%28CodyAgentService.kt%29%0D%0A%09at+com.sourcegraph.cody.agent.CodyAgentService%24Companion%24withAgent%242%241%24task%241.invoke%28CodyAgentService.kt%29%0D%0A%09at+com.sourcegraph.cody.agent.CodyAgentService%24Companion.coWithAgent%28CodyAgentService.kt%3A317%29%0D%0A%09at+com.sourcegraph.cody.agent.CodyAgentService%24Companion.access%24coWithAgent%28CodyAgentService.kt%3A227%29%0D%0A%09at+com.sourcegraph.cody.agent.CodyAgentService%24Companion%24withAgent%242%241.invokeSuspend%28CodyAgentService.kt%3A266%29%0D%0A%09at+kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith%28ContinuationImpl.kt%3A33%29%0D%0A%09at+kotlinx.coroutines.DispatchedTask.run%28DispatchedTask.kt%3A108%29%0D%0A%09at+kotlinx.coroutines.EventLoopImplBase.processNextEvent%28EventLoop.common.kt%3A280%29%0D%0A%09at+kotlinx.coroutines.BlockingCoroutine.joinBlocking%28Builders.kt%3A85%29%0D%0A%09at+kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking%28Builders.kt%3A59%29%0D%0A%09at+kotlinx.coroutines.BuildersKt.runBlocking%28Unknown+Source%29%0D%0A%09at+kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking%24default%28Builders.kt%3A38%29%0D%0A%09at+kotlinx.coroutines.BuildersKt.runBlocking%24default%28Unknown+Source%29%0D%0A%09at+com.sourcegraph.cody.agent.CodyAgentService%24Companion.withAgent%24lambda%242%28CodyAgentService.kt%3A257%29%0D%0A%09at+com.intellij.openapi.application.impl.ApplicationImpl%242.run%28ApplicationImpl.java%3A249%29%0D%0A%09at+java.base%2Fjava.util.concurrent.Executors%24RunnableAdapter.call%28Executors.java%3A539%29%0D%0A%09at+com.intellij.util.concurrency.ContextCallable.call%28ContextCallable.java%3A32%29%0D%0A%09at+java.base%2Fjava.util.concurrent.FutureTask.run%28FutureTask.java%3A264%29%0D%0A%09at+com.intellij.util.concurrency.ContextRunnable.run%28ContextRunnable.java%3A27%29%0D%0A%09at+java.base%2Fjava.util.concurrent.ThreadPoolExecutor.runWorker%28ThreadPoolExecutor.java%3A1136%29%0D%0A%09at+java.base%2Fjava.util.concurrent.ThreadPoolExecutor%24Worker.run%28ThreadPoolExecutor.java%3A635%29%0D%0A%09at+java.base%2Fjava.util.concurrent.Executors%24PrivilegedThreadFactory%241%241.run%28Executors.java%3A702%29%0D%0A%09at+java.base%2Fjava.util.concurrent.Executors%24PrivilegedThreadFactory%241%241.run%28Executors.java%3A699%29%0D%0A%09at+java.base%2Fjava.security.AccessController.doPrivileged%28AccessController.java%3A399%29%0D%0A%09at+java.base%2Fjava.util.concurrent.Executors%24PrivilegedThreadFactory%241.run%28Executors.java%3A699%29%0D%0A%09at+java.base%2Fjava.lang.Thread.run%28Thread.java%3A840%29%0D%0ACaused+by%3A+org.eclipse.lsp4j.jsonrpc.ResponseErrorException%3A+No+default+chat+model+found%0A%0AError%3A+No+default+chat+model+found%0A++++at+C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A112496%3A19%0D%0A%09at+org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.handleResponse%28RemoteEndpoint.java%3A209%29%0D%0A%09at+org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.consume%28RemoteEndpoint.java%3A193%29%0D%0A%09at+org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.handleMessage%28StreamMessageProducer.java%3A194%29%0D%0A%09at+org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.listen%28StreamMessageProducer.java%3A94%29%0D%0A%09at+org.eclipse.lsp4j.jsonrpc.json.ConcurrentMessageProcessor.run%28ConcurrentMessageProcessor.java%3A113%29%0D%0A%09at+java.base%2Fjava.util.concurrent.Executors%24RunnableAdapter.call%28Executors.java%3A539%29%0D%0A%09at+java.base%2Fjava.util.concurrent.FutureTask.run%28FutureTask.java%3A264%29%0D%0A%09at+java.base%2Fjava.util.concurrent.ThreadPoolExecutor.runWorker%28ThreadPoolExecutor.java%3A1136%29%0D%0A%09at+java.base%2Fjava.util.concurrent.ThreadPoolExecutor%24Worker.run%28ThreadPoolExecutor.java%3A635%29%0D%0A%09...+1+more%0D%0A%0A%60%60%60%0AAdditional+info%3A%0A%60%60%60text%0Aorg.eclipse.lsp4j.jsonrpc.ResponseErrorException%3A+No+default+chat+model+found%0A%0AError%3A+No+default+chat+model+found%0A++++at+C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A112496%3A19%0A%60%60%60&quot;&gt;create a support ticket&lt;/a&gt;.&lt;br&gt;&lt;br&gt;&lt;sub&gt;Error: org.eclipse.lsp4j.jsonrpc.ResponseErrorException: No default chat model found&#10;&#10;Error: No default chat model found&#10;    at C:\Users\dball\AppData\Roaming\Google\AndroidStudio2023.3\plugins\Sourcegraph\agent\index.js:112496:19&lt;/sub&gt;&lt;/html&gt;" />
+                    </message>
+                  </list>
+                </messages>
+                <updatedAt value="2024-06-04T08:37:35.4581219" />
+              </chat>
+              <chat>
+                <accountId value="VXNlcjozMDUxMTg=" />
+                <internalId value="78aa6aa4-825a-40a4-bfa6-4c2c4996c74c" />
+                <messages>
+                  <list>
+                    <message>
+                      <speaker value="HUMAN" />
+                      <text value="How to monitor a network kotlin" />
+                    </message>
+                    <message>
+                      <speaker value="ASSISTANT" />
+                      <text value=" Here are a few ways to monitor a network in Kotlin:&#10;&#10;1. Use the OkHttp library to log network requests:&#10;&#10;```kotlin&#10;val client = OkHttpClient.Builder()&#10;    .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BASIC))&#10;    .build()&#10;```&#10;&#10;This will print basic info about each network request/response to Logcat.&#10;&#10;2. Use the NetworkCallback API to get notifications about network status changes:&#10;&#10;```kotlin &#10;val networkCallback = object : ConnectivityManager.NetworkCallback() {&#10;&#10;  override fun onAvailable(network: Network) {&#10;    Log.d(&quot;Network&quot;, &quot;Network available: ${network}&quot;) &#10;  }&#10;&#10;  override fun onLost(network: Network) {&#10;    Log.d(&quot;Network&quot;, &quot;Network lost: ${network}&quot;)&#10;  }&#10;&#10;}&#10;&#10;val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager&#10;cm.registerDefaultNetworkCallback(networkCallback)&#10;```&#10;&#10;3. Use a network monitoring library like NetMon to log bandwidth usage, ping times, etc.&#10;&#10;4. For OkHttp requests specifically, use an interceptor to log timing metrics:&#10;&#10;```kotlin&#10;val metricInterceptor = Interceptor { chain -&gt;&#10;  val startNs = System.nanoTime()&#10;  chain.proceed(chain.request())&#10;  val tookMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNs) &#10;  Log.d(&quot;OkHttp&quot;, &quot;${chain.request().url} took $tookMs ms&quot;)&#10;  return@Interceptor&#10;}  &#10;```&#10;&#10;This will log the time taken for each OkHttp request." />
+                    </message>
+                    <message>
+                      <speaker value="HUMAN" />
+                      <text value="connectivityManager.activeNetworkInfo" />
+                    </message>
+                    <message>
+                      <speaker value="ASSISTANT" />
+                      <text value=" Here is how you can use `connectivityManager.activeNetworkInfo` to monitor the network in Kotlin:&#10;&#10;```kotlin&#10;val connectivityManager = Context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager&#10;&#10;val activeNetworkInfo = connectivityManager.activeNetworkInfo&#10;&#10;if (activeNetworkInfo != null &amp;&amp; activeNetworkInfo.isConnected) {&#10;  // we have an active internet connection&#10;  Log.d(&quot;Network&quot;, &quot;Active network found: ${activeNetworkInfo.typeName}&quot;)&#10;} else {&#10;  // no active internet connection&#10;  Log.d(&quot;Network&quot;, &quot;No active internet connection found&quot;) &#10;}&#10;&#10;// register callback to monitor future changes  &#10;val networkCallback = object : ConnectivityManager.NetworkCallback() {&#10;&#10;  override fun onAvailable(network: Network) {&#10;    Log.d(&quot;Network&quot;, &quot;Network now available: ${network}&quot;)&#10;  }&#10;  &#10;  override fun onLost(network: Network) {&#10;    Log.d(&quot;Network&quot;, &quot;Network unavailable&quot;)&#10;  }&#10;&#10;}&#10;&#10;connectivityManager.registerNetworkCallback(networkRequest, networkCallback)&#10;```&#10;&#10;The `activeNetworkInfo` property gives you the current state of connectivity. You can check `isConnected` to see if you have an active internet connection.&#10;&#10;Registering the `NetworkCallback` allows you to get notified whenever the connectivity changes in the future." />
+                    </message>
+                  </list>
+                </messages>
+                <updatedAt value="2024-02-28T16:08:20.1937123" />
+              </chat>
+              <chat>
+                <accountId value="VXNlcjozMDUxMTg=" />
+                <internalId value="67667be9-64e3-4696-a3a9-8aecd915698f" />
+                <messages>
+                  <list>
+                    <message>
+                      <speaker value="HUMAN" />
+                      <text value="/doc" />
+                    </message>
+                    <message>
+                      <speaker value="ASSISTANT" />
+                      <text value=" Here are a few things I can explain about the selected Kotlin code:&#10;&#10;- This is defining a LoginViewModel class that extends ViewModel. ViewModel is part of the Android architecture components and is used to store and manage UI data in a lifecycle conscious way.&#10;&#10;- The LoginViewModel has two constructor parameters:&#10;  - userLoginId: A String property that defaults to empty string&#10;  - database: An instance of UserLoginDao, which seems to be a DAO for accessing user login data from a database.&#10;&#10;- The LoginViewModel is likely being used in conjunction with a Login screen in the app. The ViewModel would hold the login state and data needed for the login UI. &#10;&#10;- When the Login screen is initialized, it would create an instance of LoginViewModel and pass a userLoginId and UserLoginDao instance. &#10;&#10;- The userLoginId could be prefilled if the user is returning and already logged in. The database DAO is needed to lookup and verify user credentials on login.&#10;&#10;- The ViewModel would expose login data and state to the Login screen UI using LiveData or other observable properties that the UI can react to. &#10;&#10;- It allows the login logic and data to survive configuration changes like screen rotations without losing state.&#10;&#10;So in summary, this LoginViewModel is created to hold and manage login state and data for a login UI in a lifecycle aware way using architecture components. The UI layer just needs to get the ViewModel instance and observe data from it." />
+                    </message>
+                  </list>
+                </messages>
+                <updatedAt value="2024-02-29T11:01:32.1932644" />
+              </chat>
+              <chat>
+                <accountId value="VXNlcjozMDUxMTg=" />
+                <internalId value="fbc3f642-ed9b-431b-8bba-6e825a052790" />
+                <messages>
+                  <list>
+                    <message>
+                      <speaker value="HUMAN" />
+                      <text value="Live data observe in a fragment" />
+                    </message>
+                    <message>
+                      <speaker value="ASSISTANT" />
+                      <text value=" Here is an example of using LiveData observe in a fragment with the selected code:&#10;&#10;```kt&#10;class LoginFragment : Fragment() {&#10;&#10;  private lateinit var loginViewModel: LoginViewModel&#10;  &#10;  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {&#10;    super.onViewCreated(view, savedInstanceState)&#10;    &#10;    loginViewModel.userLoginResponse.observe(viewLifecycleOwner) { response -&gt;&#10;      when (response) {&#10;        is ApiResponse.Success -&gt; {&#10;          // handle success response&#10;        }&#10;        is ApiResponse.Error -&gt; {&#10;          // handle error response &#10;        }&#10;      }&#10;    }&#10;  }&#10;&#10;}&#10;```&#10;&#10;The key points:&#10;&#10;- The LiveData is observed in the fragment by calling `observe` on it and passing the `viewLifecycleOwner` &#10;- This ties the LiveData observation lifecycle to the fragment's view lifecycle&#10;- The lambda provides the code to handle the different response cases&#10;- The response is the LiveData value that gets emitted&#10;&#10;So in this example, the `userLoginResponse` LiveData from the LoginViewModel is observed in the fragment. When the LiveData emits a new value, the observer lambda will execute to handle the response." />
+                    </message>
+                  </list>
+                </messages>
+                <updatedAt value="2024-03-07T13:45:54.2826652" />
+              </chat>
+              <chat>
+                <accountId value="VXNlcjozMDUxMTg=" />
+                <internalId value="fafc1032-1d90-4dc7-a884-e089e25d3982" />
+                <messages>
+                  <list>
+                    <message>
+                      <speaker value="HUMAN" />
+                      <text value="Code for a Room database to store userLoginResponse data" />
+                    </message>
+                    <message>
+                      <speaker value="ASSISTANT" />
+                      <text value=" Here is how you can create a Room database to store the user login response data from the LoginViewModel:&#10;&#10;```kotlin&#10;// Create an entity to represent the user login response &#10;@Entity&#10;data class UserLoginResponseEntity(&#10;    @PrimaryKey val id: Int,&#10;    @ColumnInfo(name = &quot;response&quot;) val response: String&#10;)&#10;&#10;// Database dao &#10;@Dao  &#10;interface UserLoginResponseDao {&#10;&#10;    @Insert(onConflict = OnConflictStrategy.REPLACE)&#10;    suspend fun insert(userLoginResponse: UserLoginResponseEntity)&#10;&#10;    @Query(&quot;SELECT * FROM userloginresponseentity&quot;)&#10;    suspend fun getAll(): List&lt;UserLoginResponseEntity&gt;&#10;}&#10;&#10;// Database &#10;@Database(entities = [UserLoginResponseEntity::class], version = 1)&#10;abstract class AppDatabase : RoomDatabase() {&#10;    abstract fun userLoginResponseDao(): UserLoginResponseDao&#10;}&#10;&#10;// Usage&#10;&#10;// Get database instance &#10;val db = Room.databaseBuilder(&#10;    applicationContext, &#10;    AppDatabase::class.java,&#10;    &quot;database-name&quot;&#10;).build()&#10;&#10;// Insert response &#10;db.userLoginResponseDao().insert(UserLoginResponseEntity(1, responseJsonString))&#10;&#10;// Get all responses&#10;val responses = db.userLoginResponseDao().getAll()&#10;```&#10;&#10;This creates a Room database with a UserLoginResponseEntity to store the response, a DAO to insert and query the data, and shows how to get the database instance and use it to save and retrieve the login responses." />
+                    </message>
+                    <message>
+                      <speaker value="HUMAN" />
+                      <text value="Create a room database for use with UserLogin" />
+                    </message>
+                    <message>
+                      <speaker value="ASSISTANT" />
+                      <text value=" Here is how you can create a Room database to store user login information to use with the UserLoginViewModel:&#10;&#10;```kotlin&#10;// UserLogin Entity&#10;@Entity&#10;data class UserLoginEntity(&#10;    @PrimaryKey val id: Int,&#10;    @ColumnInfo(name = &quot;username&quot;) val username: String,&#10;    @ColumnInfo(name = &quot;password&quot;) val password: String&#10;)&#10;&#10;// DAO &#10;@Dao&#10;interface UserLoginDao {&#10;&#10;    @Insert(onConflict = OnConflictStrategy.REPLACE)&#10;    suspend fun insert(userLogin: UserLoginEntity)&#10;&#10;    @Query(&quot;SELECT * FROM userloginentity WHERE username = :username&quot;)&#10;    suspend fun getUser(username: String): UserLoginEntity?&#10;&#10;}&#10;&#10;// Database&#10;@Database(entities = [UserLoginEntity::class], version = 1)&#10;abstract class AppDatabase : RoomDatabase() {&#10;    abstract fun userLoginDao(): UserLoginDao&#10;} &#10;&#10;// Usage&#10;&#10;// Get database instance&#10;val db = Room.databaseBuilder(&#10;    applicationContext,&#10;    AppDatabase::class.java, &#10;    &quot;user-database&quot;&#10;).build()&#10;&#10;// Save login &#10;val user = UserLoginEntity(1, &quot;john&quot;, &quot;password123&quot;)&#10;db.userLoginDao().insert(user)&#10;&#10;// Get login&#10;val savedUser = db.userLoginDao().getUser(&quot;john&quot;)&#10;&#10;```&#10;&#10;This creates a UserLoginEntity to store username and password, a DAO with insert and get methods, the database class, and shows how to instantiate the database and use the DAO to save and retrieve a user login. This can be used with the LoginViewModel to store and retrieve user credentials." />
+                    </message>
+                  </list>
+                </messages>
+                <updatedAt value="2024-03-08T13:43:49.2807178" />
+              </chat>
+              <chat>
+                <accountId value="VXNlcjozMDUxMTg=" />
+                <internalId value="7f616c66-7993-420d-a20f-fc47f7638906" />
+                <messages>
+                  <list>
+                    <message>
+                      <speaker value="HUMAN" />
+                      <text value="How to insert UserLogin to a room database" />
+                    </message>
+                    <message>
+                      <speaker value="ASSISTANT" />
+                      <text value=" Here is how you can insert a UserLogin object into a Room database:&#10;&#10;1. Define a UserLogin data class:&#10;&#10;```kotlin&#10;@Entity&#10;data class UserLogin(&#10;    @PrimaryKey val id: Int,&#10;    @ColumnInfo(name = &quot;username&quot;) val username: String, &#10;    @ColumnInfo(name = &quot;password&quot;) val password: String&#10;)&#10;```&#10;&#10;2. Get reference to the DAO:&#10;&#10;```kotlin &#10;val userLoginDao = AppDatabase.getInstance(context).userLoginDao()&#10;```&#10;&#10;3. Insert the object:&#10;&#10;```kotlin&#10;val user = UserLogin(1, &quot;john&quot;, &quot;password123&quot;)&#10;userLoginDao.insert(user)&#10;```&#10;&#10;The key steps are:&#10;&#10;- Define an entity data class annotated with @Entity&#10;- The fields you want to store in the database should be annotated (e.g. @PrimaryKey) &#10;- Get reference to the DAO object &#10;- Call the insert method on the DAO, passing your entity object&#10;&#10;The DAO will handle inserting the object into the database. Make sure to define the DAO interface and abstract method for insert." />
+                    </message>
+                  </list>
+                </messages>
+                <updatedAt value="2024-03-11T15:32:52.8457046" />
+              </chat>
+              <chat>
+                <accountId value="VXNlcjozMDUxMTg=" />
+                <internalId value="2cf3b1af-4d1e-4d6d-bf47-0a2cfac0acd8" />
+                <llm>
+                  <llm>
+                    <model value="anthropic/claude-2.0" />
+                    <provider value="Anthropic" />
+                    <title value="Claude 2.0" />
+                  </llm>
+                </llm>
+              </chat>
+              <chat>
+                <accountId value="VXNlcjozMDUxMTg=" />
+                <internalId value="0a55a60d-cd69-4112-8206-7b1be382ab02" />
+                <llm>
+                  <llm>
+                    <model value="anthropic/claude-2.0" />
+                    <provider value="Anthropic" />
+                    <title value="Claude 2.0" />
+                  </llm>
+                </llm>
+                <messages>
+                  <list>
+                    <message>
+                      <speaker value="HUMAN" />
+                      <text value="objectbox" />
+                    </message>
+                    <message>
+                      <speaker value="ASSISTANT" />
+                      <text value=" Here are a few key things to know about using ObjectBox in an Android Kotlin project:&#10;&#10;- Add the ObjectBox Kotlin gradle plugin in your app's build.gradle file:&#10;&#10;```&#10;plugins {&#10;  id &quot;io.objectbox&quot; version &quot;3.0.0&quot;&#10;}&#10;```&#10;&#10;- Annotate Kotlin data classes with @Entity to generate ObjectBox entities:&#10;&#10;```kotlin&#10;@Entity&#10;data class Book(&#10;  var name: String,&#10;  var pages: Int&#10;)&#10;```&#10;&#10;- Generate ObjectBox code by running:&#10;&#10;```&#10;./gradlew objectboxGenerate&#10;```&#10;&#10;- Get an ObjectBox instance and open/create a database:&#10;&#10;```kotlin &#10;val boxStore = MyObjectBox.builder().androidContext(context).build()&#10;val box = boxStore.boxFor(Book::class.java)&#10;```&#10;&#10;- Use the ObjectBox Kotlin extensions for a concise API:&#10;&#10;```kotlin&#10;box.put(Book(&quot;My Book&quot;, 100))&#10;val book = box.get(1)&#10;```&#10;&#10;- ObjectBox entities are regular Kotlin objects, you can use them as usual.&#10;&#10;So in summary, ObjectBox provides a nice Kotlin-first API for object persistence on Android." />
+                    </message>
+                  </list>
+                </messages>
+                <updatedAt value="2024-03-13T09:31:17.2754403" />
+              </chat>
+              <chat>
+                <accountId value="VXNlcjozMDUxMTg=" />
+                <internalId value="cf0e6962-add1-46d7-9853-e34e3fb43633" />
+                <llm>
+                  <llm>
+                    <model value="anthropic/claude-2.0" />
+                    <provider value="Anthropic" />
+                    <title value="Claude 2.0" />
+                  </llm>
+                </llm>
+                <messages>
+                  <list>
+                    <message>
+                      <speaker value="HUMAN" />
+                      <text value="How to observe MutableLiveData between ViewModels" />
+                    </message>
+                    <message>
+                      <speaker value="ASSISTANT" />
+                      <text value=" To observe MutableLiveData between ViewModels, you can use a shared ViewModel that both ViewModels have access to.&#10;&#10;For example:&#10;&#10;1. Create a shared ViewModel:&#10;&#10;```&#10;class SharedViewModel : ViewModel() {&#10;&#10;  val sharedMutableLiveData = MutableLiveData&lt;String&gt;()&#10;&#10;}&#10;```&#10;&#10;2. Inject this shared ViewModel into the ViewModels that need to observe the MutableLiveData:&#10;&#10;```&#10;class ViewModelA(&#10;  private val sharedViewModel: SharedViewModel&#10;) : ViewModel() {&#10;&#10;  init {&#10;    sharedViewModel.sharedMutableLiveData.observeForever { &#10;      // observe changes&#10;    }&#10;  }&#10;&#10;}&#10;&#10;class ViewModelB(&#10;  private val sharedViewModel: SharedViewModel  &#10;) : ViewModel() {&#10;&#10;  init {&#10;    sharedViewModel.sharedMutableLiveData.observeForever {&#10;      // observe changes&#10;    }&#10;  }&#10;&#10;}&#10;```&#10;&#10;3. When ViewModelA updates the value, ViewModelB will observe the change through the shared ViewModel.&#10;&#10;So in summary, use a shared ViewModel injected into both ViewModels to hold the MutableLiveData that needs to be observed across them." />
+                    </message>
+                    <message>
+                      <speaker value="HUMAN" />
+                      <text value="How to observe orderInfoResponse from LoginViewModel in DeliveryAddressFragment?" />
+                    </message>
+                    <message>
+                      <speaker value="ASSISTANT" />
+                      <text value=" Here is how you can observe orderInfoResponse from LoginViewModel in DeliveryAddressFragment:&#10;&#10;1. In DeliveryAddressFragment, get a reference to the LoginViewModel:&#10;&#10;```&#10;// In DeliveryAddressFragment&#10;&#10;private val loginViewModel: LoginViewModel by activityViewModels() &#10;```&#10;&#10;2. Observe the orderInfoResponse LiveData from LoginViewModel:&#10;&#10;```&#10;// In DeliveryAddressFragment&#10;&#10;loginViewModel.orderInfoResponse.observe(viewLifecycleOwner) {&#10;  // handle response&#10;}&#10;```&#10;&#10;3. In LoginViewModel, update orderInfoResponse as needed:&#10;&#10;```&#10;// In LoginViewModel &#10;&#10;fun getOrderInfo() {&#10;  //...&#10;  orderInfoResponse.postValue(response) &#10;}&#10;```&#10;&#10;4. Now whenever LoginViewModel updates orderInfoResponse, DeliveryAddressFragment will observe the change and handle it.&#10;&#10;The key is using activityViewModels() to get a reference to the LoginViewModel, and then observing the LiveData from the fragment. This allows fragments to react to state changes in the ViewModel." />
+                    </message>
+                    <message>
+                      <speaker value="HUMAN" />
+                      <text value="requireActivity() in a viewmodel" />
+                    </message>
+                    <message>
+                      <speaker value="ASSISTANT" />
+                      <text value=" Calling requireActivity() inside a ViewModel is generally not recommended. ViewModels are designed to be lifecycle-aware but UI/context-unaware. Requiring an Activity reference directly couples the ViewModel to the UI layer and Android framework classes.&#10;&#10;Instead, the proper way to communicate from a ViewModel to the Activity is via callback interfaces or LiveData/Flow observables.&#10;&#10;Some options:&#10;&#10;- Define a listener interface in the ViewModel that the Activity implements. The ViewModel can then call methods on the listener to communicate events:&#10;&#10;```&#10;// In ViewModel&#10;&#10;interface MyListener {&#10;  fun onDataLoaded()&#10;}&#10;&#10;class MyViewModel {&#10;&#10;  private lateinit var listener: MyListener&#10;  &#10;  fun setListener(listener: MyListener) {&#10;    this.listener = listener&#10;  }&#10;&#10;  fun loadData() {&#10;    // load data&#10;    listener.onDataLoaded() &#10;  }&#10;&#10;}&#10;&#10;// In Activity&#10;&#10;class MyActivity : AppCompatActivity(), MyListener {&#10;&#10;  // implement interface methods&#10;  &#10;  override fun onDataLoaded() {&#10;    // update UI&#10;  }&#10;&#10;}&#10;```&#10;&#10;- Expose a LiveData in the ViewModel that the Activity can observe:&#10;&#10;```&#10;// In ViewModel &#10;&#10;val dataLoaded = MutableLiveData&lt;Boolean&gt;()&#10;&#10;fun loadData() {&#10;  // load data&#10;  dataLoaded.value = true&#10;}&#10;&#10;// In Activity&#10;&#10;viewModel.dataLoaded.observe(this) { &#10;  // update UI&#10;}&#10;```&#10;&#10;- Use a singleton event bus that the ViewModel can post events to that the Activity observes.&#10;&#10;So in summary, avoid requireActivity() in ViewModels - use abstract interfaces or observables instead to keep the layers decoupled." />
+                    </message>
+                    <message>
+                      <speaker value="HUMAN" />
+                      <text value="How to observe MutableLiveData from one Fragment to another Fragment?" />
+                    </message>
+                    <message>
+                      <speaker value="ASSISTANT" />
+                      <text value=" Here is one way to observe a MutableLiveData from one Fragment (FragmentA) to another Fragment (FragmentB):&#10;&#10;1. Define a shared ViewModel that holds the MutableLiveData:&#10;&#10;```&#10;class SharedViewModel : ViewModel() {&#10;&#10;  val sharedLiveData = MutableLiveData&lt;String&gt;()&#10;&#10;} &#10;```&#10;&#10;2. In FragmentA, get the shared ViewModel and update the MutableLiveData:&#10;&#10;```&#10;// FragmentA&#10;&#10;private val sharedViewModel: SharedViewModel by activityViewModels()&#10;&#10;fun updateLiveData(text: String) {&#10;  sharedViewModel.sharedLiveData.value = text&#10;}&#10;```&#10;&#10;3. In FragmentB, get the shared ViewModel and observe the MutableLiveData:&#10;&#10;```&#10;// FragmentB &#10;&#10;private val sharedViewModel: SharedViewModel by activityViewModels()&#10;&#10;override fun onViewCreated(view: View, savedInstanceState: Bundle?) {&#10;  super.onViewCreated(view, savedInstanceState)&#10;  &#10;  sharedViewModel.sharedLiveData.observe(viewLifecycleOwner) {&#10;    // update UI &#10;  }&#10;}&#10;```&#10;&#10;So both fragments have access to the same SharedViewModel instance. When FragmentA updates the MutableLiveData, FragmentB will observe the change.&#10;&#10;The key is using activityViewModels() to access the shared ViewModel, and observing in onViewCreated() in FragmentB.&#10;&#10;This allows fragments to communicate via a shared source of truth in the ViewModel." />
+                    </message>
+                  </list>
+                </messages>
+                <updatedAt value="2024-03-13T15:19:43.0515556" />
+              </chat>
+              <chat>
+                <accountId value="VXNlcjozMDUxMTg=" />
+                <internalId value="384f1e88-00d0-4f74-b289-5bb7427a7548" />
+                <llm>
+                  <llm>
+                    <model value="anthropic/claude-2.0" />
+                    <provider value="Anthropic" />
+                    <title value="Claude 2.0" />
+                  </llm>
+                </llm>
+                <messages>
+                  <list>
+                    <message>
+                      <speaker value="HUMAN" />
+                      <text value="how to createcardview recycler view" />
+                    </message>
+                    <message>
+                      <speaker value="ASSISTANT" />
+                      <text value=" Here is how to create a RecyclerView with CardViews in Android:&#10;&#10;1. Add the CardView dependency in your app level build.gradle file:&#10;&#10;```&#10;implementation 'androidx.cardview:cardview:1.0.0'&#10;```&#10;&#10;2. Create a layout XML file for each card item (e.g. card_item.xml):&#10;&#10;```xml&#10;&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;&#10;&lt;androidx.cardview.widget.CardView &#10;    xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;&#10;    android:layout_width=&quot;match_parent&quot;&#10;    android:layout_height=&quot;wrap_content&quot;&#10;    android:layout_margin=&quot;8dp&quot;&gt;&#10;&#10;    &lt;!-- Card content --&gt;&#10;&#10;&lt;/androidx.cardview.widget.CardView&gt;&#10;```&#10;&#10;3. Create a layout XML file for the RecyclerView (e.g. recycler_view.xml):&#10;&#10;```xml&#10;&lt;androidx.recyclerview.widget.RecyclerView&#10;    android:id=&quot;@+id/recycler_view&quot;&#10;    android:layout_width=&quot;match_parent&quot; &#10;    android:layout_height=&quot;match_parent&quot;/&gt;&#10;```&#10;&#10;4. Create a RecyclerView Adapter and ViewHolder to populate each card item.&#10;&#10;5. Set the layout manager and adapter on the RecyclerView in your activity/fragment. &#10;&#10;6. Populate the adapter with a list of data objects to display the cards.&#10;&#10;So in summary, you need the CardView layouts, RecyclerView, Adapter, ViewHolder, and data source to build a scrollable list of cards. The RecyclerView handles recycling the card views efficiently." />
+                    </message>
+                    <message>
+                      <speaker value="HUMAN" />
+                      <text value="Use data binding for a recyclerview adapter" />
+                    </message>
+                    <message>
+                      <speaker value="ASSISTANT" />
+                      <text value=" Here is an example of using data binding in a RecyclerView adapter:&#10;&#10;1. Define a data binding layout for each item (item_layout.xml):&#10;&#10;```xml&#10;&lt;layout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;&gt;&#10;&#10;   &lt;data&gt;&#10;       &lt;variable&#10;           name=&quot;item&quot;&#10;           type=&quot;com.example.Item&quot; /&gt;&#10;   &lt;/data&gt;&#10;&#10;   &lt;!-- Layout content --&gt;&#10;   &lt;TextView&#10;       android:text=&quot;@{item.name}&quot;&#10;       .../&gt;&#10;&#10;&lt;/layout&gt;&#10;```&#10;&#10;2. In your ViewHolder, inflate the binding and set the binding variable:&#10;&#10;```kotlin&#10;class ItemViewHolder(private val binding: ItemLayoutBinding) : RecyclerView.ViewHolder(binding.root) {&#10;&#10;  fun bind(item: Item) {&#10;      binding.item = item&#10;  }&#10;&#10;}&#10;```&#10;&#10;3. In your Adapter's onCreateViewHolder():&#10;&#10;```kotlin &#10;override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {&#10;&#10;    val binding = ItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)&#10;    &#10;    return ItemViewHolder(binding)&#10;&#10;}&#10;```&#10;&#10;4. In your Adapter's onBindViewHolder():&#10;&#10;```kotlin&#10;override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {&#10;&#10;    val item = items[position]&#10;    holder.bind(item)&#10;&#10;}&#10;```&#10;&#10;So in this way, you setup the binding for each item inside the ViewHolder. The binding variable allows the layout to update automatically when the data changes." />
+                    </message>
+                  </list>
+                </messages>
+                <updatedAt value="2024-03-15T08:20:14.8141034" />
+              </chat>
+              <chat>
+                <accountId value="VXNlcjozMDUxMTg=" />
+                <internalId value="3488ef5e-14f7-4db8-b942-10a08dc1df73" />
+                <llm>
+                  <llm>
+                    <model value="anthropic/claude-2.0" />
+                    <provider value="Anthropic" />
+                    <title value="Claude 2.0" />
+                  </llm>
+                </llm>
+              </chat>
+              <chat>
+                <accountId value="VXNlcjozMDUxMTg=" />
+                <internalId value="6775c1ea-0efd-405a-aad2-57c04057bb59" />
+                <llm>
+                  <llm>
+                    <model value="anthropic/claude-2.0" />
+                    <provider value="Anthropic" />
+                    <title value="Claude 2.0" />
+                  </llm>
+                </llm>
+              </chat>
+              <chat>
+                <accountId value="VXNlcjozMDUxMTg=" />
+                <internalId value="d7bf3cb4-21fc-48cc-ad36-5c55bbd3b568" />
+                <llm>
+                  <llm>
+                    <model value="anthropic/claude-2.0" />
+                    <provider value="Anthropic" />
+                    <title value="Claude 2.0" />
+                  </llm>
+                </llm>
+              </chat>
+              <chat>
+                <accountId value="VXNlcjozMDUxMTg=" />
+                <internalId value="707b82f9-cdc5-4b22-bf0d-50a10a5c71be" />
+                <messages>
+                  <list>
+                    <message>
+                      <speaker value="HUMAN" />
+                      <text value="SetOnClickListener RecyclerView" />
+                    </message>
+                    <message>
+                      <speaker value="ASSISTANT" />
+                    </message>
+                    <message>
+                      <speaker value="HUMAN" />
+                      <text value="SetOnClickListener RecyclerView" />
+                    </message>
+                    <message>
+                      <speaker value="ASSISTANT" />
+                      <text value=" Here is an example of how to set an OnClickListener for items in a RecyclerView:&#10;&#10;```java&#10;// In your adapter class&#10;&#10;public class MyAdapter extends RecyclerView.Adapter&lt;MyAdapter.ViewHolder&gt; {&#10;&#10;  // ViewHolder, onCreateViewHolder, onBindViewHolder, etc...&#10;&#10;  class ViewHolder extends RecyclerView.ViewHolder {&#10;&#10;    public ViewHolder(View itemView) {&#10;      super(itemView);&#10;&#10;      itemView.setOnClickListener(new View.OnClickListener() {&#10;        @Override&#10;        public void onClick(View view) {&#10;          // Handle click on item&#10;        }&#10;      });&#10;    }&#10;  }&#10;&#10;}&#10;&#10;// In your activity/fragment with the RecyclerView&#10;&#10;RecyclerView recyclerView = findViewById(R.id.recyclerview); &#10;MyAdapter adapter = new MyAdapter(this, list);&#10;recyclerView.setAdapter(adapter);&#10;&#10;// Set click listener on the whole RecyclerView &#10;recyclerView.setOnClickListener(new View.OnClickListener() {&#10;  @Override&#10;  public void onClick(View view) {&#10;    // Handle click&#10;  }&#10;});&#10;```&#10;&#10;The key points:&#10;&#10;- Set the OnClickListener on the ViewHolder's itemView in the adapter&#10;- Can also set an OnClickListener on the RecyclerView itself to handle clicks on the entire view&#10;&#10;This allows handling clicks on both individual items and the whole RecyclerView." />
+                    </message>
+                    <message>
+                      <speaker value="HUMAN" />
+                      <text value="SetOnClickListener OrderingGroupAdapter" />
+                    </message>
+                    <message>
+                      <speaker value="ASSISTANT" />
+                      <text value=" Here is an example of setting an OnClickListener for items in a RecyclerView using OrderingGroupAdapter:&#10;&#10;```java&#10;// Create adapter and view holders&#10;&#10;OrderingGroupAdapter adapter = new OrderingGroupAdapter();&#10;&#10;static class ItemViewHolder extends RecyclerView.ViewHolder {&#10;&#10;  public ItemViewHolder(View itemView) {&#10;    super(itemView);&#10;&#10;    itemView.setOnClickListener(new View.OnClickListener() {&#10;      @Override &#10;      public void onClick(View view) {&#10;        // Handle click on item&#10;      }&#10;    });&#10;  }&#10;&#10;}&#10;&#10;// Set up adapter with click handler&#10;&#10;adapter.registerItemBinders(&#10;  new ItemBinder&lt;ItemModel, ItemViewHolder&gt;() {&#10;&#10;    @Override&#10;    public ItemViewHolder create(ViewGroup parent) {&#10;      // Inflate view and return ViewHolder&#10;    }&#10;&#10;    @Override&#10;    public void bind(ItemViewHolder holder, ItemModel item) {&#10;      // Bind data&#10;    }&#10;&#10;  });&#10;&#10;RecyclerView recyclerView = findViewById(R.id.recyclerview);&#10;recyclerView.setAdapter(adapter);&#10;&#10;// Handle RecyclerView click  &#10;recyclerView.setOnClickListener(new View.OnClickListener() {&#10;  @Override&#10;  public void onClick(View view) {&#10;    // Handle click&#10;  }&#10;});&#10;```&#10;&#10;The OnClickListener is set on the item ViewHolder's itemView to handle clicks on individual items. The RecyclerView OnClickListener handles clicks on the overall view." />
+                    </message>
+                    <message>
+                      <speaker value="HUMAN" />
+                      <text value="SetOnClickListener @...\orderingapplication\adapters\OrderingGroupAdapter.kt and @...\elis\orderingapplication\PosGroupFragment.kt " />
+                    </message>
+                    <message>
+                      <speaker value="ASSISTANT" />
+                      <text value=" Here is how you can set an OnClickListener for the OrderingGroupAdapter in OrderingGroupAdapter.kt and handle the click in PosGroupFragment.kt:&#10;&#10;In OrderingGroupAdapter.kt:&#10;&#10;```kotlin&#10;class OrderingGroupAdapter : ListAdapter&lt;OrderingGroup, OrderingGroupViewHolder&gt;() {&#10;&#10;  // ViewHolder, DiffCallback, etc&#10;&#10;  override fun onBindViewHolder(holder: OrderingGroupViewHolder, position: Int) {&#10;    // Bind data&#10;&#10;    holder.itemView.setOnClickListener {&#10;      onClickListener.onClick(position, getItem(position)) &#10;    }&#10;  }&#10;&#10;  private lateinit var onClickListener : OnClickListener&#10;&#10;  interface OnClickListener {&#10;    fun onClick(position: Int, orderingGroup: OrderingGroup)&#10;  }&#10;&#10;  fun setOnClickListener(onClickListener: OnClickListener) {&#10;    this.onClickListener = onClickListener&#10;  }&#10;&#10;}&#10;```&#10;&#10;In PosGroupFragment.kt:&#10;&#10;```kotlin &#10;class PosGroupFragment : Fragment() {&#10;&#10;  private lateinit var adapter: OrderingGroupAdapter&#10;  &#10;  override fun onViewCreated() {&#10;    // Initialize adapter&#10;&#10;    adapter.setOnClickListener(object : OnClickListener {&#10;      override fun onClick(position: Int, orderingGroup: OrderingGroup) {&#10;        // Handle click&#10;      }&#10;    })&#10;  }&#10;&#10;}&#10;```&#10;&#10;So set the click listener on the ViewHolder's itemView in the adapter, and implement the OnClickListener interface in the fragment to handle the clicks." />
+                    </message>
+                  </list>
+                </messages>
+                <updatedAt value="2024-03-20T11:38:33.5259216" />
+              </chat>
+              <chat>
+                <accountId value="VXNlcjozMDUxMTg=" />
+                <internalId value="098ddfa9-fcfb-44e3-904a-8e9e97c8d0ae" />
+                <llm>
+                  <llm>
+                    <model value="anthropic/claude-2.0" />
+                    <provider value="Anthropic" />
+                    <title value="Claude 2.0" />
+                  </llm>
+                </llm>
+                <messages>
+                  <list>
+                    <message>
+                      <speaker value="HUMAN" />
+                      <text value="RecyclerView onsetclicklistener navigation to another fragment" />
+                    </message>
+                    <message>
+                      <speaker value="ASSISTANT" />
+                      <text value=" Here is an example of using a RecyclerView onClickListener to navigate to another fragment when an item is clicked:&#10;&#10;```kotlin&#10;// In your adapter class&#10;&#10;class MyAdapter(private val onItemClick: (MyData) -&gt; Unit) : RecyclerView.Adapter&lt;MyViewHolder&gt;() {&#10;&#10;  override fun onBindViewHolder(holder: MyViewHolder, position: Int) {&#10;    val item = list[position]&#10;    holder.itemView.setOnClickListener {&#10;      onItemClick(item)&#10;    }&#10;  }&#10;&#10;}&#10;&#10;// In your fragment with the RecyclerView&#10;&#10;val adapter = MyAdapter { clickedItem -&gt;&#10;  val action = YourFragmentDirections.actionToNextFragment(clickedItem) &#10;  findNavController().navigate(action) &#10;}&#10;&#10;recyclerView.adapter = adapter&#10;```&#10;&#10;The key points:&#10;&#10;- Pass a click listener lambda into your adapter &#10;- Set the onClickListener on the viewHolder's itemView&#10;- Call the click listener on click, passing the clicked item&#10;- In the fragment, navigate to the next destination using the clicked item&#10;&#10;This allows the fragment to handle the navigation while the adapter just informs it of the click." />
+                    </message>
+                  </list>
+                </messages>
+                <updatedAt value="2024-03-20T13:13:28.2302073" />
+              </chat>
+              <chat>
+                <accountId value="VXNlcjozMDUxMTg=" />
+                <internalId value="e5ade03e-d7f1-4b8e-9b9d-d04488161df3" />
+              </chat>
+              <chat>
+                <accountId value="VXNlcjozMDUxMTg=" />
+                <internalId value="6e5c9612-13c9-4c51-a2ad-7800c069005c" />
+                <messages>
+                  <list>
+                    <message>
+                      <speaker value="HUMAN" />
+                      <text value="Use multiple arguments using @...\orderingapplication\adapters\DeliveryAddressAdapter.kt to pass to PosGroupFragment" />
+                    </message>
+                    <message>
+                      <speaker value="ASSISTANT" />
+                      <text value="&lt;html&gt;&amp;#9888; &lt;b&gt; Cody encountered an error when processing your message:&lt;/b&gt;&lt;br&gt;&lt;div marginwidth=15&quot; marginheight=&quot;10&quot;&gt;unable to get local issuer certificate&lt;/div&gt;&lt;/html&gt;" />
+                    </message>
+                  </list>
+                </messages>
+                <updatedAt value="2024-03-27T09:27:59.4995698" />
+              </chat>
+              <chat>
+                <accountId value="VXNlcjozMDUxMTg=" />
+                <internalId value="529ff175-94be-465d-900a-59c7b8ec3d46" />
+                <messages>
+                  <list>
+                    <message>
+                      <speaker value="HUMAN" />
+                      <text value="How do i convert a mapOrderingGroupList to groupedOrderingGroupList" />
+                    </message>
+                    <message>
+                      <speaker value="ASSISTANT" />
+                      <text value="&lt;html&gt;&amp;#9888; &lt;b&gt; Cody encountered an error when processing your message:&lt;/b&gt;&lt;br&gt;&lt;div marginwidth=15&quot; marginheight=&quot;10&quot;&gt;unable to get local issuer certificate&lt;/div&gt;&lt;/html&gt;" />
+                    </message>
+                  </list>
+                </messages>
+                <updatedAt value="2024-04-04T10:20:32.9065867" />
+              </chat>
+              <chat>
+                <accountId value="VXNlcjozMDUxMTg=" />
+                <internalId value="a0ec55e9-a2ff-4ad5-a976-b359ab6dee0f" />
+                <messages>
+                  <list>
+                    <message>
+                      <speaker value="HUMAN" />
+                      <text value="Explain what @\\c:\Users\dball\StudioProjects\OrderingApplication\app\src\main\kotlin\com\elis\orderingapplication\PosGroupFragment.kt:52-104  does in simple terms. Assume the audience is a beginner programmer who has just learned the language features and basic syntax. Focus on explaining: 1) The purpose of the code 2) What input(s) it takes 3) What output(s) it produces 4) How it achieves its purpose through the logic and algorithm. 5) Any important logic flows or data transformations happening. Use simple language a beginner could understand. Include enough detail to give a full picture of what the code aims to accomplish without getting too technical. Format the explanation in coherent paragraphs, using proper punctuation and grammar. Write the explanation assuming no prior context about the code is known. Do not make assumptions about variables or functions not shown in the shared code. Start the answer with the name of the code that is being explained." />
+                    </message>
+                    <message>
+                      <speaker value="ASSISTANT" />
+                      <text value="&lt;html&gt;&lt;b&gt; Cody encountered an error when processing your message:&lt;/b&gt;&lt;br&gt;&lt;div marginwidth=10&quot; marginheight=&quot;10&quot;&gt;&amp;#9888;  unable to get local issuer certificate&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/html&gt;" />
+                    </message>
+                  </list>
+                </messages>
+                <updatedAt value="2024-04-05T14:03:22.3947991" />
+              </chat>
+              <chat>
+                <accountId value="VXNlcjozMDUxMTg=" />
+                <internalId value="3aa33d11-624e-45b8-b8de-f6e1698d0330" />
+              </chat>
+              <chat>
+                <accountId value="VXNlcjozMDUxMTg=" />
+                <internalId value="3e5d5139-3d78-4e3d-bc60-7117fd2a97d4" />
+                <llm>
+                  <llm>
+                    <model value="anthropic/claude-3-sonnet-20240229" />
+                    <provider value="Anthropic" />
+                    <title value="Claude 3 Sonnet" />
+                  </llm>
+                </llm>
+              </chat>
+              <chat>
+                <accountId value="VXNlcjozMDUxMTg=" />
+                <internalId value="2ad6236e-9f0b-44d5-901c-ef2c09794997" />
+                <messages>
+                  <list>
+                    <message>
+                      <speaker value="HUMAN" />
+                      <text value="{&#10;  &amp;quot;OrderingOrderInfoResponseStruct&amp;quot;: {&#10;    &amp;quot;deliveryAddresses&amp;quot;: {&#10;      &amp;quot;OrderingDeliveryAddressStruct&amp;quot;: [&#10;        {&#10;          &amp;quot;deliveryAddressNo&amp;quot;: 5800009,&#10;          &amp;quot;deliveryAddressName&amp;quot;: &amp;quot;BASILDON &amp;amp; THURROCK NHS&amp;quot;,&#10;          &amp;quot;pointsOfService&amp;quot;: {&#10;            &amp;quot;OrderingPointOfServiceStruct&amp;quot;: [&#10;              {&#10;                &amp;quot;pointOfServiceNo&amp;quot;: 1,&#10;                &amp;quot;pointOfServiceName&amp;quot;: &amp;quot;A &amp;amp; E&amp;quot;,&#10;                &amp;quot;pointOfServiceDescription&amp;quot;: &amp;quot;A &amp;amp; E 12&amp;quot;,&#10;                &amp;quot;pointOfServiceOrderingGroupNo&amp;quot;: &amp;quot;580-1&amp;quot;,&#10;                &amp;quot;orders&amp;quot;: {&#10;                  &amp;quot;OrderingOrderStruct&amp;quot;: [&#10;                    {&#10;                      &amp;quot;orderType&amp;quot;: &amp;quot;inventory&amp;quot;,&#10;                      &amp;quot;orderDate&amp;quot;: &amp;quot;2023-07-07&amp;quot;,&#10;                      &amp;quot;deliveryDate&amp;quot;: &amp;quot;2023-07-07&amp;quot;,&#10;                      &amp;quot;orderStatus&amp;quot;: 0,&#10;                      &amp;quot;articles&amp;quot;: {&#10;                        &amp;quot;OrderingArticleStruct&amp;quot;: [&#10;                          {&#10;                            &amp;quot;articleNo&amp;quot;: 109842,&#10;                            &amp;quot;articleDescription&amp;quot;: &amp;quot;ESSENTIALS TOP SHEET S&amp;quot;,&#10;                            &amp;quot;articleSize&amp;quot;: &amp;quot;&amp;quot;,&#10;                            &amp;quot;articleTargetQty&amp;quot;: 385,&#10;                            &amp;quot;articleMinQty&amp;quot;: 0,&#10;                            &amp;quot;articleMaxQty&amp;quot;: 0,&#10;                            &amp;quot;articleIntervalQty&amp;quot;: 0&#10;                          },&#10;                          {&#10;                            &amp;quot;articleNo&amp;quot;: 103046,&#10;                            &amp;quot;articleDescription&amp;quot;: &amp;quot;ESSENTIALS PILLOWCASE&amp;quot;,&#10;                            &amp;quot;articleSize&amp;quot;: &amp;quot;&amp;quot;,&#10;                            &amp;quot;articleTargetQty&amp;quot;: 15,&#10;                            &amp;quot;articleMinQty&amp;quot;: 0,&#10;                            &amp;quot;articleMaxQty&amp;quot;: 0,&#10;                            &amp;quot;articleIntervalQty&amp;quot;: 0&#10;                          },&#10;                          {&#10;                            &amp;quot;articleNo&amp;quot;: 106856,&#10;                            &amp;quot;articleDescription&amp;quot;: &amp;quot;ESSENTIALS BATH TOWEL&amp;quot;,&#10;                            &amp;quot;articleSize&amp;quot;: &amp;quot;&amp;quot;,&#10;                            &amp;quot;articleTargetQty&amp;quot;: 24,&#10;                            &amp;quot;articleMinQty&amp;quot;: 0,&#10;                            &amp;quot;articleMaxQty&amp;quot;: 0,&#10;                            &amp;quot;articleIntervalQty&amp;quot;: 0&#10;                          },&#10;                          {&#10;                            &amp;quot;articleNo&amp;quot;: 106482,&#10;                            &amp;quot;articleDescription&amp;quot;: &amp;quot;ESSENTIALS BLANKET THERMAL BLUE&amp;quot;,&#10;                            &amp;quot;articleSize&amp;quot;: &amp;quot;&amp;quot;,&#10;                            &amp;quot;articleTargetQty&amp;quot;: 130,&#10;                            &amp;quot;articleMinQty&amp;quot;: 0,&#10;                            &amp;quot;articleMaxQty&amp;quot;: 0,&#10;                            &amp;quot;articleIntervalQty&amp;quot;: 0&#10;                          },&#10;                          {&#10;                            &amp;quot;articleNo&amp;quot;: 106812,&#10;                            &amp;quot;articleDescription&amp;quot;: &amp;quot;ESSENTIALS PATIENT MODESTY GOWN&amp;quot;,&#10;                            &amp;quot;articleSize&amp;quot;: &amp;quot;&amp;quot;,&#10;                            &amp;quot;articleTargetQty&amp;quot;: 65,&#10;                            &amp;quot;articleMinQty&amp;quot;: 0,&#10;                            &amp;quot;articleMaxQty&amp;quot;: 0,&#10;                            &amp;quot;articleIntervalQty&amp;quot;: 0&#10;                          },&#10;                          {&#10;                            &amp;quot;articleNo&amp;quot;: 106420,&#10;                            &amp;quot;articleDescription&amp;quot;: &amp;quot;ESSENTIALS PLASTIC BAGS WHITE&amp;quot;,&#10;                            &amp;quot;articleSize&amp;quot;: &amp;quot;&amp;quot;,&#10;                            &amp;quot;articleTargetQty&amp;quot;: 75,&#10;                            &amp;quot;articleMinQty&amp;quot;: 0,&#10;                            &amp;quot;articleMaxQty&amp;quot;: 0,&#10;                            &amp;quot;articleIntervalQty&amp;quot;: 0&#10;                          },&#10;                          {&#10;                            &amp;quot;articleNo&amp;quot;: 106458,&#10;                            &amp;quot;articleDescription&amp;quot;: &amp;quot;ESSENTIALS BAGS WATER SOLUBLE&amp;quot;,&#10;                            &amp;quot;articleSize&amp;quot;: &amp;quot;&amp;quot;,&#10;                            &amp;quot;articleTargetQty&amp;quot;: 25,&#10;                            &amp;quot;articleMinQty&amp;quot;: 0,&#10;                            &amp;quot;articleMaxQty&amp;quot;: 0,&#10;                            &amp;quot;articleIntervalQty&amp;quot;: 0&#10;                          }&#10;                        ]&#10;                      }&#10;                    }&#10;                  ]&#10;                }&#10;              }&#10;            ]&#10;          }&#10;        }&#10;      ]&#10;    },&#10;    &amp;quot;orderingGroups&amp;quot;: {&#10;      &amp;quot;OrderingOrderingGroupStruct&amp;quot;: [&#10;        {&#10;          &amp;quot;orderingGroupNo&amp;quot;: &amp;quot;580-1&amp;quot;,&#10;          &amp;quot;orderingGroupDescription&amp;quot;: &amp;quot;58000009 BASILDON OPD 1&amp;quot;&#10;        },&#10;        {&#10;          &amp;quot;orderingGroupNo&amp;quot;: &amp;quot;580-2&amp;quot;,&#10;          &amp;quot;orderingGroupDescription&amp;quot;: &amp;quot;58000009 BASILDON OPD 2&amp;quot;&#10;        },&#10;        {&#10;          &amp;quot;orderingGroupNo&amp;quot;: &amp;quot;580-3&amp;quot;,&#10;          &amp;quot;orderingGroupDescription&amp;quot;: &amp;quot;58000009 BASILDON OPD 3&amp;quot;&#10;        },&#10;        {&#10;          &amp;quot;orderingGroupNo&amp;quot;: &amp;quot;580-4&amp;quot;,&#10;          &amp;quot;orderingGroupDescription&amp;quot;: &amp;quot;ROYALFREE TOWER BLOCK&amp;quot;&#10;        },&#10;        {&#10;          &amp;quot;orderingGroupNo&amp;quot;: &amp;quot;580-5&amp;quot;,&#10;          &amp;quot;orderingGroupDescription&amp;quot;: &amp;quot;5800024 ROYAL FREE OPD 2&amp;quot;&#10;        },&#10;        {&#10;          &amp;quot;orderingGroupNo&amp;quot;: &amp;quot;580-6&amp;quot;,&#10;          &amp;quot;orderingGroupDescription&amp;quot;: &amp;quot;5800024 ROYAL FREE OPD 3&amp;quot;&#10;        }&#10;      ]&#10;    }&#10;  }&#10;}" />
+                    </message>
+                    <message>
+                      <speaker value="ASSISTANT" />
+                      <text value="&lt;html&gt;&lt;b&gt; Cody encountered an error when processing your message:&lt;/b&gt;&lt;br&gt;&lt;div marginwidth=10&quot; marginheight=&quot;10&quot;&gt;&amp;#9888;  unable to get local issuer certificate&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/html&gt;" />
+                    </message>
+                  </list>
+                </messages>
+                <updatedAt value="2024-05-15T14:13:04.6636117" />
+              </chat>
+              <chat>
+                <accountId value="VXNlcjozMDUxMTg=" />
+                <internalId value="e11a76ad-f8ee-4e92-b8d2-f2870a22d398" />
+                <messages>
+                  <list>
+                    <message>
+                      <speaker value="HUMAN" />
+                      <text value="I get the error java.lang.RuntimeException: Cannot create an instance of class com.elis.orderingapplication.viewModels.OrderingGroupViewModel" />
+                    </message>
+                    <message>
+                      <speaker value="ASSISTANT" />
+                      <text value="&lt;html&gt;&lt;b&gt; Cody encountered an error when processing your message:&lt;/b&gt;&lt;br&gt;&lt;div marginwidth=10&quot; marginheight=&quot;10&quot;&gt;&amp;#9888;  unable to get local issuer certificate&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/html&gt;" />
+                    </message>
+                  </list>
+                </messages>
+                <updatedAt value="2024-05-29T09:22:40.5729983" />
+              </chat>
+              <chat>
+                <accountId value="VXNlcjozMDUxMTg=" />
+                <internalId value="594d0e60-603a-498b-822f-4cfe1f33b732" />
+                <messages>
+                  <list>
+                    <message>
+                      <speaker value="HUMAN" />
+                      <text value="Explain what @\\c:\Users\dball\StudioProjects\OrderingApplication\app\src\main\kotlin\com\elis\orderingapplication\ArticleEntryCardFragment.kt:89-213  does in simple terms. Assume the audience is a beginner programmer who has just learned the language features and basic syntax. Focus on explaining: 1) The purpose of the code 2) What input(s) it takes 3) What output(s) it produces 4) How it achieves its purpose through the logic and algorithm. 5) Any important logic flows or data transformations happening. Use simple language a beginner could understand. Include enough detail to give a full picture of what the code aims to accomplish without getting too technical. Format the explanation in coherent paragraphs, using proper punctuation and grammar. Write the explanation assuming no prior context about the code is known. Do not make assumptions about variables or functions not shown in the shared code. Start the answer with the name of the code that is being explained." />
+                    </message>
+                    <message>
+                      <speaker value="ASSISTANT" />
+                    </message>
+                    <message>
+                      <speaker value="HUMAN" />
+                      <text value="f" />
+                    </message>
+                    <message>
+                      <speaker value="ASSISTANT" />
+                      <text value="&lt;html&gt;&lt;b&gt; Cody encountered an error when processing your message:&lt;/b&gt;&lt;br&gt;&lt;div marginwidth=10&quot; marginheight=&quot;10&quot;&gt;&amp;#9888;  unable to get local issuer certificate&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/html&gt;" />
+                    </message>
+                    <message>
+                      <speaker value="HUMAN" />
+                      <text value="o" />
+                    </message>
+                    <message>
+                      <speaker value="ASSISTANT" />
+                      <text value="&lt;html&gt;&lt;b&gt; Cody encountered an error when processing your message:&lt;/b&gt;&lt;br&gt;&lt;div marginwidth=10&quot; marginheight=&quot;10&quot;&gt;&amp;#9888;  Invalid access token.&#10;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/html&gt;" />
+                    </message>
+                  </list>
+                </messages>
+                <updatedAt value="2024-06-04T08:35:35.4772591" />
+              </chat>
+              <chat>
+                <accountId value="VXNlcjozMDUxMTg=" />
+                <internalId value="8dd9aca4-062a-4171-a883-8abc2928a2a5" />
+              </chat>
+              <chat>
+                <internalId value="c6bbbde4-7dcc-4b18-8d32-b64b142fb998" />
+                <messages>
+                  <list>
+                    <message>
+                      <speaker value="HUMAN" />
+                      <text value="Explain Code" />
+                    </message>
+                    <message>
+                      <speaker value="ASSISTANT" />
+                    </message>
+                  </list>
+                </messages>
+                <updatedAt value="2024-06-04T08:38:07.1579654" />
+              </chat>
+              <chat>
+                <internalId value="e7ec3ee3-1ee1-46aa-92c8-ed3e1aa92b4b" />
+                <messages>
+                  <list>
+                    <message>
+                      <speaker value="HUMAN" />
+                      <text value="Explain Code" />
+                    </message>
+                    <message>
+                      <speaker value="ASSISTANT" />
+                      <text value="&lt;html&gt;&lt;b&gt;&amp;#9888; Error performing this action&lt;/b&gt;&lt;br&gt;&lt;br&gt;Please retry sending your message. If you tried to run a command, try it again.&lt;br&gt;If the issue persists, please &lt;a href=&quot;https://github.com/sourcegraph/jetbrains/issues/new?template=bug_report.yml&amp;labels=bug,clients/jetbrains&amp;projects=sourcegraph/381&amp;title=bug%3A+java.util.concurrent.ExecutionException%3A+org.eclipse.lsp4j.jsonrpc.ResponseErrorException%3A+No+chat+model+found+in+server-prov...&amp;version=IDE+version%3A+%60%60%60AI-233.14808.21.2331.11709847%60%60%60&amp;logs=Stacktrace%3A%0A%60%60%60text%0Ajava.util.concurrent.ExecutionException%3A+org.eclipse.lsp4j.jsonrpc.ResponseErrorException%3A+No+chat+model+found+in+server-provided+config%0A%0AError%3A+No+chat+model+found+in+server-provided+config%0A++++at+getModel+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A219133%3A11%29%0A++++at+Object.get+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A219139%3A37%29%0A++++at+new+SimpleChatPanelProvider+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A220650%3A56%29%0A++++at+ChatPanelsManager.createProvider+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A221774%3A16%29%0A++++at+ChatPanelsManager.createWebviewPanel+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A221737%3A31%29%0A++++at+ChatPanelsManager.getNewChatPanel+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A221696%3A37%29%0A++++at+ChatManager.executeChat+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A222301%3A55%29%0A++++at+Object.callback+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A222233%3A72%29%0A++++at+Object.executeCommand+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A90739%3A43%29%0A++++at+executeChat+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A212118%3A23%29%0A++++at+runNextTicks+%28node%3Ainternal%2Fprocess%2Ftask_queues%3A60%3A5%29%0A++++at+process.processImmediate+%28node%3Ainternal%2Ftimers%3A449%3A9%29%0A++++at+process.topLevelDomainCallback+%28node%3Adomain%3A160%3A15%29%0A++++at+process.callbackTrampoline+%28node%3Ainternal%2Fasync_hooks%3A128%3A24%29%0A++++at+async+C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A212519%3A16%0A++++at+async+Agent.createChatPanel+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A112835%3A24%29%0D%0A%09at+java.base%2Fjava.util.concurrent.CompletableFuture.reportGet%28CompletableFuture.java%3A396%29%0D%0A%09at+java.base%2Fjava.util.concurrent.CompletableFuture.get%28CompletableFuture.java%3A2073%29%0D%0A%09at+com.sourcegraph.cody.chat.AgentChatSession.submitMessageToAgent%24lambda%240%28AgentChatSession.kt%3A121%29%0D%0A%09at+com.sourcegraph.cody.agent.CodyAgentService%24Companion%24withAgent%242%241%24task%241.invokeSuspend%28CodyAgentService.kt%3A260%29%0D%0A%09at+com.sourcegraph.cody.agent.CodyAgentService%24Companion%24withAgent%242%241%24task%241.invoke%28CodyAgentService.kt%29%0D%0A%09at+com.sourcegraph.cody.agent.CodyAgentService%24Companion%24withAgent%242%241%24task%241.invoke%28CodyAgentService.kt%29%0D%0A%09at+com.sourcegraph.cody.agent.CodyAgentService%24Companion.coWithAgent%28CodyAgentService.kt%3A317%29%0D%0A%09at+com.sourcegraph.cody.agent.CodyAgentService%24Companion.access%24coWithAgent%28CodyAgentService.kt%3A227%29%0D%0A%09at+com.sourcegraph.cody.agent.CodyAgentService%24Companion%24withAgent%242%241.invokeSuspend%28CodyAgentService.kt%3A266%29%0D%0A%09at+kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith%28ContinuationImpl.kt%3A33%29%0D%0A%09at+kotlinx.coroutines.DispatchedTask.run%28DispatchedTask.kt%3A108%29%0D%0A%09at+kotlinx.coroutines.EventLoopImplBase.processNextEvent%28EventLoop.common.kt%3A280%29%0D%0A%09at+kotlinx.coroutines.BlockingCoroutine.joinBlocking%28Builders.kt%3A85%29%0D%0A%09at+kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking%28Builders.kt%3A59%29%0D%0A%09at+kotlinx.coroutines.BuildersKt.runBlocking%28Unknown+Source%29%0D%0A%09at+kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking%24default%28Builders.kt%3A38%29%0D%0A%09at+kotlinx.coroutines.BuildersKt.runBlocking%24default%28Unknown+Source%29%0D%0A%09at+com.sourcegraph.cody.agent.CodyAgentService%24Companion.withAgent%24lambda%242%28CodyAgentService.kt%3A257%29%0D%0A%09at+com.intellij.openapi.application.impl.ApplicationImpl%242.run%28ApplicationImpl.java%3A249%29%0D%0A%09at+java.base%2Fjava.util.concurrent.Executors%24RunnableAdapter.call%28Executors.java%3A539%29%0D%0A%09at+com.intellij.util.concurrency.ContextCallable.call%28ContextCallable.java%3A32%29%0D%0A%09at+java.base%2Fjava.util.concurrent.FutureTask.run%28FutureTask.java%3A264%29%0D%0A%09at+com.intellij.util.concurrency.ContextRunnable.run%28ContextRunnable.java%3A27%29%0D%0A%09at+java.base%2Fjava.util.concurrent.ThreadPoolExecutor.runWorker%28ThreadPoolExecutor.java%3A1136%29%0D%0A%09at+java.base%2Fjava.util.concurrent.ThreadPoolExecutor%24Worker.run%28ThreadPoolExecutor.java%3A635%29%0D%0A%09at+java.base%2Fjava.util.concurrent.Executors%24PrivilegedThreadFactory%241%241.run%28Executors.java%3A702%29%0D%0A%09at+java.base%2Fjava.util.concurrent.Executors%24PrivilegedThreadFactory%241%241.run%28Executors.java%3A699%29%0D%0A%09at+java.base%2Fjava.security.AccessController.doPrivileged%28AccessController.java%3A399%29%0D%0A%09at+java.base%2Fjava.util.concurrent.Executors%24PrivilegedThreadFactory%241.run%28Executors.java%3A699%29%0D%0A%09at+java.base%2Fjava.lang.Thread.run%28Thread.java%3A840%29%0D%0ACaused+by%3A+org.eclipse.lsp4j.jsonrpc.ResponseErrorException%3A+No+chat+model+found+in+server-provided+config%0A%0AError%3A+No+chat+model+found+in+server-provided+config%0A++++at+getModel+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A219133%3A11%29%0A++++at+Object.get+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A219139%3A37%29%0A++++at+new+SimpleChatPanelProvider+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A220650%3A56%29%0A++++at+ChatPanelsManager.createProvider+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A221774%3A16%29%0A++++at+ChatPanelsManager.createWebviewPanel+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A221737%3A31%29%0A++++at+ChatPanelsManager.getNewChatPanel+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A221696%3A37%29%0A++++at+ChatManager.executeChat+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A222301%3A55%29%0A++++at+Object.callback+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A222233%3A72%29%0A++++at+Object.executeCommand+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A90739%3A43%29%0A++++at+executeChat+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A212118%3A23%29%0A++++at+runNextTicks+%28node%3Ainternal%2Fprocess%2Ftask_queues%3A60%3A5%29%0A++++at+process.processImmediate+%28node%3Ainternal%2Ftimers%3A449%3A9%29%0A++++at+process.topLevelDomainCallback+%28node%3Adomain%3A160%3A15%29%0A++++at+process.callbackTrampoline+%28node%3Ainternal%2Fasync_hooks%3A128%3A24%29%0A++++at+async+C%3A%5CUsers%5Cdball%5CAp...%0A%60%60%60%0AAdditional+info%3A%0A%60%60%60text%0Aorg.eclipse.lsp4j.jsonrpc.ResponseErrorException%3A+No+chat+model+found+in+server-provided+config%0A%0AError%3A+No+chat+model+found+in+server-provided+config%0A++++at+getModel+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A219133%3A11%29%0A++++at+Object.get+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A219139%3A37%29%0A++++at+new+SimpleChatPanelProvider+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A220650%3A56%29%0A++++at+ChatPanelsManager.createProvider+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A221774%3A16%29%0A++++at+ChatPanelsManager.createWebviewPanel+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A221737%3A31%29%0A++++at+ChatPanelsManager.getNewChatPanel+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A221696%3A37%29%0A++++at+ChatManager.executeChat+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A222301%3A55%29%0A++++at+Object.callback+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A222233%3A72%29%0A++++at+Object.executeCommand+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A90739%3A43%29%0A++++at+executeChat+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A212118%3A23%29%0A++++at+runNextTicks+%28node%3Ainternal%2Fprocess%2Ftask_queues%3A60%3A5%29%0A++++at+process.processImmediate+%28node%3Ainternal%2Ftimers%3A449%3A9%29%0A++++at+process.topLevelDomainCallback+%28node%3Adomain%3A160%3A15%29%0A++++at+process.callbackTrampoline+%28node%3Ainternal%2Fasync_hooks%3A128%3A24%29%0A++++at+async+C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A212519%3A16%0A++++at+async+Agent.createChatPanel+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A112835%3A24%29%0A%60%60%60&quot;&gt;create a support ticket&lt;/a&gt;.&lt;br&gt;&lt;br&gt;&lt;sub&gt;Error: org.eclipse.lsp4j.jsonrpc.ResponseErrorException: No chat model found in server-provided config&#10;&#10;Error: No chat model found in server-provided config&#10;    at getModel (C:\Users\dball\AppData\Roaming\Google\AndroidStudio2023.3\plugins\Sourcegraph\agent\index.js:219133:11)&#10;    at Object.get (C:\Users\dball\AppData\Roaming\Google\AndroidStudio2023.3\plugins\Sourcegraph\agent\index.js:219139:37)&#10;    at new SimpleChatPanelProvider (C:\Users\dball\AppData\Roaming\Google\AndroidStudio2023.3\plugins\Sourcegraph\agent\index.js:220650:56)&#10;    at ChatPanelsManager.createProvider (C:\Users\dball\AppData\Roaming\Google\AndroidStudio2023.3\plugins\Sourcegraph\agent\index.js:221774:16)&#10;    at ChatPanelsManager.createWebviewPanel (C:\Users\dball\AppData\Roaming\Google\AndroidStudio2023.3\plugins\Sourcegraph\agent\index.js:221737:31)&#10;    at ChatPanelsManager.getNewChatPanel (C:\Users\dball\AppData\Roaming\Google\AndroidStudio2023.3\plugins\Sourcegraph\agent\index.js:221696:37)&#10;    at ChatManager.executeChat (C:\Users\dball\AppData\Roaming\Google\AndroidStudio2023.3\plugins\Sourcegraph\agent\index.js:222301:55)&#10;    at Object.callback (C:\Users\dball\AppData\Roaming\Google\AndroidStudio2023.3\plugins\Sourcegraph\agent\index.js:222233:72)&#10;    at Object.executeCommand (C:\Users\dball\AppData\Roaming\Google\AndroidStudio2023.3\plugins\Sourcegraph\agent\index.js:90739:43)&#10;    at executeChat (C:\Users\dball\AppData\Roaming\Google\AndroidStudio2023.3\plugins\Sourcegraph\agent\index.js:212118:23)&#10;    at runNextTicks (node:internal/process/task_queues:60:5)&#10;    at process.processImmediate (node:internal/timers:449:9)&#10;    at process.topLevelDomainCallback (node:domain:160:15)&#10;    at process.callbackTrampoline (node:internal/async_hooks:128:24)&#10;    at async C:\Users\dball\AppData\Roaming\Google\AndroidStudio2023.3\plugins\Sourcegraph\agent\index.js:212519:16&#10;    at async Agent.createChatPanel (C:\Users\dball\AppData\Roaming\Google\AndroidStudio2023.3\plugins\Sourcegraph\agent\index.js:112835:24)&lt;/sub&gt;&lt;/html&gt;" />
+                    </message>
+                  </list>
+                </messages>
+                <updatedAt value="2024-06-04T08:38:31.0016191" />
+              </chat>
+              <chat>
+                <internalId value="973ba79f-d33c-4d74-889d-a4bb66109359" />
+                <messages>
+                  <list>
+                    <message>
+                      <speaker value="ASSISTANT" />
+                      <text value="&lt;html&gt;&lt;b&gt;&amp;#9888; Error performing this action&lt;/b&gt;&lt;br&gt;&lt;br&gt;Please retry sending your message. If you tried to run a command, try it again.&lt;br&gt;If the issue persists, please &lt;a href=&quot;https://github.com/sourcegraph/jetbrains/issues/new?template=bug_report.yml&amp;labels=bug,clients/jetbrains&amp;projects=sourcegraph/381&amp;title=bug%3A+java.util.concurrent.ExecutionException%3A+org.eclipse.lsp4j.jsonrpc.ResponseErrorException%3A+No+chat+model+found+in+server-prov...&amp;version=IDE+version%3A+%60%60%60AI-233.14808.21.2331.11709847%60%60%60&amp;logs=Stacktrace%3A%0A%60%60%60text%0Ajava.util.concurrent.ExecutionException%3A+org.eclipse.lsp4j.jsonrpc.ResponseErrorException%3A+No+chat+model+found+in+server-provided+config%0A%0AError%3A+No+chat+model+found+in+server-provided+config%0A++++at+getModel+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A219133%3A11%29%0A++++at+Object.get+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A219139%3A37%29%0A++++at+new+SimpleChatPanelProvider+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A220650%3A56%29%0A++++at+ChatPanelsManager.createProvider+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A221774%3A16%29%0A++++at+ChatPanelsManager.createWebviewPanel+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A221737%3A31%29%0A++++at+debounceCreatePanel.leading+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A222422%3A96%29%0A++++at+invokeFunc+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A28802%3A29%29%0A++++at+leadingEdge+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A28808%3A30%29%0A++++at+debounced+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A28850%3A24%29%0A++++at+ChatManager.createNewWebviewPanel+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A222427%3A18%29%0A++++at+Object.callback+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A222241%3A70%29%0A++++at+Object.executeCommand+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A90741%3A41%29%0A++++at+C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A112485%3A39%0A++++at+C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A112881%3A18%0A++++at+async+C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A90901%3A44%0D%0A%09at+java.base%2Fjava.util.concurrent.CompletableFuture.reportGet%28CompletableFuture.java%3A396%29%0D%0A%09at+java.base%2Fjava.util.concurrent.CompletableFuture.get%28CompletableFuture.java%3A2073%29%0D%0A%09at+com.sourcegraph.cody.chat.AgentChatSession.submitMessageToAgent%24lambda%240%28AgentChatSession.kt%3A121%29%0D%0A%09at+com.sourcegraph.cody.agent.CodyAgentService%24Companion%24withAgent%242%241%24task%241.invokeSuspend%28CodyAgentService.kt%3A260%29%0D%0A%09at+com.sourcegraph.cody.agent.CodyAgentService%24Companion%24withAgent%242%241%24task%241.invoke%28CodyAgentService.kt%29%0D%0A%09at+com.sourcegraph.cody.agent.CodyAgentService%24Companion%24withAgent%242%241%24task%241.invoke%28CodyAgentService.kt%29%0D%0A%09at+com.sourcegraph.cody.agent.CodyAgentService%24Companion.coWithAgent%28CodyAgentService.kt%3A317%29%0D%0A%09at+com.sourcegraph.cody.agent.CodyAgentService%24Companion.access%24coWithAgent%28CodyAgentService.kt%3A227%29%0D%0A%09at+com.sourcegraph.cody.agent.CodyAgentService%24Companion%24withAgent%242%241.invokeSuspend%28CodyAgentService.kt%3A266%29%0D%0A%09at+kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith%28ContinuationImpl.kt%3A33%29%0D%0A%09at+kotlinx.coroutines.DispatchedTask.run%28DispatchedTask.kt%3A108%29%0D%0A%09at+kotlinx.coroutines.EventLoopImplBase.processNextEvent%28EventLoop.common.kt%3A280%29%0D%0A%09at+kotlinx.coroutines.BlockingCoroutine.joinBlocking%28Builders.kt%3A85%29%0D%0A%09at+kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking%28Builders.kt%3A59%29%0D%0A%09at+kotlinx.coroutines.BuildersKt.runBlocking%28Unknown+Source%29%0D%0A%09at+kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking%24default%28Builders.kt%3A38%29%0D%0A%09at+kotlinx.coroutines.BuildersKt.runBlocking%24default%28Unknown+Source%29%0D%0A%09at+com.sourcegraph.cody.agent.CodyAgentService%24Companion.withAgent%24lambda%242%28CodyAgentService.kt%3A257%29%0D%0A%09at+com.intellij.openapi.application.impl.ApplicationImpl%242.run%28ApplicationImpl.java%3A249%29%0D%0A%09at+java.base%2Fjava.util.concurrent.Executors%24RunnableAdapter.call%28Executors.java%3A539%29%0D%0A%09at+com.intellij.util.concurrency.ContextCallable.call%28ContextCallable.java%3A32%29%0D%0A%09at+java.base%2Fjava.util.concurrent.FutureTask.run%28FutureTask.java%3A264%29%0D%0A%09at+com.intellij.util.concurrency.ContextRunnable.run%28ContextRunnable.java%3A27%29%0D%0A%09at+java.base%2Fjava.util.concurrent.ThreadPoolExecutor.runWorker%28ThreadPoolExecutor.java%3A1136%29%0D%0A%09at+java.base%2Fjava.util.concurrent.ThreadPoolExecutor%24Worker.run%28ThreadPoolExecutor.java%3A635%29%0D%0A%09at+java.base%2Fjava.util.concurrent.Executors%24PrivilegedThreadFactory%241%241.run%28Executors.java%3A702%29%0D%0A%09at+java.base%2Fjava.util.concurrent.Executors%24PrivilegedThreadFactory%241%241.run%28Executors.java%3A699%29%0D%0A%09at+java.base%2Fjava.security.AccessController.doPrivileged%28AccessController.java%3A399%29%0D%0A%09at+java.base%2Fjava.util.concurrent.Executors%24PrivilegedThreadFactory%241.run%28Executors.java%3A699%29%0D%0A%09at+java.base%2Fjava.lang.Thread.run%28Thread.java%3A840%29%0D%0ACaused+by%3A+org.eclipse.lsp4j.jsonrpc.ResponseErrorException%3A+No+chat+model+found+in+server-provided+config%0A%0AError%3A+No+chat+model+found+in+server-provided+config%0A++++at+getModel+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A219133%3A11%29%0A++++at+Object.get+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A219139%3A37%29%0A++++at+new+SimpleChatPanelProvider+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A220650%3A56%29%0A++++at+ChatPanelsManager.createProvider+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A221774%3A16%29%0A++++at+ChatPanelsManager.createWebviewPanel+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A221737%3A31%29%0A++++at+debounceCreatePanel.leading+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A222422%3A96%29%0A++++at+invokeFunc+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A28802%3A29%29%0A++++at+leadingEdge+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A28808%3A30%29%0A++++at+debounced+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A28850%3A24%29%0A++++at+ChatManager.createNewWebviewPanel+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A222427%3A18%29%0A++++at+Object.callback+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A222241%3A70%29%0A++++at+Object.executeCommand+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplug...%0A%60%60%60%0AAdditional+info%3A%0A%60%60%60text%0Aorg.eclipse.lsp4j.jsonrpc.ResponseErrorException%3A+No+chat+model+found+in+server-provided+config%0A%0AError%3A+No+chat+model+found+in+server-provided+config%0A++++at+getModel+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A219133%3A11%29%0A++++at+Object.get+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A219139%3A37%29%0A++++at+new+SimpleChatPanelProvider+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A220650%3A56%29%0A++++at+ChatPanelsManager.createProvider+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A221774%3A16%29%0A++++at+ChatPanelsManager.createWebviewPanel+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A221737%3A31%29%0A++++at+debounceCreatePanel.leading+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A222422%3A96%29%0A++++at+invokeFunc+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A28802%3A29%29%0A++++at+leadingEdge+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A28808%3A30%29%0A++++at+debounced+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A28850%3A24%29%0A++++at+ChatManager.createNewWebviewPanel+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A222427%3A18%29%0A++++at+Object.callback+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A222241%3A70%29%0A++++at+Object.executeCommand+%28C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A90741%3A41%29%0A++++at+C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A112485%3A39%0A++++at+C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A112881%3A18%0A++++at+async+C%3A%5CUsers%5Cdball%5CAppData%5CRoaming%5CGoogle%5CAndroidStudio2023.3%5Cplugins%5CSourcegraph%5Cagent%5Cindex.js%3A90901%3A44%0A%60%60%60&quot;&gt;create a support ticket&lt;/a&gt;.&lt;br&gt;&lt;br&gt;&lt;sub&gt;Error: org.eclipse.lsp4j.jsonrpc.ResponseErrorException: No chat model found in server-provided config&#10;&#10;Error: No chat model found in server-provided config&#10;    at getModel (C:\Users\dball\AppData\Roaming\Google\AndroidStudio2023.3\plugins\Sourcegraph\agent\index.js:219133:11)&#10;    at Object.get (C:\Users\dball\AppData\Roaming\Google\AndroidStudio2023.3\plugins\Sourcegraph\agent\index.js:219139:37)&#10;    at new SimpleChatPanelProvider (C:\Users\dball\AppData\Roaming\Google\AndroidStudio2023.3\plugins\Sourcegraph\agent\index.js:220650:56)&#10;    at ChatPanelsManager.createProvider (C:\Users\dball\AppData\Roaming\Google\AndroidStudio2023.3\plugins\Sourcegraph\agent\index.js:221774:16)&#10;    at ChatPanelsManager.createWebviewPanel (C:\Users\dball\AppData\Roaming\Google\AndroidStudio2023.3\plugins\Sourcegraph\agent\index.js:221737:31)&#10;    at debounceCreatePanel.leading (C:\Users\dball\AppData\Roaming\Google\AndroidStudio2023.3\plugins\Sourcegraph\agent\index.js:222422:96)&#10;    at invokeFunc (C:\Users\dball\AppData\Roaming\Google\AndroidStudio2023.3\plugins\Sourcegraph\agent\index.js:28802:29)&#10;    at leadingEdge (C:\Users\dball\AppData\Roaming\Google\AndroidStudio2023.3\plugins\Sourcegraph\agent\index.js:28808:30)&#10;    at debounced (C:\Users\dball\AppData\Roaming\Google\AndroidStudio2023.3\plugins\Sourcegraph\agent\index.js:28850:24)&#10;    at ChatManager.createNewWebviewPanel (C:\Users\dball\AppData\Roaming\Google\AndroidStudio2023.3\plugins\Sourcegraph\agent\index.js:222427:18)&#10;    at Object.callback (C:\Users\dball\AppData\Roaming\Google\AndroidStudio2023.3\plugins\Sourcegraph\agent\index.js:222241:70)&#10;    at Object.executeCommand (C:\Users\dball\AppData\Roaming\Google\AndroidStudio2023.3\plugins\Sourcegraph\agent\index.js:90741:41)&#10;    at C:\Users\dball\AppData\Roaming\Google\AndroidStudio2023.3\plugins\Sourcegraph\agent\index.js:112485:39&#10;    at C:\Users\dball\AppData\Roaming\Google\AndroidStudio2023.3\plugins\Sourcegraph\agent\index.js:112881:18&#10;    at async C:\Users\dball\AppData\Roaming\Google\AndroidStudio2023.3\plugins\Sourcegraph\agent\index.js:90901:44&lt;/sub&gt;&lt;/html&gt;" />
+                    </message>
+                  </list>
+                </messages>
+                <updatedAt value="2024-06-04T11:11:27.4522155" />
+              </chat>
+              <chat>
+                <internalId value="59aa0430-caa1-4db5-bcec-316fdb27ba1b" />
+                <messages>
+                  <list>
+                    <message>
+                      <speaker value="HUMAN" />
+                      <text value="Explain Code" />
+                    </message>
+                    <message>
+                      <speaker value="ASSISTANT" />
+                    </message>
+                  </list>
+                </messages>
+                <updatedAt value="2024-06-05T09:35:25.0575453" />
+              </chat>
+            </list>
+          </chats>
+          <defaultLlm>
+            <llm>
+              <model value="anthropic/claude-3-sonnet-20240229" />
+              <provider value="Anthropic" />
+              <title value="Claude 3 Sonnet" />
+            </llm>
+          </defaultLlm>
+        </AccountData>
+      </list>
+    </accountData>
     <chats>
       <list>
         <chat>
@@ -419,6 +960,42 @@
             </list>
           </messages>
           <updatedAt value="2024-05-29T09:22:40.5729983" />
+        </chat>
+        <chat>
+          <accountId value="VXNlcjozMDUxMTg=" />
+          <internalId value="594d0e60-603a-498b-822f-4cfe1f33b732" />
+          <messages>
+            <list>
+              <message>
+                <speaker value="HUMAN" />
+                <text value="Explain what @\\c:\Users\dball\StudioProjects\OrderingApplication\app\src\main\kotlin\com\elis\orderingapplication\ArticleEntryCardFragment.kt:89-213  does in simple terms. Assume the audience is a beginner programmer who has just learned the language features and basic syntax. Focus on explaining: 1) The purpose of the code 2) What input(s) it takes 3) What output(s) it produces 4) How it achieves its purpose through the logic and algorithm. 5) Any important logic flows or data transformations happening. Use simple language a beginner could understand. Include enough detail to give a full picture of what the code aims to accomplish without getting too technical. Format the explanation in coherent paragraphs, using proper punctuation and grammar. Write the explanation assuming no prior context about the code is known. Do not make assumptions about variables or functions not shown in the shared code. Start the answer with the name of the code that is being explained." />
+              </message>
+              <message>
+                <speaker value="ASSISTANT" />
+              </message>
+              <message>
+                <speaker value="HUMAN" />
+                <text value="f" />
+              </message>
+              <message>
+                <speaker value="ASSISTANT" />
+                <text value="&lt;html&gt;&lt;b&gt; Cody encountered an error when processing your message:&lt;/b&gt;&lt;br&gt;&lt;div marginwidth=10&quot; marginheight=&quot;10&quot;&gt;&amp;#9888;  unable to get local issuer certificate&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/html&gt;" />
+              </message>
+              <message>
+                <speaker value="HUMAN" />
+                <text value="o" />
+              </message>
+              <message>
+                <speaker value="ASSISTANT" />
+                <text value="&lt;html&gt;&lt;b&gt; Cody encountered an error when processing your message:&lt;/b&gt;&lt;br&gt;&lt;div marginwidth=10&quot; marginheight=&quot;10&quot;&gt;&amp;#9888;  Invalid access token.&#10;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;/html&gt;" />
+              </message>
+            </list>
+          </messages>
+          <updatedAt value="2024-06-04T08:35:35.4772591" />
+        </chat>
+        <chat>
+          <accountId value="VXNlcjozMDUxMTg=" />
+          <internalId value="8dd9aca4-062a-4171-a883-8abc2928a2a5" />
         </chat>
       </list>
     </chats>

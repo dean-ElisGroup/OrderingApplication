@@ -15,7 +15,7 @@ class ArticleAdapter(private val clickListener: ArticleListener) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(clickListener: ArticleListener, article: Article) {
             binding.article = article
-            binding.clickListener = clickListener
+            //binding.clickListener = clickListener
             // Allows calculation of ORDER QTY once a user enters a Counted Qty.
             binding.countedQty.doAfterTextChanged {
                 article.solCountedQty = binding.countedQty.text.toString().toIntOrNull()

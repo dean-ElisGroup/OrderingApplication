@@ -1,5 +1,6 @@
 package com.elis.orderingapplication
 
+import android.app.AlertDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -51,9 +52,6 @@ class OrderFragment : Fragment() {
                     .navigate(R.id.action_orderFragment_to_posFragment)
             }
         }
-        // Sets ordering group and ordering name to shared ViewModel
-        //sharedViewModel.setOrderingGroupNo(args.orderingGroupNo)
-        //sharedViewModel.setOrderingGroupName(args.orderingGroupName)
         // Inflate the layout for this fragment
         return binding.root
     }
@@ -71,14 +69,15 @@ class OrderFragment : Fragment() {
             OrdersAdapter(object : OrdersAdapter.MyClickListener {
                 override fun onItemClick(myData: Order) {
                     orderViewModel.onOrderClicked(myData)
-                    //sharedViewModel.setPosNum(myData.pointOfServiceNo)
+                    sharedViewModel.setArticleDeliveryDate(myData.orderDate.toString())
+                    sharedViewModel.setArticleAppOrderId(myData.appOrderId)
                     orderViewModel.navigateToOrder.observe(
                         viewLifecycleOwner,
                         Observer { order ->
                             order?.let {
                                 findNavController().navigate(
                                     OrderFragmentDirections.actionOrderFragmentToArticleFragment(
-                                        order.orderDate,
+                                        order.orderDate, order.appOrderId
                                     )
                                 )
                                 orderViewModel.onOrderNavigated()
@@ -92,13 +91,28 @@ class OrderFragment : Fragment() {
         // Observe the LiveData from the ViewModel
         orderViewModel.orders.observe(viewLifecycleOwner) { orders ->
             ordersAdapter.setData(orders)
+            if (orders.isEmpty()) {
+                showDialog()
+            }
         }
-
     }
 
     fun getOrderDate(): String? {
         var orderDateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         return LocalDateTime.now().format(orderDateFormatter)
+    }
+
+    private fun showDialog() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("No Data Found")
+        builder.setMessage("Sorry, no orders are available for selection.")
+
+        builder.setPositiveButton("OK") { dialog, _ ->
+            dialog.dismiss()
+        }
+
+        val dialog = builder.create()
+        dialog.show()
     }
 
 

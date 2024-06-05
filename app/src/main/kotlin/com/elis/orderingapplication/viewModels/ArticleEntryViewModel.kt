@@ -1,23 +1,29 @@
 package com.elis.orderingapplication.viewModels
 
+import android.app.Application
 import android.content.Context
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
+import com.elis.orderingapplication.constants.Constants
 import com.elis.orderingapplication.database.OrderInfoDatabase
+import com.elis.orderingapplication.pojo2.Article
 import com.elis.orderingapplication.pojo2.DeliveryAddress
 import com.elis.orderingapplication.pojo2.Order
 import com.elis.orderingapplication.pojo2.OrderEvent
 import com.elis.orderingapplication.pojo2.OrderEventResponse
 import com.elis.orderingapplication.repositories.UserLoginRepository
 import com.elis.orderingapplication.utils.ApiResponse
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.Response
+class ArticleEntryViewModel(application: Application, private val loginRep: UserLoginRepository, private val sharedViewModel: ParamsViewModel) : AndroidViewModel(application) {
 
-class ArticleEntryViewModel(private val loginRep: UserLoginRepository) : ViewModel() {
-
-    val orderEventResponse: MutableLiveData<ApiResponse<OrderEventResponse>?> =
+    private val orderEventResponse: MutableLiveData<ApiResponse<OrderEventResponse>?> =
         MutableLiveData()
     private val _solOrderQty = MutableLiveData<String?>()
     val solOrderQty: MutableLiveData<String?>
@@ -27,14 +33,59 @@ class ArticleEntryViewModel(private val loginRep: UserLoginRepository) : ViewMod
     private val marginChange: MutableLiveData<Boolean?>
         get() = changeMargin
 
+    private val _uiState = MutableLiveData<String>()
+    val uiState: LiveData<String> = _uiState
 
-    fun show(currentArticle: String?, totalArticles: String?) {
-        changeMargin.value = currentArticle == totalArticles
+    private val _articleData = MutableLiveData<Article>()
+    val articleData: LiveData<Article> = _articleData
+
+    val database = OrderInfoDatabase.getInstance(application)
+    val articles: LiveData<List<Article>> = database.orderInfoDao.getArticles(getDeliveryDate().value.toString(),getOrderId().value.toString())
+    val order: LiveData<List<Order>> = database.orderInfoDao.getOrderByOrderId(getOrderId().value.toString())
+
+
+    fun updateArticleData(data: Article) {
+        _articleData.value = data
+    }
+    private fun getDeliveryDate(): LiveData<String> {
+        return sharedViewModel.getArticleDeliveryDate()
+    }
+    private fun getOrderId(): LiveData<String> {
+        return sharedViewModel.getArticleAppOrderId()
     }
 
-    fun getShow(): Boolean?{
-        return marginChange.value
+    fun updateTextByOtherField(orderQty: Int, countedQty: Int, articleNum: String, appOrderId: String) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                //val database1 = OrderInfoDatabase.getInstance(application)
+                withContext(Dispatchers.IO) {
+                    orderQty?.let { it1 ->
+                        articleNum?.let { it2 ->
+                            appOrderId.let { it3 ->
+                                database.orderInfoDao.updateOrderQty(
+                                    it1,
+                                    it2,
+                                    it3
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+            withContext(Dispatchers.Main) {
+                _uiState.value = orderQty.toString()
+                _uiState.value = countedQty.toString()
+            }
+        }
     }
+
+    //fun show(currentArticle: String?, totalArticles: String?) {
+    //    changeMargin.value = currentArticle == totalArticles
+   // }
+
+    //fun getShow(): Boolean?{
+    //    return marginChange.value
+    //}
 
     fun updateOrderStatus(order: Order) {
         order.appOrderStatus = "Submitted"

@@ -55,7 +55,7 @@ class ParamsViewModel : ViewModel() {
     val deliveryAddressName: LiveData<String> = _deliveryAddressName
 
     private var _deliveryAddressNum = MutableLiveData<String>("")
-    val deliveryAddressNum: LiveData<String> = _deliveryAddressNum
+    private val deliveryAddressNum: LiveData<String> = _deliveryAddressNum
 
     private var _orderingGroupName = MutableLiveData<String?>("")
     val orderingGroupName: MutableLiveData<String?> = _orderingGroupName
@@ -64,7 +64,13 @@ class ParamsViewModel : ViewModel() {
     val orderingGroupNo: LiveData<String> = _orderingGroupNo
 
     private var _pointOfServiceNo = MutableLiveData<String>("")
-    val posNo: LiveData<String> = _pointOfServiceNo
+    private val posNo: LiveData<String> = _pointOfServiceNo
+
+    private var _appOrderId = MutableLiveData<String>("")
+    private val appOrderId: LiveData<String> = _appOrderId
+
+    private var _articleDeliveryDate = MutableLiveData<String>("")
+    private val articleDeliveryDate: LiveData<String> = _articleDeliveryDate
 
     fun setOrderDate(orderDate: String) {
         _orderDate.value = orderDate
@@ -88,6 +94,22 @@ class ParamsViewModel : ViewModel() {
         return deliveryAddressNum
     }
 
+    fun setArticleAppOrderId(data: String) {
+        _appOrderId.value = data
+    }
+    fun getArticleAppOrderId(): LiveData<String> {
+        return appOrderId
+    }
+
+    fun setArticleDeliveryDate(data: String) {
+        _articleDeliveryDate.value = data
+    }
+    fun getArticleDeliveryDate(): LiveData<String> {
+        return articleDeliveryDate
+    }
+
+
+
     fun setPosNum(data: String) {
         _pointOfServiceNo.value = data
     }
@@ -98,14 +120,6 @@ class ParamsViewModel : ViewModel() {
     fun getDeliveryAddressNo(): String {
         return _deliveryAddressNo
     }
-
-    //fun setPointOfServiceNo(pointOfServiceNo: String) {
-    //    _pointOfServiceNo = pointOfServiceNo
-    //}
-
-    //fun getPointOfServiceNo(): String {
-    //    return _pointOfServiceNo
-    //}
 
     fun setPOSTotal(posTotal: Int) {
         _posTotal.value = posTotal

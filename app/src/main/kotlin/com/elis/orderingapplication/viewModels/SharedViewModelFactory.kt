@@ -3,6 +3,7 @@ package com.elis.orderingapplication.viewModels
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.elis.orderingapplication.repositories.UserLoginRepository
 
 class SharedViewModelFactory(
     private val sharedViewModel: ParamsViewModel,
@@ -17,6 +18,9 @@ class SharedViewModelFactory(
             }
             if (modelClass.isAssignableFrom(OrderViewModel::class.java)) {
                 return OrderViewModel(application, sharedViewModel) as T
+            }
+            if (modelClass.isAssignableFrom(ArticleViewModel::class.java)) {
+                return ArticleViewModel(application, sharedViewModel) as T
             }
             throw IllegalArgumentException("Unknown ViewModel class")
         }
