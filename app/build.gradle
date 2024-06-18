@@ -5,12 +5,14 @@ plugins {
     id 'com.google.firebase.crashlytics'
     id 'kotlin-kapt'
     id 'kotlin-android'
+    id 'kotlin-parcelize'
     id("com.google.devtools.ksp").version("1.9.10-1.0.13") // Or latest version of KSP
     id("io.objectbox")
     id 'androidx.navigation.safeargs.kotlin'
 }
 
 android {
+
 
     compileSdk 34
 
@@ -56,6 +58,7 @@ android {
                 dataBinding = true
                 viewBinding = true
                 buildConfig = true
+
             }
         }
     }
@@ -80,8 +83,10 @@ android {
         buildConfig = true
     }
 
-
-
+    dataBinding{
+        enabled = true
+        addDefaultAdapters = true
+    }
 }
 
 

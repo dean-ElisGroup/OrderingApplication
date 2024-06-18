@@ -78,6 +78,7 @@ class LoginViewModel(private val loginRep: UserLoginRepository) : ViewModel() {
         coroutineScope.launch {
             if (addressList != null) {
                 val database = OrderInfoDatabase.getInstance(context)
+                database.clearAllTables()
                 val dao = database.orderInfoDao
 
                 dao.insert(addressList)

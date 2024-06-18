@@ -1,15 +1,20 @@
 package com.elis.orderingapplication.adapters
 
-import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import androidx.databinding.InverseMethod
 import androidx.recyclerview.widget.RecyclerView
 import com.elis.orderingapplication.pojo2.DeliveryAddress
 import com.elis.orderingapplication.pojo2.Order
-import com.elis.orderingapplication.pojo2.OrderInfo
 import com.elis.orderingapplication.pojo2.OrderingGroup
-import com.elis.orderingapplication.pojo2.PointsOfService
+import org.jetbrains.annotations.NotNull
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.Date
+import java.util.Locale
 
 class BindingAdapters {
     @BindingAdapter("deliveryAddressListData")
@@ -29,6 +34,9 @@ class BindingAdapters {
         val adapter = recyclerView.adapter as OrderAdapter
         adapter.submitList(data)
     }
+
+
+
 companion object {
     @BindingAdapter("conditionalMargin")
     @JvmStatic
@@ -42,6 +50,18 @@ companion object {
         }
         textView.layoutParams = layoutParams
     }
-}
-}
 
+    @BindingAdapter("dateFormat")
+    @JvmStatic
+    fun dateFormat(textView: TextView, date: String): String {
+
+        val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        val outputFormatter = DateTimeFormatter.ofPattern("EEEE, dd MMMM yyyy", Locale.getDefault())
+        val date = LocalDate.parse(date, inputFormatter)
+
+        val finalDate = outputFormatter.format(date)
+
+        return finalDate
+    }
+}
+}

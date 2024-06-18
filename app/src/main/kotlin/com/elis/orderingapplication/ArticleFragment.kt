@@ -10,7 +10,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.elis.orderingapplication.adapters.ArticleEntryAdapter
 import com.elis.orderingapplication.databinding.FragmentArticleBinding
@@ -31,7 +30,7 @@ class ArticleFragment : Fragment() {
     private val articleViewModel: ArticleViewModel by viewModels {
         SharedViewModelFactory(sharedViewModel, requireActivity().application)
     }
-
+    private val args: ArticleFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,6 +40,8 @@ class ArticleFragment : Fragment() {
             DataBindingUtil.inflate(inflater, R.layout.fragment_article, container, false)
 
         binding.sharedViewModel = sharedViewModel
+        binding.orderData = args.orderData
+        binding.orderDateVal = args.order
         binding.toolbar.title = getString(R.string.article_title)
         binding.toolbar.setNavigationIcon(R.drawable.ic_back)
         binding.toolbar.setNavigationOnClickListener {
@@ -69,18 +70,11 @@ class ArticleFragment : Fragment() {
         viewPagerAdapter = ArticleEntryAdapter(
             childFragmentManager,
             lifecycle,
-            //articleViewModel.articles.value ?: emptyList(),
-            emptyList(),
-            articleEntryViewModel
+            emptyList()
         )
         viewPager.adapter = viewPagerAdapter
 
         articleViewModel.articles.observe(viewLifecycleOwner) { articles ->
-            //val viewPager2: ViewPager2 = binding.articleEntryViewpager
-            //val viewPagerAdapter = ArticleEntryAdapter(childFragmentManager, lifecycle, articles)
-            //viewPager2.adapter = viewPagerAdapter
-            //viewPagerAdapter = ArticleEntryAdapter(childFragmentManager, lifecycle, articles, articleEntryViewModel)
-            //viewPager.adapter = viewPagerAdapter
             viewPagerAdapter.updateData(articles)
             sharedViewModel.setArticleTotal(articles.size)
         }

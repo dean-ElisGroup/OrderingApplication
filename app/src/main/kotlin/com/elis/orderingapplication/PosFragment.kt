@@ -1,6 +1,6 @@
 package com.elis.orderingapplication
 
-import android.app.AlertDialog
+
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,35 +13,23 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
-import com.elis.orderingapplication.adapters.PosAdapter
 import com.elis.orderingapplication.databinding.FragmentPosBinding
 import com.elis.orderingapplication.pojo2.PointsOfService
 import com.elis.orderingapplication.viewModels.ParamsViewModel
 import com.elis.orderingapplication.viewModels.PosViewModel
-import android.widget.SearchView
 import androidx.fragment.app.viewModels
-import com.elis.orderingapplication.adapters.listAdapters.OrderingGroupAdapter
 import com.elis.orderingapplication.adapters.listAdapters.PointOfServiceAdapter
-import com.elis.orderingapplication.pojo2.JoinOrderingGroup
-import com.elis.orderingapplication.pojo2.Order
-import com.elis.orderingapplication.viewModels.OrderingGroupViewModel
 import com.elis.orderingapplication.viewModels.SharedViewModelFactory
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 class PosFragment : Fragment() {
 
     private lateinit var binding: FragmentPosBinding
     private val sharedViewModel: ParamsViewModel by activityViewModels()
-
-    //private val posViewModel: PosViewModel by activityViewModels()
     private val args: PosFragmentArgs by navArgs()
     private lateinit var pointOfServiceAdapter: PointOfServiceAdapter
     private val posViewModel: PosViewModel by viewModels {
         SharedViewModelFactory(sharedViewModel, requireActivity().application)
     }
-
-    // private lateinit var searchView: SearchView
     private lateinit var recyclerView: RecyclerView
 
 
@@ -90,6 +78,8 @@ class PosFragment : Fragment() {
                                 findNavController().navigate(
                                     PosFragmentDirections.actionPosFragmentToOrderFragment(
                                         pointOfService.pointOfServiceNo,
+                                        pointOfService.deliveryAddressName,
+                                        pointOfService.pointOfServiceName
                                     )
                                 )
                                 //}

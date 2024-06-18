@@ -11,6 +11,10 @@
         <variable
             name="clickListener"
             type="com.elis.orderingapplication.adapters.listAdapters.OrdersAdapter.MyClickListener" />
+
+        <variable
+            name="deliveryDate"
+            type="String" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -52,10 +56,11 @@
                 android:id="@+id/totalArticles"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/gothic_a1_medium"
                 android:text='@{"Total articles: " + order.totalArticles.toString()}'
                 android:textAlignment="center"
-                app:layout_constraintTop_toBottomOf="@+id/new_status"
                 android:textSize="16sp"
+                app:layout_constraintTop_toBottomOf="@+id/new_status"
                 tools:layout_editor_absoluteX="7dp" />
 
             <TextView
@@ -65,16 +70,15 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="6dp"
                 android:autoSizeTextType="none"
-                android:fontFamily="@font/sharpsans_medium"
+                android:fontFamily="@font/gothic_a1_medium"
                 android:gravity="center|center_vertical"
                 android:maxLines="2"
                 android:minLines="1"
                 android:nestedScrollingEnabled="false"
                 android:singleLine="false"
-                android:text='@{"Delivery date: " + order.deliveryDate}'
+                android:text='@{"Delivery date: " + deliveryDate}'
                 android:textColor="@color/elis_black"
                 android:textSize="16sp"
-                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/totalArticles" />

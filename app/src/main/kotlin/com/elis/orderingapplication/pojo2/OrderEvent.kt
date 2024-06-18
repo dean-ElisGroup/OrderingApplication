@@ -38,7 +38,7 @@ data class OrderRowsItem(
 	val size: String? = null,
 
 	@field:SerializedName("qty")
-    var qty: Int? = null,
+    var qty: Int ? = null,
 
 	@field:SerializedName("articleNo")
 	var articleNo: String? = null

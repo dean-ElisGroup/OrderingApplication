@@ -6,6 +6,7 @@ import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import androidx.room.Relation
 import com.squareup.moshi.Json
+import java.util.Date
 import java.util.UUID
 import javax.annotation.Generated
 import javax.annotation.Nonnull
@@ -24,7 +25,7 @@ data class Order (
     @Nonnull
     @ColumnInfo(name = "delivery_date")
     @Json(name = "deliveryDate")
-    var deliveryDate: String = "",// = null,
+    var deliveryDate: String = "",
 
     @Json(name = "orderStatus")
     var orderStatus: Int? = null,

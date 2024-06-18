@@ -41,6 +41,7 @@ import com.elis.orderingapplication.pojo2.Order
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.UUID
 import kotlin.math.abs
 
 class ArticleEntryCardFragment : Fragment() {
@@ -52,6 +53,7 @@ class ArticleEntryCardFragment : Fragment() {
         SharedViewModelFactory(sharedViewModel, requireActivity().application)
     }
     private lateinit var article: Article
+    private var countedQty: Int = 0
 
     private var currentOrderData: Order? = null
     private var currentArticle: Article? = null
@@ -80,121 +82,212 @@ class ArticleEntryCardFragment : Fragment() {
             userLoginRepository
         )
 
+        ViewModelProvider(this, viewModelFactory)[ArticleEntryViewModel::
+        class.java]
 
-    /*view.viewTreeObserver.addOnGlobalFocusChangeListener { oldFocus, newFocus ->
-        if (newFocus != null) {
-            val viewId = newFocus.id
-            val idString = try {
-                if (viewId == View.NO_ID) {
-                    "NO_ID"
-                } else {
-                    resources.getResourceEntryName(viewId)
-                }
-            } catch (e: Resources.NotFoundException) {
-                "Unknown ID: $viewId"
+        currentArticlePosition = arguments?.getInt("currentArticlePosition")
+        currentArticleOrder = arguments?.getInt("currentArticle")
+
+        observeOrderData()
+        observeArticleData()
+        setupCountedQtyTextChangeListener()
+    }
+
+    private fun observeOrderData() {
+        articleEntryViewModel.order.observe(viewLifecycleOwner) { currentOrder ->
+            currentOrderData = currentOrder.firstOrNull()
+            numberOfArticles = currentOrderData?.totalArticles
+            sharedViewModel.setArticleTotal(numberOfArticles ?: 0)
+        }
+    }
+
+    private fun observeArticleData() {
+        articleEntryViewModel.articles.observe(viewLifecycleOwner) { articles ->
+            currentArticle = articles.getOrNull(currentArticleOrder ?: 0)
+            updateUI(currentArticle)
+        }
+    }
+
+    private fun updateUI(article: Article?) {
+        article?.let {
+            binding.articleNo.text = it.articleNo
+            binding.articleDescription.text = it.articleDescription
+            binding.targetQty.text = it.articleTargetQty.toString()
+        }
+
+        val isLastArticle = currentArticlePosition == numberOfArticles
+        binding.lastArticleText.isVisible = isLastArticle
+        binding.sendOrderButton.isVisible = isLastArticle
+
+        binding.ofArticlePosition.text = numberOfArticles?.toString() ?: ""
+        binding.articlePosition.text = currentArticlePosition?.toString() ?: ""
+    }
+    private fun setupCountedQtyTextChangeListener() {
+        binding.countedQty.doAfterTextChanged {
+            val targetQty =
+                currentArticle?.articleTargetQty
+
+            fun calculateResultOrderQty(
+                targetQty: Int?,
+                countedQty: Int,
+                countedIsEmpty: Boolean
+            ): Int {
+                return targetQty?.let { it - countedQty } ?: 0
             }
-            Log.d("FocusLogger", "View ${newFocus.javaClass.simpleName} with ID $idString gained focus")
-        }
-        if (oldFocus != null) {
-            val viewId = oldFocus.id
-            val idString = try {
-                if (viewId == View.NO_ID) {
-                    "NO_ID"
-                } else {
-                    resources.getResourceEntryName(viewId)
-                }
-            } catch (e: Resources.NotFoundException) {
-                "Unknown ID: $viewId"
-            }
-            Log.d("FocusLogger", "View ${oldFocus.javaClass.simpleName} with ID $idString lost focus")
-        }
-    }*/
 
-
-
-
-
-    ViewModelProvider(this, viewModelFactory)[ArticleEntryViewModel::
-    class.java]
-
-    currentArticlePosition = arguments?.getInt("currentArticlePosition")
-    currentArticleOrder = arguments?.getInt("currentArticle")
-
-    observeOrderData()
-    observeArticleData()
-    setupCountedQtyTextChangeListener()
-}
-
-
-private fun observeOrderData() {
-    articleEntryViewModel.order.observe(viewLifecycleOwner) { currentOrder ->
-        currentOrderData = currentOrder.firstOrNull()
-        numberOfArticles = currentOrderData?.totalArticles
-        sharedViewModel.setArticleTotal(numberOfArticles ?: 0)
-    }
-}
-
-private fun observeArticleData() {
-    articleEntryViewModel.articles.observe(viewLifecycleOwner) { articles ->
-        currentArticle = articles.getOrNull(currentArticleOrder ?: 0)
-        updateUI(currentArticle)
-    }
-}
-
-private fun updateUI(article: Article?) {
-    article?.let {
-        binding.articleNo.text = it.articleNo
-        binding.articleDescription.text = it.articleDescription
-        binding.targetQty.text = it.articleTargetQty.toString()
-    }
-
-    val isLastArticle = currentArticlePosition == numberOfArticles
-    binding.lastArticleText.isVisible = isLastArticle
-    binding.sendOrderButton.isVisible = isLastArticle
-
-    binding.ofArticlePosition.text = numberOfArticles?.toString() ?: ""
-    binding.articlePosition.text = currentArticlePosition?.toString() ?: ""
-}
-
-private fun setupCountedQtyTextChangeListener() {
-    binding.countedQty.doAfterTextChanged {
-        val targetQty =
-            currentArticle?.articleTargetQty
-
-        fun calculateResultOrderQty(targetQty: Int?, countedQty: Int): Int {
-            return targetQty?.let { it - countedQty } ?: 0
-        }
-
-        fun updateDatabaseWithResultOrderQty(resultOrderQty: Int, countedQty: Int) {
-            currentArticle?.let { article ->
-                currentOrderData?.let { orderData ->
-                    articleEntryViewModel.updateTextByOtherField(
-                        resultOrderQty,
-                        countedQty,
-                        article.articleNo,
-                        orderData.appOrderId
-                    )
+            fun updateDatabaseWithResultOrderQty(resultOrderQty: Int, countedQty: Int) {
+                currentArticle?.let { article ->
+                    currentOrderData?.let { orderData ->
+                        articleEntryViewModel.updateTextByOtherField(
+                            resultOrderQty,
+                            countedQty,
+                            article.articleNo,
+                            orderData.appOrderId
+                        )
+                    }
                 }
             }
+
+            val countedQtyIsEmpty = binding.countedQty.text.isEmpty()
+            countedQty = binding.countedQty.text.toString().toIntOrNull() ?: 0
+            val resultOrderQty = calculateResultOrderQty(targetQty, countedQty, countedQtyIsEmpty)
+            if (countedQtyIsEmpty) {
+                updateDatabaseWithResultOrderQty(0, 0)
+                binding.orderQty.text = ""
+            } else {
+                binding.orderQty.text = resultOrderQty.toString()
+                updateDatabaseWithResultOrderQty(resultOrderQty, countedQty)
+
+            }
         }
-
-        val countedQty = binding.countedQty.text.toString().toIntOrNull() ?: 0
-        val resultOrderQty = calculateResultOrderQty(targetQty, countedQty)
-        binding.orderQty.text = resultOrderQty.toString()
-        updateDatabaseWithResultOrderQty(resultOrderQty, countedQty)
-        binding.countedQty.requestFocus()
+        binding.sendOrderButton.setOnClickListener {
+            currentOrderData?.let { it1 -> sendOrderToSOL(it1) }
+        }
     }
 
-    articleEntryViewModel.uiState.observe(viewLifecycleOwner) { updatedText ->
-        binding.orderQty.text = updatedText
-        binding.countedQty.requestFocus()
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
-}
 
-override fun onDestroyView() {
-    super.onDestroyView()
-    _binding = null
-}
+    private fun externalOrderId(length: Int = 12): String {
+        val uuid = UUID.randomUUID()
+        val byteArray = ByteArray(16)
+        val bytes = uuid.mostSignificantBits.toBigInteger().toByteArray()
+        System.arraycopy(bytes, 0, byteArray, 0, 8)
+        val bytes2 = uuid.leastSignificantBits.toBigInteger().toByteArray()
+        System.arraycopy(bytes2, 0, byteArray, 8, 8)
+        val hexString = byteArray.joinToString("") { "%02x".format(it) }
+        return hexString.take(length)
+    }
+
+    private val test2 = externalOrderId()
+    private fun sendOrderToSOL(order: Order, externalOrderId: String = test2){
+        articleEntryViewModel.sendOrderToSOL(order,externalOrderId)
+
+        //val sendOrderExternalOrderId = externalOrderId()
+            //val sendOrder = SendOrder(
+            //    order.appPosNo.toIntOrNull(),
+            //    order.deliveryAddressNo.toIntOrNull(),
+            //    sendOrderExternalOrderId,
+            //    order.orderDate,
+            //    sendOrderExternalOrderId,
+            //    articleEntryViewModel.articleRows(order.orderDate,order.appOrderId)
+            //)
+            //val test = sendOrder
+
+
+            /*val sendOrderEvent = OrderEvent(sharedViewModel.getSessionKey(), sendOrder)
+            articleEntryViewModel.orderEvent(sendOrderEvent)
+            articleEntryViewModel.orderEventResponse.observe(viewLifecycleOwner) { response ->
+                when (response) {
+                    is ApiResponse.Success -> {
+                        val testing = response?.data?.success
+                    }
+
+                    is ApiResponse.Loading -> {
+                        //orderInfoLoading.visibility = View.VISIBLE
+                    }
+
+                    is ApiResponse.Error -> {
+                        //orderInfoLoading.visibility = View.INVISIBLE
+                        response.data?.let { error ->
+                            Log.e("TAG", error.messages.toString())
+                            Toast.makeText(
+                                requireContext(),
+                                error.messages.toString(),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            requireActivity().window.clearFlags(
+                                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+                            )
+                        }
+                    }
+
+                    is ApiResponse.NoDataError -> {
+                        //orderInfoLoading.visibility = View.INVISIBLE
+                        val noDataMessage =
+                            "There was an issue loading data. Please try again."
+                        Log.e("TAG", noDataMessage)
+
+                        Toast.makeText(
+                            requireContext(),
+                            noDataMessage,
+                            Toast.LENGTH_SHORT
+
+                        ).show()
+                        requireActivity().window.clearFlags(
+                            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+                        )
+                    }
+
+                    else -> {
+                        Toast.makeText(
+                            requireContext(),
+                            "There was an issue loading data. Please try logging in again.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }*/
+    }
+
+    fun elementFocusLogger() {
+        view?.viewTreeObserver?.addOnGlobalFocusChangeListener { oldFocus, newFocus ->
+            if (newFocus != null) {
+                val viewId = newFocus.id
+                val idString = try {
+                    if (viewId == View.NO_ID) {
+                        "NO_ID"
+                    } else {
+                        resources.getResourceEntryName(viewId)
+                    }
+                } catch (e: Resources.NotFoundException) {
+                    "Unknown ID: $viewId"
+                }
+                Log.d(
+                    "FocusLogger",
+                    "View ${newFocus.javaClass.simpleName} with ID $idString gained focus"
+                )
+            }
+            if (oldFocus != null) {
+                val viewId = oldFocus.id
+                val idString = try {
+                    if (viewId == View.NO_ID) {
+                        "NO_ID"
+                    } else {
+                        resources.getResourceEntryName(viewId)
+                    }
+                } catch (e: Resources.NotFoundException) {
+                    "Unknown ID: $viewId"
+                }
+                Log.d(
+                    "FocusLogger",
+                    "View ${oldFocus.javaClass.simpleName} with ID $idString lost focus"
+                )
+            }
+        }
+    }
 }
 /*
     private lateinit var binding: FragmentArticleEntryViewpagerBinding

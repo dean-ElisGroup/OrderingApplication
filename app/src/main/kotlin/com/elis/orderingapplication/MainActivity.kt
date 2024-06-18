@@ -6,6 +6,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
+import com.elis.orderingapplication.database.OrderInfoDatabase
 import com.elis.orderingapplication.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -24,6 +25,5 @@ class MainActivity : AppCompatActivity() {
 
         setupActionBarWithNavController(this, navController)
         supportFragmentManager.findFragmentById(R.id.myNavHostFragment)
-
     }
 }

@@ -4,15 +4,18 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.elis.orderingapplication.pojo2.DeliveryAddress
 import com.elis.orderingapplication.pojo2.OrderInfo
 import com.elis.orderingapplication.pojo2.PointsOfService
 import com.elis.orderingapplication.pojo2.Order
 import com.elis.orderingapplication.pojo2.Article
+import com.elis.orderingapplication.pojo2.DateTypeConverter
 import com.elis.orderingapplication.pojo2.OrderingGroup
 
 //@Database(entities = [OrderInfo::class], version = 1, exportSchema = false)
 @Database(entities = [DeliveryAddress::class, PointsOfService::class, Order::class, Article::class, OrderingGroup::class], version = 25, exportSchema = false)
+@TypeConverters(DateTypeConverter::class)
 abstract class OrderInfoDatabase : RoomDatabase() {
 
     abstract val orderInfoDao: OrderInfoDao

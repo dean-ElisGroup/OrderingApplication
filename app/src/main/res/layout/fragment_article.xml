@@ -11,6 +11,12 @@
         <variable
             name="deliveryAddressName"
             type="String" />
+        <variable
+            name="orderData"
+            type="com.elis.orderingapplication.pojo2.OrderParcelable" />
+        <variable
+            name="orderDateVal"
+            type="String" />
 
     </data>
 
@@ -82,6 +88,7 @@
                     android:layout_marginTop="4dp"
                     android:layout_marginEnd="8dp"
                     android:focusable="false"
+                    android:fontFamily="@font/gothic_a1_medium"
                     android:text="@string/order_date_text"
                     android:textAlignment="center"
                     android:textColor="@color/elis_blue"
@@ -97,8 +104,8 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
                     android:focusable="false"
-                    android:fontFamily="@font/sharpsans_medium"
-                    android:text="@{sharedViewModel.orderDate}"
+                    android:fontFamily="@font/gothic_a1_bold"
+                    android:text="@{orderDateVal}"
                     android:textFontWeight="800"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -112,8 +119,8 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
                     android:focusable="false"
-                    android:fontFamily="@font/sharpsans_medium"
-                    android:text="@{sharedViewModel.deliveryAddressName}"
+                    android:fontFamily="@font/gothic_a1_bold"
+                    android:text="@{orderData.deliveryAddressName}"
                     android:textFontWeight="800"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -128,6 +135,7 @@
                     android:layout_marginTop="2dp"
                     android:layout_marginEnd="8dp"
                     android:focusable="false"
+                    android:fontFamily="@font/gothic_a1_medium"
                     android:text="@string/delivery_address_text"
                     android:textAlignment="center"
                     android:textColor="@color/elis_blue"
@@ -143,8 +151,8 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
                     android:focusable="false"
-                    android:fontFamily="@font/sharpsans_medium"
-                    android:text="@{sharedViewModel.orderingGroupName}"
+                    android:fontFamily="@font/gothic_a1_bold"
+                    android:text="@{orderData.posName}"
                     android:textFontWeight="800"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -159,6 +167,7 @@
                     android:layout_marginTop="2dp"
                     android:layout_marginEnd="8dp"
                     android:focusable="false"
+                    android:fontFamily="@font/gothic_a1_medium"
                     android:text="@string/pos_text"
                     android:textAlignment="center"
                     android:textColor="@color/elis_blue"
