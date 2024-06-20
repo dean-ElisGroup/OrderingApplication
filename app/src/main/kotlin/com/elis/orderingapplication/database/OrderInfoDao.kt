@@ -48,13 +48,22 @@ interface OrderInfoDao {
 
 
     //@Query("UPDATE article SET solOrderQty = :newOrderQty, SolCountedQty = :countedQty WHERE articleNo = :articleId AND app_order_id = :appOrderId")
-    @Query("""
+    @Query(
+        """
     UPDATE article
     SET solOrderQty = CASE WHEN :newOrderQty = 0 AND :countedQty = 0 THEN NULL ELSE :newOrderQty END,
         SolCountedQty = CASE WHEN :newOrderQty = 0 AND :countedQty = 0 THEN NULL ELSE :countedQty END
     WHERE articleNo = :articleId AND app_order_id = :appOrderId
-""")
-    fun updateOrderQty(newOrderQty: Int, articleId: String, appOrderId: String, countedQty: Int )
+"""
+    )
+    fun updateOrderQty(newOrderQty: Int, articleId: String, appOrderId: String, countedQty: Int)
+
+    @Query(
+        """
+    UPDATE pos_order SET appOrderStatus = :appOrderStatus where appOrderId = :appOrderId 
+    """
+    )
+    fun updateOrderStatus(appOrderId: String, appOrderStatus: String)
 
     @Transaction
     @Query("SELECT  * FROM ordering_group WHERE order_group_id = :orderGroupId")

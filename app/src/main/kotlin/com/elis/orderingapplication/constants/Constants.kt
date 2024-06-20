@@ -14,5 +14,7 @@ class Constants {
         const val APP_STATUS_STARTED = 1
         const val APP_STATUS_FINISHED = 2
         const val APP_STATUS_SENT = 3
+        // Send Order Event Error
+        const val DATE_TOO_LATE = "Earliest next delivery is:"
     }
 }
