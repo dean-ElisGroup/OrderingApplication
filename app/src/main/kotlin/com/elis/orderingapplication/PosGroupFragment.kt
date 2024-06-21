@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -24,15 +23,12 @@ class PosGroupFragment : Fragment() {
 
     private lateinit var binding: FragmentPosGroupBinding
     private val sharedViewModel: ParamsViewModel by activityViewModels()
-
-    //private val orderingGroupViewModel: OrderingGroupViewModel by activityViewModels()
     private val args: PosGroupFragmentArgs by navArgs()
     private lateinit var orderingGroupAdapter: OrderingGroupAdapter
-    //private val orderingGroupViewModel: OrderingGroupViewModel by lazy {
-    //    ViewModelProvider(this)[OrderingGroupViewModel::class.java]
-        private val orderingGroupViewModel: OrderingGroupViewModel by viewModels {
-            SharedViewModelFactory(sharedViewModel,requireActivity().application)
-            }
+    private var deliveryAddressForArgs: String = ""
+    private val orderingGroupViewModel: OrderingGroupViewModel by viewModels {
+        SharedViewModelFactory(sharedViewModel, requireActivity().application)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,19 +48,25 @@ class PosGroupFragment : Fragment() {
                     .navigate(R.id.action_posGroupFragment_to_deliveryAddressFragment)
             }
         }
+
+        val deliveryAddressFromArgs =
+            sharedViewModel.argsBundleFromTest.value?.getString("DELIVERY_ADDRESS_NAME", "")
+        if (deliveryAddressFromArgs != null) {
+            binding.deliveryAddress.text = deliveryAddressFromArgs
+        } else {
+            sharedViewModel.argsBundleFromTest.observe(viewLifecycleOwner, Observer {
+                deliveryAddressForArgs = it.getString("DELIVERY_ADDRESS_NAME", "")
+                binding.deliveryAddress.text = deliveryAddressForArgs
+            })
+        }
+
+
         // Inflate the layout for this fragment
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        sharedViewModel.setDeliveryAddressName(args.deliveryAddressNo)
-
-        if (args.deliveryAddressNo.isNullOrEmpty())
-            binding.deliveryAddressName = sharedViewModel.deliveryAddressName.value
-        else
-            binding.deliveryAddressName = args.deliveryAddressNo
 
         val recyclerView: RecyclerView = binding.orderingGroupSelection
         val spacingInPixels = resources.getDimensionPixelSize(R.dimen.spacing)
@@ -75,6 +77,12 @@ class PosGroupFragment : Fragment() {
             override fun onItemClick(myData: JoinOrderingGroup) {
                 orderingGroupViewModel.onOrderingGroupClicked(myData)
                 sharedViewModel.setOrderingGroupNo(myData.orderingGroupNo)
+                sharedViewModel.setDeliveryAddressNum(myData.deliveryAddressNo)
+                val currentArgsBundle = sharedViewModel.argsBundleFromTest.value ?: Bundle()
+                val updatedArgsBundle = currentArgsBundle.apply {
+                    putString("ORDERING_GROUP", myData.orderingGroupDescription)
+                }
+                sharedViewModel.argsBundleFromTest.value = updatedArgsBundle
                 orderingGroupViewModel.navigateToOrderingGroup.observe(
                     viewLifecycleOwner,
                     Observer { orderingGroup ->

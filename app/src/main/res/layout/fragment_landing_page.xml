@@ -126,30 +126,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/selectAnOption" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/button_view_orders"
-                style="@style/Widget.Material3.Button.ElevatedButton"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginBottom="10dp"
-                android:fontFamily="@font/sharpsans_medium"
-                android:includeFontPadding="true"
-                android:paddingTop="10dp"
-                android:text="@string/button_view_orders"
-                android:textColor="@color/elis_black"
-                android:textSize="20sp"
-                app:cornerRadius="@dimen/button_corner_radius"
-                android:gravity="center"
-                android:paddingStart="20dp"
-                android:paddingEnd="3dp"
-                android:drawableLeft="@drawable/baseline_list_24"
-                android:drawableRight="@drawable/baseline_arrow_right_24"
-                android:drawableTint="@color/elis_black"
-                app:layout_constraintBottom_toTopOf="@+id/button_send_orders"
-                app:layout_constraintEnd_toStartOf="@+id/guideline4"
-                app:layout_constraintStart_toStartOf="@+id/guideline3"
-                app:layout_constraintTop_toBottomOf="@+id/orders_button" />
-
-            <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_send_orders"
                 style="@style/Widget.Material3.Button.ElevatedButton"
                 android:layout_width="0dp"
@@ -174,6 +150,31 @@
                 app:layout_constraintTop_toBottomOf="@+id/button_view_orders" />
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_view_orders"
+                style="@style/Widget.Material3.Button.ElevatedButton"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginBottom="10dp"
+                android:drawableLeft="@drawable/baseline_list_24"
+                android:drawableRight="@drawable/baseline_arrow_right_24"
+                android:drawableTint="@color/elis_black"
+                android:enabled="false"
+                android:fontFamily="@font/sharpsans_medium"
+                android:gravity="center"
+                android:includeFontPadding="true"
+                android:paddingStart="20dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="3dp"
+                android:text="@string/button_view_orders"
+                android:textColor="@color/elis_black"
+                android:textSize="20sp"
+                app:cornerRadius="@dimen/button_corner_radius"
+                app:layout_constraintBottom_toTopOf="@+id/button_send_orders"
+                app:layout_constraintEnd_toStartOf="@+id/guideline4"
+                app:layout_constraintStart_toStartOf="@+id/guideline3"
+                app:layout_constraintTop_toBottomOf="@+id/orders_button" />
+
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_settings"
                 style="@style/Widget.Material3.Button.ElevatedButton"
                 android:layout_width="0dp"
@@ -192,6 +193,7 @@
                 android:drawableLeft="@drawable/baseline_settings_24"
                 android:drawableRight="@drawable/baseline_arrow_right_24"
                 android:drawableTint="@color/elis_black"
+                android:enabled="false"
                 app:layout_constraintBottom_toTopOf="@+id/button_logout"
                 app:layout_constraintEnd_toStartOf="@+id/guideline4"
                 app:layout_constraintStart_toStartOf="@+id/guideline3"

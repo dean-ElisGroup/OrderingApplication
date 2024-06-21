@@ -138,6 +138,7 @@ class OrderFragment : Fragment() {
 
             builder.setPositiveButton("OK") { dialog, _ ->
                 dialog.dismiss()
+                findNavController().navigate(R.id.action_orderFragment_to_posFragment)
             }
 
             val dialog = builder.create()

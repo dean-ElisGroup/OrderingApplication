@@ -78,7 +78,7 @@ interface OrderInfoDao {
     fun getPointsOfService(deliveryAddressNo: String, orderingGroup: String) : LiveData<List<PointsOfService>>
 
     @Transaction
-    @Query("SELECT * FROM pos_order WHERE deliveryAddressNo = :deliveryAddressNo AND point_of_service_no = :posNumber AND delivery_date = :deliveryDate AND orderStatus = :orderStatus ")
+    @Query("SELECT * FROM pos_order WHERE deliveryAddressNo = :deliveryAddressNo AND point_of_service_no = :posNumber AND orderDate = :deliveryDate AND orderStatus = :orderStatus ")
     fun getOrders(deliveryAddressNo: String, posNumber: String, deliveryDate: String, orderStatus: Int) : LiveData<List<Order>>
 
     @Transaction

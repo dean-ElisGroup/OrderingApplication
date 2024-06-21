@@ -1,4 +1,4 @@
-package com.elis.orderingapplication
+package com.elis.orderingapplication.sendOrder
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -11,13 +11,15 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.elis.orderingapplication.CardViewDecoration
+import com.elis.orderingapplication.R
 import com.elis.orderingapplication.adapters.listAdapters.DeliveryAdapter
 import com.elis.orderingapplication.databinding.FragmentDeliveryAddressBinding
 import com.elis.orderingapplication.pojo2.DeliveryAddress
 import com.elis.orderingapplication.viewModels.DeliveryAddressViewModel
 import com.elis.orderingapplication.viewModels.ParamsViewModel
 
-class DeliveryAddressFragment : Fragment() {
+class SendDeliveryAddressFragment : Fragment() {
 
     private lateinit var binding: FragmentDeliveryAddressBinding
     private val sharedViewModel: ParamsViewModel by activityViewModels()

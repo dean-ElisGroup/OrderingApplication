@@ -2,7 +2,9 @@ package com.elis.orderingapplication.retrofit
 
 import com.elis.orderingapplication.interfaces.OrderEvent
 import com.elis.orderingapplication.interfaces.OrderInfo
+import com.elis.orderingapplication.interfaces.UserLogOut
 import com.elis.orderingapplication.interfaces.UserLogin
+import com.elis.orderingapplication.model.LogoutRequest
 import com.solstockorder.dev.utils.ApiUrls.Companion.BASE_URL
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -10,7 +12,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.time.Duration
 import java.util.concurrent.TimeUnit
-
 
 class RetroFitInstance {
     companion object {
@@ -39,6 +40,9 @@ class RetroFitInstance {
         }
         val orderEvent by lazy {
             retrofit.create(OrderEvent::class.java)
+        }
+        val logout by lazy {
+            retrofit.create(UserLogOut::class.java)
         }
     }
 }

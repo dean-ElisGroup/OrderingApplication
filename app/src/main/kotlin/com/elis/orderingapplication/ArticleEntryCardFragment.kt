@@ -153,23 +153,23 @@ class ArticleEntryCardFragment : Fragment() {
         val hexString = byteArray.joinToString("") { "%02x".format(it) }
         return hexString.take(length)
     }
-
     //private val externalSOLOrderId = externalOrderId()
     private fun sendOrderToSOL(order: Order, externalOrderId: String = externalOrderId()) {
         val sendOrder = articleEntryViewModel.sendOrderToSOL(order, externalOrderId)
         val sendOrderEvent = OrderEvent(sharedViewModel.getSessionKey(), sendOrder)
         articleEntryViewModel.orderEvent(sendOrderEvent)
-        articleEntryViewModel.orderEventResponse.value = null
         articleEntryViewModel.orderEventResponse.observe(viewLifecycleOwner) { response ->
-            when (response) {
-                is ApiResponse.Success -> handleSuccessResponse(response.data?.success)
-                is ApiResponse.Loading -> handleLoadingState()
-                is ApiResponse.Error -> handleErrorResponse(response.data?.messages)
-                is ApiResponse.ErrorSendOrderDate -> handleErrorResponse(response.data?.messages)
-                is ApiResponse.NoDataError -> handleNoDataError()
-                is ApiResponse.ErrorLogin -> handleUnknownError()
-                is ApiResponse.UnknownError -> handleUnknownError()
-                else -> handleUnknownError()
+            if (response != null) {
+                when (response) {
+                    is ApiResponse.Success -> handleSuccessResponse(response.data?.success)
+                    is ApiResponse.Loading -> handleLoadingState()
+                    is ApiResponse.Error -> handleErrorResponse(response.message)// .data?.messages)
+                    is ApiResponse.ErrorSendOrderDate -> handleErrorResponse(response.message)
+                    is ApiResponse.NoDataError -> handleNoDataError()
+                    is ApiResponse.ErrorLogin -> handleUnknownError()
+                    is ApiResponse.UnknownError -> handleUnknownError()
+                    else -> handleUnknownError()
+                }
             }
         }
     }
@@ -181,18 +181,19 @@ class ArticleEntryCardFragment : Fragment() {
             Toast.makeText(requireContext(), "Order sent to Sol", Toast.LENGTH_SHORT).show()
         }
     }
+
     private fun handleLoadingState() {
         // Show loading indicator
     }
 
-    private fun handleErrorResponse(errorMessages: List<String?>?) {
+    private fun handleErrorResponse(errorMessages: String?) {
         errorMessages?.let { messages ->
-            Log.e("TAG", messages.toString())
+            Log.e("ERROR_MESSAGE", messages.toString())
 
             // Create an AlertDialog.Builder
             val builder = AlertDialog.Builder(requireContext())
             builder.setTitle("Error")
-                .setMessage(messages.joinToString("\n"))
+                .setMessage(messages.replace(Regex("\\[|\\]"), ""))
                 .setPositiveButton("OK") { _, _ ->
                     // Handle OK button click if needed
                     clearNotTouchableFlag()
@@ -203,6 +204,7 @@ class ArticleEntryCardFragment : Fragment() {
             clearNotTouchableFlag()
         }
     }
+
 
     private fun handleNoDataError() {
         val noDataMessage = "There was an issue loading data. Please try again."

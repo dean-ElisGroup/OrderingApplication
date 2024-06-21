@@ -42,10 +42,6 @@ class LoginFragment : Fragment() {
 
     private lateinit var binding: FragmentLoginBinding
     private val sharedViewModel: ParamsViewModel by activityViewModels()
-
-    //private val rep = UserLoginRepository()
-    //private val provider = LoginViewModelFactory(rep)
-    //private val loginViewModel = ViewModelProvider(this, provider)[LoginViewModel::class.java]
     private lateinit var loginView: LoginViewModel
     lateinit var loginAdapter: LoginAdapter
 
@@ -69,8 +65,14 @@ class LoginFragment : Fragment() {
         binding.lifecycleOwner = this
         orderInfoLoading = binding.orderInfoLoading
 
+        // Network check
+        /*if (NetworkUtils.isOnline(requireContext())) {
+            Toast.makeText(requireContext(),"You're online, it's all good!!", Toast.LENGTH_LONG).show()
+        } else {
+            Toast.makeText(requireContext(),"You're offline", Toast.LENGTH_LONG).show()
+        }*/
+
         fireBaseRemoteConfig()
-        ObjectBox.init(requireContext())
         return view
     }
 
@@ -129,14 +131,6 @@ class LoginFragment : Fragment() {
                                                     )
                                                 }
                                             }
-
-                                            /*if (testAddressList != null) {
-                                                context?.let { it1 ->
-                                                    OrderInfoDatabase.getInstance(
-                                                        it1
-                                                    ).orderInfoDao.insert(testAddressList)
-                                                }
-                                            }*/
                                             findNavController(view).navigate(R.id.action_loginFragment_to_landingPageFragment)
                                         }
 

@@ -18,6 +18,7 @@ import com.elis.orderingapplication.pojo2.PointsOfService
 import com.elis.orderingapplication.viewModels.ParamsViewModel
 import com.elis.orderingapplication.viewModels.PosViewModel
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import com.elis.orderingapplication.adapters.listAdapters.PointOfServiceAdapter
 import com.elis.orderingapplication.viewModels.SharedViewModelFactory
 
@@ -31,6 +32,8 @@ class PosFragment : Fragment() {
         SharedViewModelFactory(sharedViewModel, requireActivity().application)
     }
     private lateinit var recyclerView: RecyclerView
+    private var deliveryAddressForArgs: String = ""
+    private var orderingGroupForArgs: String? = null
 
 
     override fun onCreateView(
@@ -40,16 +43,41 @@ class PosFragment : Fragment() {
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_pos, container, false)
 
+
         binding.sharedViewModel = sharedViewModel
         binding.posViewModel = posViewModel
         binding.toolbar.title = getString(R.string.pos_title)
         binding.toolbar.setNavigationIcon(R.drawable.ic_back)
+
+        //sharedViewModel.argsBundleFromTest.observe(viewLifecycleOwner, Observer {
+        //    deliveryAddressForArgs = it.getString("DELIVERY_ADDRESS_NAME", "")
+        //}).toString()
+
         binding.toolbar.setNavigationOnClickListener {
             view?.let { it ->
-                Navigation.findNavController(it)
-                    .navigate(R.id.action_posFragment_to_posGroupFragment)
+                val action = PosFragmentDirections.actionPosFragmentToPosGroupFragment(
+                    // Pass arguments here
+                    deliveryAddressForArgs
+                )
+                Navigation.findNavController(it).navigate(action)
             }
         }
+
+        val deliveryAddressFromArgs = sharedViewModel.argsBundleFromTest.value?.getString("DELIVERY_ADDRESS_NAME", "")
+        orderingGroupForArgs =
+            sharedViewModel.argsBundleFromTest.value?.getString("ORDERING_GROUP", "")
+        if (deliveryAddressFromArgs != null) {
+            binding.deliveryAddress.text = deliveryAddressFromArgs
+            binding.orderingGroup.text = orderingGroupForArgs
+        } else {
+            sharedViewModel.argsBundleFromTest.observe(viewLifecycleOwner, Observer {
+                deliveryAddressForArgs = it.getString("DELIVERY_ADDRESS_NAME", "")
+                orderingGroupForArgs = it.getString("ORDERING_GROUP","")
+                binding.deliveryAddress.text = deliveryAddressForArgs
+                binding.orderingGroup.text = orderingGroupForArgs
+            })
+        }
+
         // Sets ordering group and ordering name to shared ViewModel
         args.orderingGroupNo?.let { sharedViewModel.setOrderingGroupNo(it) }
         sharedViewModel.setOrderingGroupName(args.orderingGroupName)

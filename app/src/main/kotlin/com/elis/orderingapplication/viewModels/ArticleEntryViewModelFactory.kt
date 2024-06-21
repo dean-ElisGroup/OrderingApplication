@@ -9,20 +9,18 @@ class ArticleEntryViewModelFactory(
     private val sharedViewModel: ParamsViewModel,
     private val application: Application,
     private val articleEntryRepository: UserLoginRepository
-): ViewModelProvider.Factory {
+) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return ArticleEntryViewModel(application, articleEntryRepository, sharedViewModel) as T
+        if (modelClass.isAssignableFrom(ArticleEntryViewModel::class.java)) {
+            return ArticleEntryViewModel(application, articleEntryRepository, sharedViewModel) as T
+        }
+        if (modelClass.isAssignableFrom(LandingPageViewModel::class.java)) {
+            return LandingPageViewModel(application, articleEntryRepository, sharedViewModel) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
     }
 
 }
 
 
-    /*class ArticleEntryViewModelFactory(
-        private val articleEntryRepository: UserLoginRepository
-    ): ViewModelProvider.Factory {
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return ArticleEntryViewModel(articleEntryRepository) as T
-        }
-
-    }*/
 

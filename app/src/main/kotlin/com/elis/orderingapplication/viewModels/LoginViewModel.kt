@@ -131,7 +131,6 @@ class LoginViewModel(private val loginRep: UserLoginRepository) : ViewModel() {
         return ApiResponse.NoDataError("There was an issue loading data. Please try again.")
     }
 
-
     fun getDate(): String? {
         val formatter = DateTimeFormatter.ofPattern("EEEE, MMMM, dd, yyyy")
         return LocalDateTime.now().format(formatter)

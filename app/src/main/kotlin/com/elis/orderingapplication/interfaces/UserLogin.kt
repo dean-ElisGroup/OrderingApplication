@@ -1,6 +1,8 @@
 package com.elis.orderingapplication.interfaces
 
 import com.elis.orderingapplication.model.LoginRequest
+import com.elis.orderingapplication.model.LogoutRequest
+import com.elis.orderingapplication.model.LogoutRequestResponse
 import com.elis.orderingapplication.model.OrderingLoginResponseStruct
 import com.elis.orderingapplication.model.OrderingRequest
 import com.elis.orderingapplication.pojo2.OrderEvent
@@ -8,9 +10,11 @@ import com.elis.orderingapplication.pojo2.OrderEventResponse
 import com.elis.orderingapplication.pojo2.OrderInfo
 import com.elis.orderingapplication.pojo2.SendOrder
 import com.elis.orderingapplication.utils.ApiChannels.Companion.LOGIN
+import com.elis.orderingapplication.utils.ApiChannels.Companion.LOGOUT
 import com.elis.orderingapplication.utils.ApiChannels.Companion.ORDER_EVENT
 import com.elis.orderingapplication.utils.ApiChannels.Companion.ORDER_INFO
 import okhttp3.ResponseBody
+import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.Headers
@@ -38,4 +42,11 @@ interface OrderEvent {
     suspend fun sendOrderEvent(
         @Body orderEvent: OrderEvent
     ): Response<OrderEventResponse>
+}
+interface UserLogOut {
+    @Headers("Content-Type: application/json")
+    @POST(LOGOUT)
+    suspend fun logoutRequest(
+        @Body sessionKey: LogoutRequest
+    ) : Boolean
 }

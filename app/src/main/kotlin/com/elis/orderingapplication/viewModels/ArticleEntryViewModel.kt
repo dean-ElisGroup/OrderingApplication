@@ -141,7 +141,7 @@ class ArticleEntryViewModel(
 
             response.isSuccessful && response.body()?.messages?.any {
                 it!!.contains(
-                    "DATE_TOO_LATE",
+                    DATE_TOO_LATE,
                     ignoreCase = true
                 )
             } == true -> {
@@ -150,7 +150,7 @@ class ArticleEntryViewModel(
 
             response.isSuccessful && response.body()?.messages?.none {
                 it!!.contains(
-                    "DATE_TOO_LATE",
+                    DATE_TOO_LATE,
                     ignoreCase = true
                 )
             } == true -> {

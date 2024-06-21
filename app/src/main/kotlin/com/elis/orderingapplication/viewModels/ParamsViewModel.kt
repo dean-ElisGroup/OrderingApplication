@@ -1,5 +1,6 @@
 package com.elis.orderingapplication.viewModels
 
+import android.os.Bundle
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -72,6 +73,8 @@ class ParamsViewModel : ViewModel() {
     private var _articleDeliveryDate = MutableLiveData<String>("")
     private val articleDeliveryDate: LiveData<String> = _articleDeliveryDate
 
+    val argsBundleFromTest = MutableLiveData<Bundle>()
+
     fun setOrderDate(orderDate: String) {
         _orderDate.value = orderDate
     }
@@ -82,10 +85,6 @@ class ParamsViewModel : ViewModel() {
 
     fun getSessionKey(): String {
         return _sessionKey
-    }
-
-    fun setDeliveryAddressNo(deliveryAddressNo: String) {
-        _deliveryAddressNo = deliveryAddressNo
     }
     fun setDeliveryAddressNum(data: String) {
         _deliveryAddressNum.value = data
@@ -137,30 +136,6 @@ class ParamsViewModel : ViewModel() {
         return _orderInfo
     }
 
-    fun setPointsOfService(pos: List<PointsOfService>?) {
-        _pointsOfService = pos
-    }
-
-    fun setFilteredPointsOfService(filteredPos: List<PointsOfService>?) {
-        _filteredPointsOfService = filteredPos
-    }
-
-    fun getFilteredPointsOfService(): List<PointsOfService>? {
-        return _filteredPointsOfService
-    }
-
-    fun getPos(): List<PointsOfService>? {
-        return _pointsOfService
-    }
-
-    fun setFilteredOrders(filteredOrder: List<Order>?) {
-        _filteredOrders = filteredOrder
-    }
-
-    fun getFilteredOrders(): List<Order>? {
-        return _filteredOrders
-    }
-
     fun setDeliveryAddress(deliveryAddress: ApiResponse<OrderInfo>?) {
         _deliveryAddress = deliveryAddress?.data?.deliveryAddresses
     }
@@ -176,11 +151,6 @@ class ParamsViewModel : ViewModel() {
     fun setOrderingGroupName(orderingGroupName: String?) {
         _orderingGroupName.value = orderingGroupName
     }
-
-    //fun setOrderingGroupNo(orderingGroupNo: String?) {
-    //    _orderingGroupNo.value = orderingGroupNo
-    //}
-
     fun setOrderingGroupNo(data: String) {
         _orderingGroupNo.value = data
     }
