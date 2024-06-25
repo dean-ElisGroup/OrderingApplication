@@ -66,7 +66,6 @@ class ArticleEntryViewModel(
     }
 
     fun sendOrderToSOL(order: Order, sendOrderExternalOrderId: String): SendOrder {
-        //viewModelScope.launch {
             val sendOrder = SendOrder(
                 order.appPosNo.toIntOrNull(),
                 order.deliveryAddressNo.toIntOrNull(),
@@ -77,8 +76,6 @@ class ArticleEntryViewModel(
             )
         return sendOrder
         }
-   // }
-
     private fun articleRows(orderDate: String?, orderId: String?): List<OrderRowsItem> =
         runBlocking {
             withContext(Dispatchers.IO) {

@@ -15,17 +15,18 @@ import com.elis.orderingapplication.CardViewDecoration
 import com.elis.orderingapplication.R
 import com.elis.orderingapplication.adapters.listAdapters.DeliveryAdapter
 import com.elis.orderingapplication.databinding.FragmentDeliveryAddressBinding
+import com.elis.orderingapplication.databinding.FragmentSendOrderDeliveryAddressBinding
 import com.elis.orderingapplication.pojo2.DeliveryAddress
 import com.elis.orderingapplication.viewModels.DeliveryAddressViewModel
 import com.elis.orderingapplication.viewModels.ParamsViewModel
 
 class SendDeliveryAddressFragment : Fragment() {
 
-    private lateinit var binding: FragmentDeliveryAddressBinding
+    private lateinit var binding: FragmentSendOrderDeliveryAddressBinding
     private val sharedViewModel: ParamsViewModel by activityViewModels()
     private lateinit var deliveryAdapter: DeliveryAdapter
-    private val deliveryAddressViewModel: DeliveryAddressViewModel by lazy {
-        ViewModelProvider(this)[DeliveryAddressViewModel::class.java]
+    private val deliveryAddressViewModel: SendDeliveryAddressViewModel by lazy {
+        ViewModelProvider(this)[SendDeliveryAddressViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -33,7 +34,7 @@ class SendDeliveryAddressFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        binding = FragmentDeliveryAddressBinding.inflate(inflater)
+        binding = FragmentSendOrderDeliveryAddressBinding.inflate(inflater)
         binding.lifecycleOwner = this
         binding.viewModel = sharedViewModel
 
@@ -42,7 +43,7 @@ class SendDeliveryAddressFragment : Fragment() {
         binding.toolbar.setNavigationOnClickListener {
             view?.let { it ->
                 Navigation.findNavController(it)
-                    .navigate(R.id.action_deliveryAddressFragment_to_landingPageFragment)
+                    .navigate(R.id.action_sendDeliveryAddressFragment_to_landingPageFragment)
             }
         }
         return binding.root
@@ -72,7 +73,7 @@ class SendDeliveryAddressFragment : Fragment() {
                     Observer { deliveryAddressNo ->
                         deliveryAddressNo?.let {
                             findNavController().navigate(
-                                DeliveryAddressFragmentDirections.actionDeliveryAddressFragmentToPosGroupFragment(
+                                SendDeliveryAddressFragmentDirections.actionSendDeliveryAddressFragmentToSendOrderOrderFragment(
                                     deliveryAddressNo
                                 )
                             )

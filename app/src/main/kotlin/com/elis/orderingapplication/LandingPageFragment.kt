@@ -64,6 +64,12 @@ class LandingPageFragment : Fragment() {
                         .navigate(R.id.action_landingPageFragment_to_deliveryAddressFragment)
                 }
             }
+            buttonSendOrders.setOnClickListener {
+                view?.let { it ->
+                    Navigation.findNavController(it)
+                        .navigate(R.id.action_landingPageFragment_to_sendDeliveryAddressFragment)
+                }
+            }
 
             buttonLogout.setOnClickListener {
                 val logoutSessionKey = LogoutRequest(sharedViewModel.getSessionKey())

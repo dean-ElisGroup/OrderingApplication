@@ -64,6 +64,7 @@
     <string name="article_entry_article_position_text">Entering Article</string>
     <string name="article_entry_counted_qty_speakable">Counted qty field</string>
     <string name="article_entry_send_order_button">Send order</string>
+    <string name="please_select_an_order_to_send">Select an order to send</string>
 
 
 </resources>

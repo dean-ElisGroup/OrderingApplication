@@ -30,6 +30,9 @@
         <action
             android:id="@+id/action_landingPageFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_landingPageFragment_to_sendDeliveryAddressFragment"
+            app:destination="@id/sendDeliveryAddressFragment" />
     </fragment>
     <fragment
         android:id="@+id/deliveryAddressFragment"
@@ -159,6 +162,34 @@
             app:argType="com.elis.orderingapplication.pojo2.OrderParcelable"
             app:nullable="true"
             android:defaultValue="@null" />
+    </fragment>
+    <fragment
+        android:id="@+id/sendDeliveryAddressFragment"
+        android:name="com.elis.orderingapplication.sendOrder.SendDeliveryAddressFragment"
+        android:label="SendDeliveryAddressFragment" >
+        <action
+            android:id="@+id/action_sendDeliveryAddressFragment_to_landingPageFragment"
+            app:destination="@id/landingPageFragment" />
+        <action
+            android:id="@+id/action_sendDeliveryAddressFragment_to_sendOrderOrderFragment"
+            app:destination="@id/sendOrderOrderFragment" />
+        <argument
+            android:name="deliveryAddressNo"
+            app:argType="string" />
+        <argument
+            android:name="deliveryAddressName"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/sendOrderOrderFragment"
+        android:name="com.elis.orderingapplication.sendOrder.SendOrderFragment"
+        android:label="SendOrderOrderFragment" >
+        <action
+            android:id="@+id/action_sendOrderOrderFragment_to_sendDeliveryAddressFragment"
+            app:destination="@id/sendDeliveryAddressFragment" />
+        <argument
+            android:name="deliveryAddressNo"
+            app:argType="string" />
     </fragment>
 
 
