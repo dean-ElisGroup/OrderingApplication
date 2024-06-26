@@ -11,7 +11,7 @@ data class ArticleParcelable(
     val articleMinQty: Int?,
     val articleMaxQty: Int?,
     val articleIntervalQty: Int?,
-    val solOrderQty: Int?,
+    val solOrderQty: Int? = 0,
     val solCountedQty: Int?,
     val totalArticles: Int?,
     val pointOfService: String,

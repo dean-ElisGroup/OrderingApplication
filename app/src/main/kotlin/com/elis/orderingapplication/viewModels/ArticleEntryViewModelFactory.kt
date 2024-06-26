@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.elis.orderingapplication.repositories.UserLoginRepository
+import com.elis.orderingapplication.sendOrder.SendOrderViewModel
 
 class ArticleEntryViewModelFactory(
     private val sharedViewModel: ParamsViewModel,
@@ -16,6 +17,9 @@ class ArticleEntryViewModelFactory(
         }
         if (modelClass.isAssignableFrom(LandingPageViewModel::class.java)) {
             return LandingPageViewModel(application, articleEntryRepository, sharedViewModel) as T
+        }
+        if (modelClass.isAssignableFrom(SendOrderViewModel::class.java)) {
+            return SendOrderViewModel(application, articleEntryRepository, sharedViewModel) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

@@ -12,6 +12,7 @@ import com.elis.orderingapplication.pojo2.OrderEvent
 import com.elis.orderingapplication.pojo2.OrderEventResponse
 import com.elis.orderingapplication.pojo2.OrderRowsItem
 import com.elis.orderingapplication.pojo2.SendOrder
+import com.elis.orderingapplication.repositories.UserLoginRepository
 import com.elis.orderingapplication.utils.ApiResponse
 import com.elis.orderingapplication.viewModels.ParamsViewModel
 import kotlinx.coroutines.Dispatchers
@@ -22,7 +23,10 @@ import retrofit2.Response
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-class SendOrderViewModel(application: Application, private val sharedViewModel: ParamsViewModel) : AndroidViewModel(application) {
+class SendOrderViewModel(application: Application,
+private val loginRep: UserLoginRepository,
+private val sharedViewModel: ParamsViewModel
+) : AndroidViewModel(application) {
 
     private val _navigateToOrder = MutableLiveData<Order?>()
     val orderEventResponse: MutableLiveData<ApiResponse<OrderEventResponse>?> =
@@ -99,7 +103,9 @@ class SendOrderViewModel(application: Application, private val sharedViewModel: 
         viewModelScope.launch {
             withContext(Dispatchers.IO){
                 withContext(Dispatchers.IO){
-                    database.orderInfoDao.updateOrderStatus(order.appOrderId, APP_STATUS_SENT)
+                    database.orderInfoDao.updateOrderStatus(order.appOrderId,
+                        Constants.APP_STATUS_SENT.toString()
+                    )
                 }
             }
         }

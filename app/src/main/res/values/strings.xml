@@ -33,6 +33,8 @@
     <string name="article_entry_title">Order entry</string>
     <string name="order_selection_title">Orders</string>
     <string name="article_title">Article entry</string>
+    <string name="send_order_delivery_address">Send order</string>
+    <string name="send_order_order_screen">Send order</string>
 
 
     // Shared prefs

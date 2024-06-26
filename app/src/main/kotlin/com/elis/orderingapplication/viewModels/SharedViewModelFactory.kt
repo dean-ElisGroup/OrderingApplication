@@ -23,9 +23,9 @@ class SharedViewModelFactory(
             if (modelClass.isAssignableFrom(ArticleViewModel::class.java)) {
                 return ArticleViewModel(application, sharedViewModel) as T
             }
-            if (modelClass.isAssignableFrom(SendOrderViewModel::class.java)) {
-                return SendOrderViewModel(application, sharedViewModel) as T
-            }
+            //if (modelClass.isAssignableFrom(SendOrderViewModel::class.java)) {
+            //    return SendOrderViewModel(application, sharedViewModel) as T
+            //}
             throw IllegalArgumentException("Unknown ViewModel class")
         }
     }

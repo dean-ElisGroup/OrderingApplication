@@ -35,7 +35,7 @@ data class Article (
     var articleIntervalQty: Int? = null,
 
     @Json(name = "solOrderQty")
-    var solOrderQty: Int? = null,
+    var solOrderQty: Int? = 0,
 
     @Json(name = "solCountedQty")
     var solCountedQty: Int? = null,

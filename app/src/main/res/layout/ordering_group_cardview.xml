@@ -37,11 +37,12 @@
 
             <ImageView
                 android:id="@+id/delivery_address_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
                 android:contentDescription="@string/delivery_address_icon"
+                app:tint="@color/elis_black"
                 android:scaleType="fitCenter"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/deliveryAddressName"
@@ -52,12 +53,13 @@
 
             <ImageView
                 android:id="@+id/proceed_button_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
                 android:contentDescription="@string/proceed_button_icon"
                 android:scaleType="centerCrop"
+                app:tint="@color/elis_black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/deliveryAddressName"

@@ -38,7 +38,7 @@ class SendDeliveryAddressFragment : Fragment() {
         binding.lifecycleOwner = this
         binding.viewModel = sharedViewModel
 
-        binding.toolbar.title = getString(R.string.delivery_address_title)
+        binding.toolbar.title = getString(R.string.send_order_delivery_address)
         binding.toolbar.setNavigationIcon(R.drawable.ic_back)
         binding.toolbar.setNavigationOnClickListener {
             view?.let { it ->
