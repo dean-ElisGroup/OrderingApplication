@@ -20,13 +20,13 @@
         android:layout_margin="10dp"
         android:clickable="true"
         android:elevation="5dp"
-        android:minHeight="100dp"
+        android:minHeight="70dp"
         app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="10dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="70dp"
             android:layout_margin="5dp"
             android:backgroundTint="@color/white"
             android:gravity="center|fill"
@@ -37,19 +37,19 @@
 
             <ImageView
                 android:id="@+id/delivery_address_icon"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
                 android:contentDescription="@string/delivery_address_icon"
-                app:tint="@color/elis_black"
                 android:scaleType="fitCenter"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/deliveryAddressName"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.5"
-                app:srcCompat="@drawable/baseline_pin_drop_24" />
+                app:srcCompat="@drawable/baseline_pin_drop_24"
+                app:tint="@color/elis_black" />
 
             <ImageView
                 android:id="@+id/proceed_button_icon"
@@ -59,24 +59,28 @@
                 android:layout_marginBottom="16dp"
                 android:contentDescription="@string/proceed_button_icon"
                 android:scaleType="centerCrop"
-                app:tint="@color/elis_black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/deliveryAddressName"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.5"
                 app:srcCompat="@drawable/baseline_arrow_right_24_black"
+                app:tint="@color/elis_black"
                 tools:ignore="RedundantDescriptionCheck" />
 
             <TextView
                 android:id="@+id/deliveryAddressName"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:layout_marginEnd="5dp"
+                android:layout_marginEnd="10dp"
+                android:autoSizeTextType="uniform"
                 android:fontFamily="@font/elis_sharpsans"
                 android:gravity="center_vertical"
+                android:maxLines="1"
+                android:singleLine="true"
                 android:text="@{orderingGroup.orderingGroupDescription}"
+                android:textAlignment="viewStart"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"

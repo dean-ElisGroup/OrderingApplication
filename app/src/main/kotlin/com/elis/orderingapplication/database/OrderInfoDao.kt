@@ -1,6 +1,7 @@
 package com.elis.orderingapplication.database
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -14,6 +15,9 @@ import com.elis.orderingapplication.pojo2.Order
 import com.elis.orderingapplication.pojo2.OrderRowsItem
 import com.elis.orderingapplication.pojo2.OrderingGroup
 import com.elis.orderingapplication.pojo2.PointsOfService
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.withContext
 
 @Dao
 interface OrderInfoDao {
@@ -60,10 +64,10 @@ interface OrderInfoDao {
 
     @Query(
         """
-    UPDATE pos_order SET appOrderStatus = :appOrderStatus where appOrderId = :appOrderId 
+    UPDATE pos_order SET appOrderStatus = :appOrderStatus, orderStatus = :solOrderStatus where appOrderId = :appOrderId 
     """
     )
-    fun updateOrderStatus(appOrderId: String, appOrderStatus: String)
+    fun updateOrderStatus(appOrderId: String, appOrderStatus: String, solOrderStatus: Int)
 
     @Transaction
     @Query("SELECT  * FROM ordering_group WHERE order_group_id = :orderGroupId")
@@ -76,6 +80,21 @@ interface OrderInfoDao {
     @Transaction
     @Query("SELECT * FROM points_of_service WHERE deliveryAddressNo = :deliveryAddressNo AND orderingGroupNo = :orderingGroup ")
     fun getPointsOfService(deliveryAddressNo: String, orderingGroup: String) : LiveData<List<PointsOfService>>
+
+    @Transaction
+    @Query("""
+        SELECT COUNT(*)
+        FROM pos_order
+        WHERE EXISTS (
+            SELECT 1
+            FROM points_of_service
+            WHERE deliveryAddressNo = :deliveryAddressNo
+            AND orderingGroupNo = :orderingGroup
+            AND pos_order.point_of_service_no = points_of_service.point_of_service
+            AND pos_order.deliveryAddressNo = points_of_service.deliveryAddressNo
+        )
+    """)
+    fun getOrderCountForPointsOfService(deliveryAddressNo: String, orderingGroup: String): LiveData<Int>
 
     @Transaction
     @Query("SELECT * FROM pos_order WHERE deliveryAddressNo = :deliveryAddressNo AND point_of_service_no = :posNumber AND orderDate = :deliveryDate AND orderStatus = :orderStatus ")
@@ -98,5 +117,7 @@ interface OrderInfoDao {
     @Query("SELECT * FROM pos_order WHERE deliveryAddressNo = :deliveryAddressNo AND appOrderStatus = :orderStatus ")
     fun getSendOrders(deliveryAddressNo: String, orderStatus: Int) : LiveData<List<Order>>
 
+    @Query("SELECT COUNT(*) FROM pos_order WHERE deliveryAddressNo = :deliveryAddressNo AND orderDate = :orderDate")
+    fun getOrderCount(deliveryAddressNo: String, orderDate: String): Int
 
 }

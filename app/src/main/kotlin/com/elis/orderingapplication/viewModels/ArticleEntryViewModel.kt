@@ -12,6 +12,7 @@ import androidx.lifecycle.viewModelScope
 import com.elis.orderingapplication.constants.Constants
 import com.elis.orderingapplication.constants.Constants.Companion.APP_STATUS_SENT
 import com.elis.orderingapplication.constants.Constants.Companion.DATE_TOO_LATE
+import com.elis.orderingapplication.constants.Constants.Companion.ORDER_STATUS_FINISHED
 import com.elis.orderingapplication.database.OrderInfoDatabase
 import com.elis.orderingapplication.pojo2.Article
 import com.elis.orderingapplication.pojo2.DeliveryAddress
@@ -112,11 +113,14 @@ class ArticleEntryViewModel(
         }
     }
 
-    fun updateOrderStatus(order: Order) {
+    fun updateOrderStatus(order: Order, appStatus: String, orderStatus: Int) {
         viewModelScope.launch {
             withContext(Dispatchers.IO){
                 withContext(Dispatchers.IO){
-                    database.orderInfoDao.updateOrderStatus(order.appOrderId, "Submitted")
+                    database.orderInfoDao.updateOrderStatus(order.appOrderId,
+                        appStatus,
+                        orderStatus
+                    )
                 }
             }
         }

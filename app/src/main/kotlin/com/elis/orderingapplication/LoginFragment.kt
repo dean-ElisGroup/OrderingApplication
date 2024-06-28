@@ -1,5 +1,6 @@
 package com.elis.orderingapplication
 
+import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
@@ -27,16 +28,25 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import android.widget.ProgressBar
+import androidx.compose.material3.AlertDialog
+import androidx.compose.runtime.Composable
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation.findNavController
 import com.elis.orderingapplication.adapters.LoginAdapter
-import com.elis.orderingapplication.database.OrderInfoDatabase
 import com.elis.orderingapplication.databinding.FragmentLoginBinding
+import com.elis.orderingapplication.model.OrderingLoginResponseStruct
+import com.elis.orderingapplication.model.OrderingOrderInfoResponseStruct
+import com.elis.orderingapplication.pojo2.OrderInfo
 import com.elis.orderingapplication.repositories.UserLoginRepository
 import com.elis.orderingapplication.utils.ApiResponse
+import com.elis.orderingapplication.utils.InternetCheck
 import com.elis.orderingapplication.viewModels.LoginViewModelFactory
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigClientException
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigFetchThrottledException
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class LoginFragment : Fragment() {
 
@@ -65,14 +75,8 @@ class LoginFragment : Fragment() {
         binding.lifecycleOwner = this
         orderInfoLoading = binding.orderInfoLoading
 
-        // Network check
-        /*if (NetworkUtils.isOnline(requireContext())) {
-            Toast.makeText(requireContext(),"You're online, it's all good!!", Toast.LENGTH_LONG).show()
-        } else {
-            Toast.makeText(requireContext(),"You're offline", Toast.LENGTH_LONG).show()
-        }*/
-
         fireBaseRemoteConfig()
+
         return view
     }
 
@@ -85,150 +89,66 @@ class LoginFragment : Fragment() {
         sharedViewModel.setFlavor(BuildConfig.FLAVOR)
         // sets Flavor banner details for login activity
         setFlavorBanner()
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
+            var isInternetAvailable = checkInternetAvailability()
+
+            if(!isInternetAvailable)
+            {
+                showAlertDialog()
+
+            }
+        }
+
 
 
         with(binding) {
             loginButton.setOnClickListener {
-                //view
-                if (checkUsernamePassword()) {
-                    // Sets the required username and password to be sent within the Login Api call.
-                    requireActivity().window.setFlags(
-                        WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-                        WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-                    )
-                    //orderInfoLoading.visibility = VISIBLE
-                    it.hideKeyboard()
-                    // Gets and sets the user entered username and password.
-                    val login = LoginRequest(username.text.toString(), password.text.toString())
-                    // Initiates the Login Api call, passing the above username and password.
-                    loginView.getUserLogin(login)
-                    loginView.userLoginResponse.observe(viewLifecycleOwner) { response ->
-                        when (response) {
-                            is ApiResponse.Success -> {
-                                // Sets the session key to be used for the Ordering Api call.
-                                orderInfoLoading.visibility = VISIBLE
-
-                                response.data?.let { it1 -> sharedViewModel.setSessionKey(it1.sessionKey) }
-                                val sessionKey = OrderingRequest(sharedViewModel.getSessionKey())
-                                loginView.getOrderInfo(sessionKey)
-                                loginView.orderInfoResponse.observe(viewLifecycleOwner) { orderInfoResponse ->
-                                    //sharedViewModel.setOrderInfo(loginView.orderInfoResponse.observe())
-                                    when (orderInfoResponse) {
-                                        is ApiResponse.Success -> {
-                                            sharedViewModel.setOrderInfo(loginView.orderInfoResponse.value)
-
-                                            val deliveryAddressList =
-                                                loginView.orderInfoResponse.value?.data?.deliveryAddresses
-                                            val orderingGroupList =
-                                                loginView.orderInfoResponse.value?.data?.orderingGroups
-
-                                            context?.let { it1 ->
-                                                if (orderingGroupList != null) {
-                                                    loginView.insertToDatabase(
-                                                        it1,
-                                                        deliveryAddressList,
-                                                        orderingGroupList
-                                                    )
-                                                }
-                                            }
-                                            findNavController(view).navigate(R.id.action_loginFragment_to_landingPageFragment)
-                                        }
-
-                                        is ApiResponse.Loading -> {
-                                            orderInfoLoading.visibility = VISIBLE
-                                        }
-
-                                        is ApiResponse.Error -> {
-                                            orderInfoLoading.visibility = INVISIBLE
-                                            response.data?.let { error ->
-                                                Log.e("TAG", error.message)
-                                                Toast.makeText(
-                                                    requireContext(),
-                                                    error.message,
-                                                    Toast.LENGTH_SHORT
-                                                ).show()
-                                                requireActivity().window.clearFlags(
-                                                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-                                                )
-                                            }
-                                        }
-
-                                        is ApiResponse.NoDataError -> {
-                                            orderInfoLoading.visibility = INVISIBLE
-                                            val noDataMessage =
-                                                "There was an issue loading data. Please try again."
-                                            Log.e("TAG", noDataMessage)
-
-                                            Toast.makeText(
-                                                requireContext(),
-                                                noDataMessage,
-                                                Toast.LENGTH_SHORT
-
-                                            ).show()
-                                            requireActivity().window.clearFlags(
-                                                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-                                            )
-                                        }
-
-                                        else -> {
-                                            Toast.makeText(
-                                                requireContext(),
-                                                "There was an issue loading data. Please try logging in again.",
-                                                Toast.LENGTH_SHORT
-                                            ).show()
-                                        }
-                                    }
-                                }
-
-                            }
-
-                            is ApiResponse.Error -> {
-                                orderInfoLoading.visibility = INVISIBLE
-                                response.data?.let { error ->
-                                    Log.e("TAG", error.message)
-                                    Toast.makeText(
-                                        requireContext(),
-                                        error.message,
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                    requireActivity().window.clearFlags(
-                                        WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-                                    )
-                                }
-                            }
-
-                            is ApiResponse.ErrorLogin -> {
-                                orderInfoLoading.visibility = INVISIBLE
-                                val loginFailed = "Login Failed"
-                                Toast.makeText(
-                                    requireContext(),
-                                    loginFailed,
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                                requireActivity().window.clearFlags(
-                                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-                                )
-                            }
-
-
-                            is ApiResponse.Loading -> {
-                                orderInfoLoading.visibility = VISIBLE
-                            }
-
-                            else -> {
-                                Toast.makeText(
-                                    requireContext(),
-                                    "Error1",
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
+                    var isInternetAvailable = checkInternetAvailability()
+                    //isInternetAvailable = true
+                    if (isInternetAvailable) {
+                        // Internet is available, proceed with network operations
+                        if (checkUsernamePassword()) {
+                            // Sets the required username and password to be sent within the Login Api call.
+                            requireActivity().window.setFlags(
+                                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+                            )
+                            it.hideKeyboard()
+                            // Gets and sets the user entered username and password.
+                            val usernameText = username.text.toString()
+                            val passwordText = password.text.toString()
+                            val login = LoginRequest(usernameText, passwordText)
+                            // Initiates the Login Api call, passing the above username and password.
+                            loginView.resetLoginState(viewLifecycleOwner)
+                            loginView.getUserLogin(login)
+                            loginView.userLoginResponse.observe(viewLifecycleOwner) { response ->
+                                handleLoginResponse(response)
                             }
                         }
+                    } else {
+                        showNoInternetToast()
                     }
                 }
             }
         }
     }
 
+    private fun showAlertDialog() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Internet Connection")
+        builder.setMessage("There is currently no internet connection. Please check your connection and try again.")
+        builder.setIcon(R.drawable.outline_error_24)
+        builder.setPositiveButton("OK") { dialog, which ->
+            // Handle positive button click
+            dialog.dismiss()
+        }
+
+        builder.setCancelable(true)
+
+        val dialog = builder.create()
+        dialog.show()
+    }
 
     private fun View.hideKeyboard() {
         val inputManager =
@@ -286,5 +206,121 @@ class LoginFragment : Fragment() {
             false
         } else true
     }
+
+    private suspend fun checkInternetAvailability(): Boolean {
+        return withContext(Dispatchers.IO) {
+            val isInternetAvailable = InternetCheck.isInternetAvailable()
+            isInternetAvailable
+        }
+    }
+
+    private fun handleLoginResponse(response: ApiResponse<OrderingLoginResponseStruct>?) {
+        if (response != null) {
+            when (response) {
+                is ApiResponse.Success -> {
+                    orderInfoLoading?.visibility = VISIBLE
+                    response.data?.sessionKey?.let { sessionKey ->
+                        sharedViewModel.setSessionKey(sessionKey)
+                        val sessionKeyRequest = OrderingRequest(sessionKey)
+                        loginView.getOrderInfo(sessionKeyRequest)
+                        loginView.orderInfoResponse.observe(viewLifecycleOwner) { orderInfoResponse ->
+                            handleOrderInfoResponse(orderInfoResponse)
+                        }
+                    }
+                }
+
+                is ApiResponse.Error -> {
+                    val errorMessage = response.message ?: "An error occurred"
+                    showToast(errorMessage)
+                }
+
+                is ApiResponse.ErrorLogin -> {
+                    val errorMessage = response.data?.message ?: "Login error occurred"
+                    orderInfoLoading?.visibility = VISIBLE
+                    showToast(errorMessage)
+                    orderInfoLoading?.visibility = INVISIBLE
+                }
+
+                is ApiResponse.ErrorSendOrderDate -> {
+                    val errorMessage = "An unexpected error occurred"
+                    showToast(errorMessage)
+                }
+
+                is ApiResponse.Loading -> {
+                    orderInfoLoading?.visibility = VISIBLE
+                }
+
+                is ApiResponse.NoDataError -> {
+                    val errorMessage = "An unexpected error occurred"
+                    showToast(errorMessage)
+                }
+
+                is ApiResponse.UnknownError -> {
+                    val errorMessage = "An unexpected error occurred"
+                    showToast(errorMessage)
+                }
+            }
+            clearNotTouchableFlag()
+        }
+    }
+
+
+    private fun handleOrderInfoResponse(response: ApiResponse<OrderInfo>?) {
+        when (response) {
+            is ApiResponse.Success -> {
+                sharedViewModel.setOrderInfo(response)
+                val deliveryAddressList = response.data?.deliveryAddresses
+                val orderingGroupList = response.data?.orderingGroups
+                context?.let { context ->
+                    if (orderingGroupList != null) {
+                        loginView.insertToDatabase(context, deliveryAddressList, orderingGroupList)
+                    }
+                }
+                val navController = view?.let { findNavController(it) }
+                if (navController?.currentDestination?.id != R.id.landingPageFragment) {
+                    navController?.navigate(R.id.action_loginFragment_to_landingPageFragment)
+                }
+            }
+
+            is ApiResponse.Loading -> {
+                orderInfoLoading?.visibility = VISIBLE
+
+            }
+
+            is ApiResponse.Error -> TODO()
+            is ApiResponse.ErrorLogin -> TODO()
+            is ApiResponse.ErrorSendOrderDate -> TODO()
+            is ApiResponse.NoDataError -> TODO()
+            is ApiResponse.UnknownError -> TODO()
+            null -> TODO()
+        }
+
+    }
+
+    private fun showNoInternetToast() {
+        Toast.makeText(
+            requireContext(),
+            "There is no Internet connection!\nPlease check you have a connection.",
+            Toast.LENGTH_SHORT
+        ).show()
+    }
+
+    private fun showGenericErrorToast() {
+        Toast.makeText(
+            requireContext(),
+            "There was an issue loading data. Please try logging in again.",
+            Toast.LENGTH_SHORT
+        ).show()
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun clearNotTouchableFlag() {
+        requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+    }
+
+
 }
 

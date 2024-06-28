@@ -14,7 +14,7 @@ import com.elis.orderingapplication.pojo2.DateTypeConverter
 import com.elis.orderingapplication.pojo2.OrderingGroup
 
 //@Database(entities = [OrderInfo::class], version = 1, exportSchema = false)
-@Database(entities = [DeliveryAddress::class, PointsOfService::class, Order::class, Article::class, OrderingGroup::class], version = 25, exportSchema = false)
+@Database(entities = [DeliveryAddress::class, PointsOfService::class, Order::class, Article::class, OrderingGroup::class], version = 27, exportSchema = false)
 @TypeConverters(DateTypeConverter::class)
 abstract class OrderInfoDatabase : RoomDatabase() {
 

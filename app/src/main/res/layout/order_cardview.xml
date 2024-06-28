@@ -46,29 +46,35 @@
 
             <ImageView
                 android:id="@+id/new_status"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                app:layout_constraintEnd_toStartOf="@+id/proceed_arrow"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/baseline_fiber_new_24" />
 
             <TextView
                 android:id="@+id/totalArticles"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
                 android:fontFamily="@font/gothic_a1_medium"
                 android:text='@{"Total articles: " + order.totalArticles.toString()}'
                 android:textAlignment="center"
                 android:textSize="16sp"
-                app:layout_constraintTop_toBottomOf="@+id/new_status"
-                tools:layout_editor_absoluteX="7dp" />
+                app:layout_constraintEnd_toStartOf="@+id/proceed_arrow"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/new_status" />
 
             <TextView
                 android:id="@+id/orderingGroupName"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="6dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
                 android:autoSizeTextType="none"
                 android:fontFamily="@font/gothic_a1_medium"
                 android:gravity="center|center_vertical"
@@ -79,19 +85,23 @@
                 android:text='@{"Delivery date: " + deliveryDate}'
                 android:textColor="@color/elis_black"
                 android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/proceed_arrow"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/totalArticles" />
 
             <ImageView
                 android:id="@+id/proceed_arrow"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="16dp"
                 android:foregroundGravity="right"
-                android:scaleType="fitEnd"
-                app:srcCompat="@drawable/baseline_arrow_right_24_black"
-                tools:layout_editor_absoluteX="10dp"
-                tools:layout_editor_absoluteY="68dp" />
+                android:scaleType="fitCenter"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/baseline_arrow_right_24_black" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>

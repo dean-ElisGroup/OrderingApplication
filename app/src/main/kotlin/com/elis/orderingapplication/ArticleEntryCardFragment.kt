@@ -14,6 +14,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import com.elis.orderingapplication.constants.Constants
 import com.elis.orderingapplication.databinding.FragmentArticleEntryViewpagerBinding
 import com.elis.orderingapplication.pojo2.Article
 import com.elis.orderingapplication.pojo2.OrderEvent
@@ -24,6 +26,13 @@ import com.elis.orderingapplication.viewModels.ArticleEntryViewModelFactory
 import com.elis.orderingapplication.viewModels.ParamsViewModel
 import com.elis.orderingapplication.viewModels.SharedViewModelFactory
 import com.elis.orderingapplication.pojo2.Order
+import com.elis.orderingapplication.utils.InternetCheck
+import com.elis.orderingapplication.utils.NetworkUtils
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.time.delay
+import java.time.Duration
 import java.util.UUID
 
 class ArticleEntryCardFragment : Fragment() {
@@ -134,13 +143,48 @@ class ArticleEntryCardFragment : Fragment() {
             }
         }
         binding.sendOrderButton.setOnClickListener {
-            currentOrderData?.let { it1 -> sendOrderToSOL(it1) }
+            viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
+                startInternetCheckJob()
+                //currentOrderData?.let { it1 -> sendOrderToSOL(it1) }
+            }
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+// Starts a check to see if there's a physical connection to the internet.
+    private fun startInternetCheckJob() {
+        lifecycleScope.launch {
+            while (isActive) {
+                val isInternetAvailable = NetworkUtils.isInternetAvailable(requireContext())
+                if (isInternetAvailable) {
+                    // Internet is available, perform your desired actions
+                    currentOrderData?.let { it1 -> sendOrderToSOL(it1) }
+                    Toast.makeText(
+                        requireContext(),
+                        "Internet is available",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    // Internet is not available, perform your desired actions
+                    currentOrderData?.let {
+                        articleEntryViewModel.updateOrderStatus(
+                            it,
+                            Constants.APP_STATUS_FINISHED.toString(),
+                            Constants.ORDER_STATUS_FINISHED
+                        )
+                    }
+                    Toast.makeText(
+                        requireContext(),
+                        "Internet is not available",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                delay(Duration.ofSeconds(5000)) // Delay for 5 seconds before checking again
+            }
+        }
     }
 
     private fun externalOrderId(length: Int = 12): String {
@@ -153,7 +197,7 @@ class ArticleEntryCardFragment : Fragment() {
         val hexString = byteArray.joinToString("") { "%02x".format(it) }
         return hexString.take(length)
     }
-    //private val externalSOLOrderId = externalOrderId()
+
     private fun sendOrderToSOL(order: Order, externalOrderId: String = externalOrderId()) {
         val sendOrder = articleEntryViewModel.sendOrderToSOL(order, externalOrderId)
         val sendOrderEvent = OrderEvent(sharedViewModel.getSessionKey(), sendOrder)
@@ -175,7 +219,12 @@ class ArticleEntryCardFragment : Fragment() {
     }
 
     private fun handleSuccessResponse(success: Boolean?) {
-        currentOrderData?.let { articleEntryViewModel.updateOrderStatus(it) }
+        currentOrderData?.let {
+            articleEntryViewModel.updateOrderStatus(
+                it, Constants.APP_STATUS_SENT.toString(),
+                Constants.ORDER_STATUS_FINISHED
+            )
+        }
 
         if (success == true) {
             Toast.makeText(requireContext(), "Order sent to Sol", Toast.LENGTH_SHORT).show()

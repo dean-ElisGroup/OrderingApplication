@@ -1,6 +1,7 @@
 package com.elis.orderingapplication.viewModels
 
 import android.content.Context
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -28,6 +29,8 @@ class LoginViewModel(private val loginRep: UserLoginRepository) : ViewModel() {
     val orderInfoResponse: MutableLiveData<ApiResponse<OrderInfo>?> =
         MutableLiveData()
 
+    var orderCount = 0
+
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
 
     fun getUserLogin(loginRequest: LoginRequest) = viewModelScope.launch {
@@ -47,7 +50,8 @@ class LoginViewModel(private val loginRep: UserLoginRepository) : ViewModel() {
                 // Update fields within the PointsOfService object
                 pointsOfService.deliveryAddressNo = deliveryAddress.deliveryAddressNo
                 pointsOfService.deliveryAddressName = deliveryAddress.deliveryAddressName
-                pointsOfService.orderingGroupDescription = orderingGroupResponse?.firstOrNull{it.orderingGroupNo == pointsOfService.pointOfServiceOrderingGroupNo}?.orderingGroupDescription
+                pointsOfService.orderingGroupDescription =
+                    orderingGroupResponse?.firstOrNull { it.orderingGroupNo == pointsOfService.pointOfServiceOrderingGroupNo }?.orderingGroupDescription
                 // Iterate over the orders list within each PointsOfService
                 pointsOfService.orders?.forEach { order ->
                     // Update fields within the Order object
@@ -56,7 +60,6 @@ class LoginViewModel(private val loginRep: UserLoginRepository) : ViewModel() {
                     order.posName = pointsOfService.pointOfServiceName
                     order.deliveryAddressNo = pointsOfService.deliveryAddressNo
                     order.deliveryAddressName = pointsOfService.deliveryAddressName
-
                     // Iterate over the articles list within each Order
                     order.articles?.forEach { article ->
                         // Update fields within the Article object
@@ -74,7 +77,11 @@ class LoginViewModel(private val loginRep: UserLoginRepository) : ViewModel() {
         orderInfoResponse.postValue(handleOrderInfoResponse(response))
     }
 
-    fun insertToDatabase(context: Context, addressList: List<DeliveryAddress>?, orderingGroupList: List<OrderingGroup>) {
+    fun insertToDatabase(
+        context: Context,
+        addressList: List<DeliveryAddress>?,
+        orderingGroupList: List<OrderingGroup>
+    ) {
         coroutineScope.launch {
             if (addressList != null) {
                 val database = OrderInfoDatabase.getInstance(context)
@@ -104,19 +111,22 @@ class LoginViewModel(private val loginRep: UserLoginRepository) : ViewModel() {
             }
         }
     }
-    private fun handleUserLoginResponse(response: Response<OrderingLoginResponseStruct>): ApiResponse<OrderingLoginResponseStruct> {
-        if (response.isSuccessful && response.body()?.message == "") {
-            response.body()?.let { resultResponse ->
-                return ApiResponse.Success(resultResponse)
-            }
-        }
 
-        if (response.isSuccessful && response.body()?.message != "") {
-            response.body()?.let { errorResultResponse ->
-                return ApiResponse.ErrorLogin(errorResultResponse.message)
+    private fun handleUserLoginResponse(response: Response<OrderingLoginResponseStruct>): ApiResponse<OrderingLoginResponseStruct> {
+        userLoginResponse.value = null
+        return when {
+            response.isSuccessful && response.body()?.message?.isEmpty() == true -> {
+                ApiResponse.Success(response.body())
+
             }
+            response.isSuccessful && response.body()?.message == "Login failed" -> {
+                ApiResponse.ErrorLogin(response.body()!!.message, response.body())
+            }
+            else -> {
+                ApiResponse.UnknownError("Unknown error occurred")
+            }
+
         }
-        return ApiResponse.Error(response.message())
     }
 
     private fun handleOrderInfoResponse(response: Response<OrderInfo>): ApiResponse<OrderInfo> {
@@ -125,15 +135,18 @@ class LoginViewModel(private val loginRep: UserLoginRepository) : ViewModel() {
                 return ApiResponse.Success(resultResponse)
             }
         }
-        //if (response.isSuccessful && response.body()?.deliveryAddresses?.isNotEmpty() == false) {
-        //        return ApiResponse.NoDataError("There was an issue loading data. Please try again.")
-        // }
         return ApiResponse.NoDataError("There was an issue loading data. Please try again.")
     }
 
     fun getDate(): String? {
         val formatter = DateTimeFormatter.ofPattern("EEEE, MMMM, dd, yyyy")
         return LocalDateTime.now().format(formatter)
+    }
+
+    fun resetLoginState(viewLifecycleOwner: LifecycleOwner) {
+        // Update the LiveData or Flow emitting the login state to a neutral or initial state
+        userLoginResponse.value = null
+        userLoginResponse.removeObservers(viewLifecycleOwner)
     }
 }
 

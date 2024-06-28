@@ -6,6 +6,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.elis.orderingapplication.constants.Constants
+import com.elis.orderingapplication.constants.Constants.Companion.APP_STATUS_SENT
+import com.elis.orderingapplication.constants.Constants.Companion.ORDER_STATUS_FINISHED
 import com.elis.orderingapplication.database.OrderInfoDatabase
 import com.elis.orderingapplication.pojo2.Order
 import com.elis.orderingapplication.pojo2.OrderEvent
@@ -104,7 +106,8 @@ private val sharedViewModel: ParamsViewModel
             withContext(Dispatchers.IO){
                 withContext(Dispatchers.IO){
                     database.orderInfoDao.updateOrderStatus(order.appOrderId,
-                        Constants.APP_STATUS_SENT.toString()
+                        APP_STATUS_SENT.toString(),
+                        ORDER_STATUS_FINISHED
                     )
                 }
             }

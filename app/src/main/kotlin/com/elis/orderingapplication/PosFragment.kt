@@ -19,8 +19,10 @@ import com.elis.orderingapplication.viewModels.ParamsViewModel
 import com.elis.orderingapplication.viewModels.PosViewModel
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.viewModelScope
 import com.elis.orderingapplication.adapters.listAdapters.PointOfServiceAdapter
 import com.elis.orderingapplication.viewModels.SharedViewModelFactory
+import kotlinx.coroutines.launch
 
 class PosFragment : Fragment() {
 
@@ -43,15 +45,10 @@ class PosFragment : Fragment() {
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_pos, container, false)
 
-
         binding.sharedViewModel = sharedViewModel
         binding.posViewModel = posViewModel
         binding.toolbar.title = getString(R.string.pos_title)
         binding.toolbar.setNavigationIcon(R.drawable.ic_back)
-
-        //sharedViewModel.argsBundleFromTest.observe(viewLifecycleOwner, Observer {
-        //    deliveryAddressForArgs = it.getString("DELIVERY_ADDRESS_NAME", "")
-        //}).toString()
 
         binding.toolbar.setNavigationOnClickListener {
             view?.let { it ->
@@ -63,7 +60,8 @@ class PosFragment : Fragment() {
             }
         }
 
-        val deliveryAddressFromArgs = sharedViewModel.argsBundleFromTest.value?.getString("DELIVERY_ADDRESS_NAME", "")
+        val deliveryAddressFromArgs =
+            sharedViewModel.argsBundleFromTest.value?.getString("DELIVERY_ADDRESS_NAME", "")
         orderingGroupForArgs =
             sharedViewModel.argsBundleFromTest.value?.getString("ORDERING_GROUP", "")
         if (deliveryAddressFromArgs != null) {
@@ -72,7 +70,7 @@ class PosFragment : Fragment() {
         } else {
             sharedViewModel.argsBundleFromTest.observe(viewLifecycleOwner, Observer {
                 deliveryAddressForArgs = it.getString("DELIVERY_ADDRESS_NAME", "")
-                orderingGroupForArgs = it.getString("ORDERING_GROUP","")
+                orderingGroupForArgs = it.getString("ORDERING_GROUP", "")
                 binding.deliveryAddress.text = deliveryAddressForArgs
                 binding.orderingGroup.text = orderingGroupForArgs
             })
@@ -110,7 +108,6 @@ class PosFragment : Fragment() {
                                         pointOfService.pointOfServiceName
                                     )
                                 )
-                                //}
                                 posViewModel.onPosNavigated()
                             }
                         })
@@ -125,7 +122,7 @@ class PosFragment : Fragment() {
         }
         sharedViewModel.posTotal.observe(
             viewLifecycleOwner,
-            Observer { totalPost -> binding.totalPOS.text = totalPost.toString() })
+            Observer { totalPos -> binding.totalPOS.text = totalPos.toString() })
 
     }
 }

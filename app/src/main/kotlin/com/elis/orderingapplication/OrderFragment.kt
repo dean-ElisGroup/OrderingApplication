@@ -107,12 +107,13 @@ class OrderFragment : Fragment() {
                                         )
                                     )
                                     orderViewModel.onOrderNavigated()
+                                    // Updates the order status to STARTED.
+                                    orderViewModel.updateOrderStatus(myData)
                                 }
                             })
 
                     }
                 })
-
                         binding . orderSelection . adapter = ordersAdapter
                         // Observe the LiveData from the ViewModel
                         orderViewModel.orders.observe(viewLifecycleOwner) { orders ->
