@@ -4,7 +4,7 @@
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
+    <color name="teal_700">#018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="elis_green">#168183</color>
@@ -13,4 +13,6 @@
     <color name="elis_orange">#F07D22</color>
     <color name="elis_light_blue">#A6A7D3</color>
     <color name="elis_lighter_blue">#4A4A9C</color>
+    <color name="elis_red">#E3000B</color>
+    <color name="elis_send_green">#55B42C</color>
 </resources>

@@ -14,6 +14,8 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
+import android.widget.Button
+import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -28,8 +30,10 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.compose.material3.AlertDialog
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation.findNavController
@@ -76,6 +80,28 @@ class LoginFragment : Fragment() {
         orderInfoLoading = binding.orderInfoLoading
 
         fireBaseRemoteConfig()
+        // Find the anchor view (e.g., a button or an overflow icon)
+        val anchorView = binding.overflowMenu
+        // Inflate the overflow menu
+        val overflowMenu = PopupMenu(requireContext(), anchorView)
+        overflowMenu.menuInflater.inflate(R.menu.login_menu, overflowMenu.menu)
+
+        // Set up the OnMenuItemClickListener
+        overflowMenu.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.login_menu_overflow -> {
+                    showDeviceInfoDialog()
+                    true
+                }
+                else -> false
+            }
+        }
+
+        // Show the overflow menu when needed (e.g., on a button click)
+        val overflowButton = binding.overflowMenu //findViewById<Button>(R.id.overflow_menu)
+        overflowButton.setOnClickListener {
+            overflowMenu.show()
+        }
 
         return view
     }
@@ -161,6 +187,8 @@ class LoginFragment : Fragment() {
         // sets banner text
         if (sharedViewModel.flavor.value == "development") {
             flavorBanner.text = resources.getString(R.string.devFlavorText)
+            binding.debugBanner.setBackgroundColor(ContextCompat.getColor(requireContext(),R.color.purple_200))
+            binding.bannerText.text = resources.getString(R.string.devFlavorText)
         }
         // hides banner if PROD application
         if (sharedViewModel.flavor.value == "production") {
@@ -169,13 +197,15 @@ class LoginFragment : Fragment() {
         // sets banner text and banner color
         if (sharedViewModel.flavor.value == "staging") {
             flavorBanner.text = resources.getString(R.string.testFlavorText)
-            flavorBanner.run {
+            binding.debugBanner.setBackgroundColor(ContextCompat.getColor(requireContext(),R.color.elis_orange))
+            binding.bannerText.text = resources.getString(R.string.devFlavorText)
+            /*flavorBanner.run {
                 setBackgroundColor(
                     ContextCompat.getColor(
                         context, R.color.elis_orange
                     )
                 )
-            }
+            }*/
         }
     }
 
@@ -319,6 +349,17 @@ class LoginFragment : Fragment() {
 
     private fun clearNotTouchableFlag() {
         requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+    }
+
+    private fun showDeviceInfoDialog() {
+        // Create and show the dialog
+        val dialog = AlertDialog.Builder(requireContext())
+            .setTitle("Device info")
+            .setIcon(R.drawable.outline_error_24)
+            .setMessage("This is a dialog shown from the overflow menu.")
+            .setPositiveButton("OK") { _, _ -> }
+            .create()
+        dialog.show()
     }
 
 

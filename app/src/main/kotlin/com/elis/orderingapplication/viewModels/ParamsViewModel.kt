@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.elis.orderingapplication.ArticleEntryCardFragment
 import com.elis.orderingapplication.pojo2.DeliveryAddress
 import com.elis.orderingapplication.pojo2.Order
 import com.elis.orderingapplication.pojo2.OrderInfo
@@ -74,6 +75,8 @@ class ParamsViewModel : ViewModel() {
     private val articleDeliveryDate: LiveData<String> = _articleDeliveryDate
 
     val argsBundleFromTest = MutableLiveData<Bundle>()
+
+    private var lastArticleCallback: ArticleEntryCardFragment.LastArticleCallback? = null
 
     fun setOrderDate(orderDate: String) {
         _orderDate.value = orderDate
@@ -205,6 +208,14 @@ class ParamsViewModel : ViewModel() {
 
     fun hasNoAppVersion(): Boolean {
         return _appVersion.value.isNullOrEmpty()
+    }
+
+    fun setLastArticleCallback(callback: ArticleEntryCardFragment.LastArticleCallback) {
+        lastArticleCallback = callback
+    }
+
+    fun getLastArticleCallback(): ArticleEntryCardFragment.LastArticleCallback? {
+        return lastArticleCallback
     }
 
 

@@ -34,7 +34,7 @@ android {
             applicationIdSuffix ".dev"
             manifestPlaceholders = [appLabel: "Stock Ordering - Dev"]
             namespace 'com.solstockorder.dev'
-            versionName "1.2.16"
+            versionName "2.0.0"
         }
         staging {
             dimension "app_environment"
@@ -42,6 +42,7 @@ android {
             applicationId "com.solstockorder"
             manifestPlaceholders = [appLabel: "Stock Ordering - Test"]
             namespace 'com.solcstockorder.test'
+            versionName "2.0.0"
             buildFeatures{
                 dataBinding = true
                 viewBinding = true
@@ -54,6 +55,7 @@ android {
             applicationId "com.flutterflow.elisinventoryorderingapp"
             manifestPlaceholders = [appLabel: "Stock Ordering"]
             namespace 'com.elis.orderingapplication'
+            versionName "2.0.0"
             buildFeatures{
                 dataBinding = true
                 viewBinding = true

@@ -11,8 +11,10 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.addCallback
+import androidx.core.content.ContextCompat
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
@@ -116,6 +118,7 @@ class LandingPageFragment : Fragment() {
             "order_info_database"
         ).build()
         binding.apply { viewModel = sharedViewModel }
+        setFlavorBanner()
         //apiCall2(sharedViewModel.session_key.value.toString())
         menuHost.addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -145,6 +148,30 @@ class LandingPageFragment : Fragment() {
                 "Please use the logout function",
                 Toast.LENGTH_LONG
             ).show()
+        }
+    }
+
+    private fun setFlavorBanner() {
+        // sets banner text
+        if (sharedViewModel.flavor.value == "development") {
+            binding.debugBanner.setBackgroundColor(ContextCompat.getColor(requireContext(),R.color.purple_200))
+            binding.bannerText.text = resources.getString(R.string.devFlavorText)
+        }
+        // hides banner if PROD application
+        if (sharedViewModel.flavor.value == "production") {
+
+        }
+        // sets banner text and banner color
+        if (sharedViewModel.flavor.value == "staging") {
+            binding.debugBanner.setBackgroundColor(ContextCompat.getColor(requireContext(),R.color.elis_orange))
+            binding.bannerText.text = resources.getString(R.string.devFlavorText)
+            /*flavorBanner.run {
+                setBackgroundColor(
+                    ContextCompat.getColor(
+                        context, R.color.elis_orange
+                    )
+                )
+            }*/
         }
     }
 

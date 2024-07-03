@@ -1,11 +1,13 @@
 package com.elis.orderingapplication.adapters
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.elis.orderingapplication.ArticleEntryCardFragment
+import com.elis.orderingapplication.databinding.FragmentArticleEntryViewpagerBinding
 import com.elis.orderingapplication.pojo2.Article
 import com.elis.orderingapplication.pojo2.ArticleParcelable
 
@@ -14,15 +16,14 @@ class ArticleEntryAdapter(
     lifecycle: Lifecycle,
     private var articles: List<Article>,
 
-) :
-    FragmentStateAdapter(fragmentManager, lifecycle) {
+    ) : FragmentStateAdapter(fragmentManager, lifecycle) {
     override fun getItemCount(): Int = articles.size
 
     override fun createFragment(position: Int): Fragment {
 
         val articles = articles[position]
         val entryFragment = ArticleEntryCardFragment()
-        val articlePosition = position+1
+        val articlePosition = position + 1
 
         val updatedArticleList = parcelizeArticle(articles)
 
@@ -31,11 +32,13 @@ class ArticleEntryAdapter(
             putString("numberOfArticles", itemCount.toString())
             putInt("currentArticlePosition", articlePosition)
             putInt("currentArticle", position)
+            putInt("totalArticles", itemCount)
         }
         entryFragment.arguments = fragmentBundle
 
         return entryFragment
     }
+
     private fun parcelizeArticle(articlesList: Article): ArticleParcelable {
         val articleParcelable = ArticleParcelable(
             articlesList.articleNo,
@@ -53,7 +56,8 @@ class ArticleEntryAdapter(
             articlesList.orderDate,
             articlesList.appOrderId,
             articlesList.deliveryAddressNo,
-            articlesList.deliveryAddressName)
+            articlesList.deliveryAddressName
+        )
 
         return articleParcelable
     }

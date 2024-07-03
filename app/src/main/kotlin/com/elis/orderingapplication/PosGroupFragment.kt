@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -67,7 +68,7 @@ class PosGroupFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        setFlavorBanner()
         val recyclerView: RecyclerView = binding.orderingGroupSelection
         val spacingInPixels = resources.getDimensionPixelSize(R.dimen.spacing)
         val itemSpacingDecoration = CardViewDecoration(spacingInPixels)
@@ -105,6 +106,22 @@ class PosGroupFragment : Fragment() {
         // Observe the LiveData from the ViewModel
         orderingGroupViewModel.orderingGroup.observe(viewLifecycleOwner) { orderingGroup ->
             orderingGroupAdapter.setData(orderingGroup)
+        }
+    }
+
+    private fun setFlavorBanner() {
+        // sets banner text
+        if (sharedViewModel.flavor.value == "development") {
+            binding.debugBanner.setBackgroundColor(ContextCompat.getColor(requireContext(),R.color.purple_200))
+            binding.bannerText.text = resources.getString(R.string.devFlavorText)
+        }
+        // hides banner if PROD application
+        if (sharedViewModel.flavor.value == "production") {
+        }
+        // sets banner text and banner color
+        if (sharedViewModel.flavor.value == "staging") {
+            binding.debugBanner.setBackgroundColor(ContextCompat.getColor(requireContext(),R.color.elis_orange))
+            binding.bannerText.text = resources.getString(R.string.devFlavorText)
         }
     }
 }

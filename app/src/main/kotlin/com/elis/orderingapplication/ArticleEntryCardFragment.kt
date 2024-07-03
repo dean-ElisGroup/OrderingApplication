@@ -15,6 +15,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.elis.orderingapplication.constants.Constants
 import com.elis.orderingapplication.databinding.FragmentArticleEntryViewpagerBinding
 import com.elis.orderingapplication.pojo2.Article
@@ -49,8 +50,11 @@ class ArticleEntryCardFragment : Fragment() {
     private var currentOrderData: Order? = null
     private var currentArticle: Article? = null
     private var numberOfArticles: Int? = null
+    private var totalArticles: Int? = null
     private var currentArticlePosition: Int? = null
     private var currentArticleOrder: Int? = null
+
+    private var bindingEntry: FragmentArticleEntryViewpagerBinding? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -59,7 +63,8 @@ class ArticleEntryCardFragment : Fragment() {
         _binding = FragmentArticleEntryViewpagerBinding.inflate(inflater, container, false)
         binding.sharedViewModel = sharedViewModel
 
-        return binding.root
+
+        return _binding!!.root // binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -74,11 +79,17 @@ class ArticleEntryCardFragment : Fragment() {
 
         currentArticlePosition = arguments?.getInt("currentArticlePosition")
         currentArticleOrder = arguments?.getInt("currentArticle")
+        totalArticles = arguments?.getInt("totalArticles")
+
+
 
         observeOrderData()
         observeArticleData()
         setupCountedQtyTextChangeListener()
+
+
     }
+
 
     private fun observeOrderData() {
         articleEntryViewModel.order.observe(viewLifecycleOwner) { currentOrder ->
@@ -97,14 +108,19 @@ class ArticleEntryCardFragment : Fragment() {
 
     private fun updateUI(article: Article?) {
         article?.let {
-            binding.articleNo.text = it.articleNo
-            binding.articleDescription.text = it.articleDescription
-            binding.targetQty.text = it.articleTargetQty.toString()
+            //binding.articleNo.text = it.articleNo
+            //binding.articleDescription.text = it.articleDescription
+            //binding.targetQty.text = it.articleTargetQty.toString()
+//            binding.article = article
+            _binding?.article = article
         }
 
-        val isLastArticle = currentArticlePosition == numberOfArticles
+        val isLastArticle = currentArticlePosition == totalArticles //numberOfArticles
         binding.lastArticleText.isVisible = isLastArticle
-        binding.sendOrderButton.isVisible = isLastArticle
+        //binding.sendOrderButton.isVisible = isLastArticle
+        val lastArticleCallback = sharedViewModel.getLastArticleCallback()
+
+        lastArticleCallback?.onLastArticleChanged(isLastArticle)
 
         binding.ofArticlePosition.text = numberOfArticles?.toString() ?: ""
         binding.articlePosition.text = currentArticlePosition?.toString() ?: ""
@@ -150,25 +166,27 @@ class ArticleEntryCardFragment : Fragment() {
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
+    //override fun onDestroyView() {
+    //    super.onDestroyView()
+    //    _binding = null
+   // }
 // Starts a check to see if there's a physical connection to the internet.
-    private fun startInternetCheckJob() {
+    fun startInternetCheckJob() {
         lifecycleScope.launch {
             while (isActive) {
                 val isInternetAvailable = NetworkUtils.isInternetAvailable(requireContext())
                 if (isInternetAvailable) {
                     // Internet is available, perform your desired actions
                     currentOrderData?.let { it1 -> sendOrderToSOL(it1) }
-                    Toast.makeText(
-                        requireContext(),
-                        "Internet is available",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    // navigate back to the orders screen
+                    findNavController().navigate(R.id.action_articleFragment_to_orderFragment)
+                    //Toast.makeText(
+                    //    requireContext(),
+                    //    "Internet is available",
+                    //    Toast.LENGTH_SHORT
+                    //).show()
                 } else {
-                    // Internet is not available, perform your desired actions
+                    // Internet is not available
                     currentOrderData?.let {
                         articleEntryViewModel.updateOrderStatus(
                             it,
@@ -176,11 +194,12 @@ class ArticleEntryCardFragment : Fragment() {
                             Constants.ORDER_STATUS_FINISHED
                         )
                     }
-                    Toast.makeText(
-                        requireContext(),
-                        "Internet is not available",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    orderNotSubmittedDialog()
+                    //Toast.makeText(
+                    //    requireContext(),
+                    //    "Internet is not available",
+                    //    Toast.LENGTH_SHORT
+                    //).show()
                 }
                 delay(Duration.ofSeconds(5000)) // Delay for 5 seconds before checking again
             }
@@ -225,9 +244,9 @@ class ArticleEntryCardFragment : Fragment() {
                 Constants.ORDER_STATUS_FINISHED
             )
         }
-
         if (success == true) {
             Toast.makeText(requireContext(), "Order sent to Sol", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(R.id.action_articleFragment_to_orderFragment)
         }
     }
 
@@ -297,6 +316,27 @@ class ArticleEntryCardFragment : Fragment() {
 
     private fun clearNotTouchableFlag() {
         requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+    }
+
+    override fun onResume() {
+        super.onResume()
+            updateUI(currentArticle)
+    }
+
+    private fun orderNotSubmittedDialog() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Order Not Submitted")
+            .setMessage("There is currently no connection to the internet.\nThe order has not been sent to SOL.")
+            .setPositiveButton("OK") { _, _ ->
+                // Handle OK button click if needed
+                findNavController().navigate(R.id.action_articleFragment_to_orderFragment)
+                clearNotTouchableFlag()
+            }
+            .setCancelable(false).show() // Prevent dismissing the
+    }
+
+    interface LastArticleCallback {
+        fun onLastArticleChanged(isLastArticle: Boolean)
     }
 }
 

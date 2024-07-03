@@ -1,6 +1,7 @@
 package com.elis.orderingapplication.viewModels
 
 import android.content.Context
+import android.os.Build
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -32,6 +33,11 @@ class LoginViewModel(private val loginRep: UserLoginRepository) : ViewModel() {
     var orderCount = 0
 
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
+
+    fun getDeviceInfo(){
+        val deviceName = Build.MODEL
+        val deviceName1 = Build.DEVICE
+    }
 
     fun getUserLogin(loginRequest: LoginRequest) = viewModelScope.launch {
         userLoginResponse.postValue(ApiResponse.Loading())

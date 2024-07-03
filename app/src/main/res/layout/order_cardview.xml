@@ -15,30 +15,45 @@
         <variable
             name="deliveryDate"
             type="String" />
+
+        <variable
+            name="buttonColour"
+            type="int" />
+        <variable
+            name="buttonTextColor"
+            type="int" />
+        <variable
+            name="statusIconColour"
+            type="int" />
+        <variable
+            name="warningText"
+            type="String" />
+        <variable
+            name="clickable"
+            type="Boolean" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/mainCardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/white"
-        android:clickable="true"
         android:maxHeight="80dp"
         android:minHeight="80dp"
         app:cardCornerRadius="10dp"
-        app:cardElevation="6dp"
         app:strokeColor="@color/elis_black"
+        app:cardElevation="0dp"
         app:strokeWidth="1dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/buttonLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/white"
-            android:elevation="5dp"
             android:gravity="fill"
             android:minHeight="80dp"
-            android:onClick="@{() -> clickListener.onItemClick(order)}"
             android:orientation="horizontal"
             android:padding="5dp"
+            android:elevation="0dp"
+            android:background="@{buttonColour}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
@@ -46,24 +61,27 @@
 
             <ImageView
                 android:id="@+id/new_status"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                app:layout_constraintEnd_toStartOf="@+id/proceed_arrow"
+                android:layout_marginStart="8dp"
+                android:scaleType="fitStart"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                colorFilter="@{statusIconColour}"
                 app:srcCompat="@drawable/baseline_fiber_new_24" />
 
             <TextView
                 android:id="@+id/totalArticles"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginEnd="10dp"
                 android:fontFamily="@font/gothic_a1_medium"
+                android:hint="Total articles:"
                 android:text='@{"Total articles: " + order.totalArticles.toString()}'
-                android:textAlignment="center"
+                android:textAlignment="textStart"
+                android:textColor="@{buttonTextColor}"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toStartOf="@+id/proceed_arrow"
                 app:layout_constraintStart_toStartOf="parent"
@@ -73,17 +91,18 @@
                 android:id="@+id/orderingGroupName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginEnd="10dp"
-                android:autoSizeTextType="none"
+                android:autoSizeTextType="uniform"
                 android:fontFamily="@font/gothic_a1_medium"
-                android:gravity="center|center_vertical"
-                android:maxLines="2"
+                android:gravity="start|center_vertical"
+                android:hint="Delivery date:"
+                android:maxLines="1"
                 android:minLines="1"
                 android:nestedScrollingEnabled="false"
                 android:singleLine="false"
                 android:text='@{"Delivery date: " + deliveryDate}'
-                android:textColor="@color/elis_black"
+                android:textColor="@{buttonTextColor}"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toStartOf="@+id/proceed_arrow"
                 app:layout_constraintStart_toStartOf="parent"
@@ -101,7 +120,25 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                colorFilter="@{statusIconColour}"
                 app:srcCompat="@drawable/baseline_arrow_right_24_black" />
+
+            <TextView
+                android:id="@+id/warningTextField"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:autoSizeTextType="uniform"
+                android:fontFamily="@font/gothic_a1_bold"
+                android:maxLines="1"
+                android:text="@{warningText}"
+                android:textAlignment="center"
+                android:textColor="@{buttonTextColor}"
+                android:textStyle="italic"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/orderingGroupName" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>

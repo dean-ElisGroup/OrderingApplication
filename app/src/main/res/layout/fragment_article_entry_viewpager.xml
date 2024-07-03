@@ -124,6 +124,7 @@
             android:gravity="center_horizontal|center_vertical"
             android:textColor="@color/white"
             android:textSize="30sp"
+            android:text="@{article.articleTargetQty.toString()}"
             app:layout_constraintEnd_toStartOf="@+id/counted_qty"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/counted_qty" />
@@ -141,6 +142,7 @@
             android:textColor="@color/white"
             android:textSize="30sp"
             android:textStyle="bold"
+            android:text="@{article.solOrderQty.toString()}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/counted_qty"
             app:layout_constraintTop_toTopOf="@+id/counted_qty" />
@@ -162,6 +164,7 @@
             android:textColor="@color/elis_black"
             android:textSize="40sp"
             android:textStyle="bold"
+            android:text="@{article.solCountedQty.toString()}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/entercountedqty" />
@@ -180,6 +183,7 @@
             android:textColor="@color/elis_black"
             android:textSize="15sp"
             android:textStyle="bold"
+            android:text="@{article.articleDescription}"
             app:layout_constraintEnd_toEndOf="@+id/order_qty"
             app:layout_constraintStart_toStartOf="@+id/target_qty"
             app:layout_constraintTop_toBottomOf="@+id/counted_qty" />
@@ -194,6 +198,7 @@
             android:textAlignment="center"
             android:textColor="@color/elis_black"
             android:textSize="15sp"
+            android:text="@{article.articleNo}"
             app:layout_constraintBottom_toTopOf="@+id/guideline5"
             app:layout_constraintEnd_toEndOf="@+id/article_description"
             app:layout_constraintStart_toStartOf="@+id/article_description"

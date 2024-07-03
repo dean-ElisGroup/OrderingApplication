@@ -6,12 +6,6 @@
     android:orientation="vertical">
     <data>
         <variable
-            name="sharedViewModel"
-            type="com.elis.orderingapplication.viewModels.ParamsViewModel" />
-        <variable
-            name="deliveryAddressName"
-            type="String" />
-        <variable
             name="orderData"
             type="com.elis.orderingapplication.pojo2.OrderParcelable" />
         <variable
@@ -64,14 +58,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.94" />
+                app:layout_constraintGuide_percent="0.96" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="8dp"
                 android:background="@drawable/instruction_background_v3"
                 android:elevation="2dp"
@@ -190,7 +184,25 @@
                 app:layout_constraintBottom_toTopOf="@+id/guideline6"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+
+            </androidx.viewpager2.widget.ViewPager2>
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/send_order_fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:clickable="true"
+                android:text="@string/submit_order_text"
+                android:textColor="@color/white"
+                android:visibility="gone"
+                app:backgroundTint="#4CAF50"
+                app:icon="@drawable/baseline_send_24"
+                app:iconTint="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/guideline4"
+                app:layout_constraintStart_toStartOf="@+id/guideline3" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline3"
@@ -215,6 +227,7 @@
                 android:contentDescription="@string/elis_logo_bottom"
                 android:focusable="false"
                 android:src="@drawable/elis_logo_white_circular_services_01"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/guideline4"
                 app:layout_constraintStart_toStartOf="@+id/guideline3"
@@ -240,7 +253,34 @@
                 app:layout_constraintEnd_toStartOf="@+id/guideline4"
                 app:layout_constraintTop_toTopOf="parent" />
 
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:id="@+id/debug_banner"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginStart="-40dp"
+            android:layout_marginTop="30dp"
+            android:background="#AA000000"
+            android:orientation="vertical"
+            android:padding="8dp"
+            android:rotation="-45"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/banner_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

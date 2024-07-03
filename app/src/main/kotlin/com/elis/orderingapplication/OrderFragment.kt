@@ -1,11 +1,14 @@
 package com.elis.orderingapplication
 
 import android.app.AlertDialog
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.ui.unit.Constraints
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
@@ -17,6 +20,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import com.elis.orderingapplication.viewModels.ParamsViewModel
 import com.elis.orderingapplication.adapters.listAdapters.OrdersAdapter
+import com.elis.orderingapplication.constants.Constants
 import com.elis.orderingapplication.databinding.FragmentOrderBinding
 import com.elis.orderingapplication.pojo2.Article
 import com.elis.orderingapplication.pojo2.ArticleParcelable
@@ -34,13 +38,11 @@ class OrderFragment : Fragment() {
 
     private lateinit var binding: FragmentOrderBinding
     private val sharedViewModel: ParamsViewModel by activityViewModels()
-    private val args: OrderFragmentArgs by navArgs()
     private lateinit var recyclerView: RecyclerView
     private lateinit var ordersAdapter: OrdersAdapter
     private val orderViewModel: OrderViewModel by viewModels {
         SharedViewModelFactory(sharedViewModel, requireActivity().application)
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,8 +53,6 @@ class OrderFragment : Fragment() {
 
         binding.sharedViewModel = sharedViewModel
         binding.orderViewModel = orderViewModel
-        binding.deliveryAddressName = args.deliveryAddressName
-        binding.pointOfServiceName = args.pointOfServiceName
         binding.toolbar.title = getString(R.string.order_selection_title)
         binding.toolbar.setNavigationIcon(R.drawable.ic_back)
         binding.toolbar.setNavigationOnClickListener {
@@ -61,13 +61,14 @@ class OrderFragment : Fragment() {
                     .navigate(R.id.action_orderFragment_to_posFragment)
             }
         }
+        observeArgsBundleFromTest()
         // Inflate the layout for this fragment
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        setFlavorBanner()
         recyclerView = binding.orderSelection
 
         val spacingInPixels = resources.getDimensionPixelSize(R.dimen.spacing)
@@ -86,13 +87,18 @@ class OrderFragment : Fragment() {
                 orderData.totalArticles,
                 orderData.deliveryAddressNo,
                 orderData.deliveryAddressName,
-                orderData.appOrderId)
+                orderData.appOrderId
+            )
 
             return orderParcelable
         }
-                ordersAdapter =
-                OrdersAdapter(object : OrdersAdapter.MyClickListener {
-                    override fun onItemClick(myData: Order) {
+
+        ordersAdapter =
+            OrdersAdapter(object : OrdersAdapter.MyClickListener {
+                override fun onItemClick(myData: Order, isClickable: Boolean, orderStatus: String?) {
+                    if (!isClickable) {
+                        orderDialog(orderStatus)
+                    } else {
                         orderViewModel.onOrderClicked(myData)
                         sharedViewModel.setArticleDeliveryDate(myData.orderDate.toString())
                         sharedViewModel.setArticleAppOrderId(myData.appOrderId)
@@ -103,7 +109,9 @@ class OrderFragment : Fragment() {
                                 order?.let {
                                     findNavController().navigate(
                                         OrderFragmentDirections.actionOrderFragmentToArticleFragment(
-                                            getOrderDate(order.orderDate), order.appOrderId, orderData
+                                            getOrderDate(order.orderDate),
+                                            order.appOrderId,
+                                            orderData
                                         )
                                     )
                                     orderViewModel.onOrderNavigated()
@@ -111,40 +119,96 @@ class OrderFragment : Fragment() {
                                     orderViewModel.updateOrderStatus(myData)
                                 }
                             })
-
                     }
-                })
-                        binding . orderSelection . adapter = ordersAdapter
-                        // Observe the LiveData from the ViewModel
-                        orderViewModel.orders.observe(viewLifecycleOwner) { orders ->
-                            ordersAdapter.setData(orders)
-                            if (orders.isEmpty()) {
-                                showDialog()
-                            }
-                        }
-        }
-
-        fun getOrderDate(orderDate: String?): String {
-            val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-            val outputFormatter = DateTimeFormatter.ofPattern("EEEE, dd MMMM yyyy", Locale.getDefault())
-            val date = LocalDate.parse(orderDate, inputFormatter)
-
-            return outputFormatter.format(date)
-        }
-
-        private fun showDialog() {
-            val builder = AlertDialog.Builder(requireContext())
-            builder.setTitle("No Data Found")
-            builder.setMessage("Sorry, no orders are available for selection.")
-
-            builder.setPositiveButton("OK") { dialog, _ ->
-                dialog.dismiss()
-                findNavController().navigate(R.id.action_orderFragment_to_posFragment)
+                }
+            })
+        binding.orderSelection.adapter = ordersAdapter
+        // Observe the LiveData from the ViewModel
+        orderViewModel.orders.observe(viewLifecycleOwner) { orders ->
+            ordersAdapter.setData(orders)
+            if (orders.isEmpty()) {
+                showDialog()
             }
+        }
+    }
 
-            val dialog = builder.create()
-            dialog.show()
+    fun getOrderDate(orderDate: String?): String {
+        val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        val outputFormatter = DateTimeFormatter.ofPattern("EEEE, dd MMMM yyyy", Locale.getDefault())
+        val date = LocalDate.parse(orderDate, inputFormatter)
+
+        return outputFormatter.format(date)
+    }
+
+    private fun showDialog() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("No Data Found")
+        builder.setMessage("Sorry, no orders are available for selection.")
+
+        builder.setPositiveButton("OK") { dialog, _ ->
+            dialog.dismiss()
+            findNavController().navigate(R.id.action_orderFragment_to_posFragment)
+        }
+
+        val dialog = builder.create()
+        dialog.show()
+    }
+
+    private fun setFlavorBanner() {
+        // sets banner text
+        if (sharedViewModel.flavor.value == "development") {
+            binding.debugBanner.setBackgroundColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.purple_200
+                )
+            )
+            binding.bannerText.text = resources.getString(R.string.devFlavorText)
+        }
+        // hides banner if PROD application
+        if (sharedViewModel.flavor.value == "production") {
+        }
+        // sets banner text and banner color
+        if (sharedViewModel.flavor.value == "staging") {
+            binding.debugBanner.setBackgroundColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.elis_orange
+                )
+            )
+            binding.bannerText.text = resources.getString(R.string.devFlavorText)
+        }
+    }
+
+    private fun observeArgsBundleFromTest() {
+        sharedViewModel.argsBundleFromTest.observe(viewLifecycleOwner) { bundle ->
+            val deliveryAddressName = bundle.getString("DELIVERY_ADDRESS_NAME", "")
+            val pointOfServiceName = bundle.getString("ORDERING_GROUP", "")
+            binding.deliveryAddressName = deliveryAddressName
+            binding.pointOfServiceName = pointOfServiceName
+        }
+    }
+
+    private fun orderDialog(orderStatus: String?) {
+        var message = ""
+        if (orderStatus == Constants.APP_STATUS_FINISHED.toString()) {
+            message =
+                "Order has been finished. Please submit the order using the Send Order option."
+        } else if (orderStatus == Constants.APP_STATUS_SENT.toString()) {
+            message =
+                "Order has already been submitted."
         }
 
 
+        val dialog = AlertDialog.Builder(requireContext())
+            .setIcon(R.drawable.outline_error_24)
+            .setTitle("Order")
+            .setMessage(message)
+            .setPositiveButton("OK", null)
+            .create()
+        dialog.show()
     }
+
+
+
+}
