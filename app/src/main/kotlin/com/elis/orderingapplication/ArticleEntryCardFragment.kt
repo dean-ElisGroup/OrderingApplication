@@ -180,11 +180,6 @@ class ArticleEntryCardFragment : Fragment() {
                     currentOrderData?.let { it1 -> sendOrderToSOL(it1) }
                     // navigate back to the orders screen
                     findNavController().navigate(R.id.action_articleFragment_to_orderFragment)
-                    //Toast.makeText(
-                    //    requireContext(),
-                    //    "Internet is available",
-                    //    Toast.LENGTH_SHORT
-                    //).show()
                 } else {
                     // Internet is not available
                     currentOrderData?.let {
@@ -195,11 +190,6 @@ class ArticleEntryCardFragment : Fragment() {
                         )
                     }
                     orderNotSubmittedDialog()
-                    //Toast.makeText(
-                    //    requireContext(),
-                    //    "Internet is not available",
-                    //    Toast.LENGTH_SHORT
-                    //).show()
                 }
                 delay(Duration.ofSeconds(5000)) // Delay for 5 seconds before checking again
             }

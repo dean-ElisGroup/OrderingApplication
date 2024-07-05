@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -51,7 +52,7 @@ class SendDeliveryAddressFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        setFlavorBanner()
         val recyclerView: RecyclerView = binding.deliveryAddressSelection
         val spacingInPixels = resources.getDimensionPixelSize(R.dimen.spacing)
         val itemSpacingDecoration = CardViewDecoration(spacingInPixels)
@@ -89,6 +90,38 @@ class SendDeliveryAddressFragment : Fragment() {
         // Observe the LiveData from the ViewModel
         deliveryAddressViewModel.entities.observe(viewLifecycleOwner) { deliveryAddresses ->
             deliveryAdapter.setData(deliveryAddresses)
+        }
+    }
+
+    private fun setFlavorBanner() {
+        // sets banner text
+        if (sharedViewModel.flavor.value == "development") {
+            binding.debugBanner.visibility = View.VISIBLE
+            binding.bannerText.visibility = View.VISIBLE
+            binding.debugBanner.setBackgroundColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.purple_200
+                )
+            )
+            binding.bannerText.text = resources.getString(R.string.devFlavorText)
+        }
+        // hides banner if PROD application
+        if (sharedViewModel.flavor.value == "production") {
+            binding.debugBanner.visibility = View.GONE
+            binding.bannerText.visibility = View.GONE
+        }
+        // sets banner text and banner color
+        if (sharedViewModel.flavor.value == "staging") {
+            binding.debugBanner.visibility = View.VISIBLE
+            binding.bannerText.visibility = View.VISIBLE
+            binding.debugBanner.setBackgroundColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.elis_orange
+                )
+            )
+            binding.bannerText.text = resources.getString(R.string.testFlavorText)
         }
     }
 }

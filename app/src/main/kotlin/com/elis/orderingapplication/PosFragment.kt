@@ -1,11 +1,15 @@
 package com.elis.orderingapplication
 
 
+import android.app.AlertDialog
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
@@ -22,10 +26,11 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.viewModelScope
 import com.elis.orderingapplication.adapters.listAdapters.PointOfServiceAdapter
+import com.elis.orderingapplication.databinding.LoadingBackgroundBinding
 import com.elis.orderingapplication.viewModels.SharedViewModelFactory
 import kotlinx.coroutines.launch
 
-class PosFragment : Fragment() {
+class PosFragment : Fragment(), PointOfServiceAdapter.TotalPOSCallback {
 
     private lateinit var binding: FragmentPosBinding
     private val sharedViewModel: ParamsViewModel by activityViewModels()
@@ -89,6 +94,8 @@ class PosFragment : Fragment() {
         setFlavorBanner()
         recyclerView = binding.posSelection
 
+        binding.progressBar.visibility = View.VISIBLE
+
         val spacingInPixels = resources.getDimensionPixelSize(R.dimen.spacing)
         val itemSpacingDecoration = CardViewDecoration(spacingInPixels)
         recyclerView.addItemDecoration(itemSpacingDecoration)
@@ -98,6 +105,9 @@ class PosFragment : Fragment() {
                 override fun onItemClick(myData: PointsOfService) {
                     posViewModel.onPosClicked(myData)
                     sharedViewModel.setPosNum(myData.pointOfServiceNo)
+                    val currentArgsBundle = sharedViewModel.argsBundleFromTest.value ?: Bundle()
+                    currentArgsBundle.putString("POINT_OF_SERVICE_NAME", myData.pointOfServiceName)
+                    sharedViewModel.argsBundleFromTest.value = currentArgsBundle
                     posViewModel.navigateToPos.observe(
                         viewLifecycleOwner,
                         Observer { pointOfService ->
@@ -114,32 +124,75 @@ class PosFragment : Fragment() {
                         })
 
                 }
-            })
+            }, this)
         binding.posSelection.adapter = pointOfServiceAdapter
         // Observe the LiveData from the ViewModel
-        posViewModel.pointOfService.observe(viewLifecycleOwner) { pointsOfService ->
-            pointOfServiceAdapter.setData(pointsOfService)
-            sharedViewModel.setPOSTotal(pointOfServiceAdapter.itemCount)
-        }
-        sharedViewModel.posTotal.observe(
-            viewLifecycleOwner,
-            Observer { totalPos -> binding.totalPOS.text = totalPos.toString() })
+        // Delay loading data for 1 seconds
+        Handler(Looper.getMainLooper()).postDelayed({
+            // Observe the LiveData from the ViewModel
+            posViewModel.pointsOfService.observe(viewLifecycleOwner) { pointsOfService ->
+                requireActivity().window.setFlags(
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+                )
+                binding.progressBar.visibility = View.GONE
+                binding.totalPOS.visibility = View.VISIBLE
+                requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+                pointOfServiceAdapter.setData(pointsOfService)
 
+                if(pointsOfService.isEmpty()) {
+                    noOrderDialog()
+                }
+            }
+        }, 500)
+    }
+
+    private fun noOrderDialog(){
+        val builder = AlertDialog.Builder(context)
+        builder.setTitle("No orders")
+        builder.setIcon(R.drawable.outline_error_24)
+        builder.setMessage("There are no Points of service with orders for selection.")
+        builder.setPositiveButton("OK") { dialog, which ->
+            findNavController().navigate(R.id.action_posFragment_to_posGroupFragment)
+        }
+        val alertDialog = builder.create()
+        alertDialog.show()
     }
 
     private fun setFlavorBanner() {
         // sets banner text
         if (sharedViewModel.flavor.value == "development") {
-            binding.debugBanner.setBackgroundColor(ContextCompat.getColor(requireContext(),R.color.purple_200))
+            binding.debugBanner.visibility = View.VISIBLE
+            binding.bannerText.visibility = View.VISIBLE
+            binding.debugBanner.setBackgroundColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.purple_200
+                )
+            )
             binding.bannerText.text = resources.getString(R.string.devFlavorText)
         }
         // hides banner if PROD application
         if (sharedViewModel.flavor.value == "production") {
+            binding.debugBanner.visibility = View.GONE
+            binding.bannerText.visibility = View.GONE
         }
         // sets banner text and banner color
         if (sharedViewModel.flavor.value == "staging") {
-            binding.debugBanner.setBackgroundColor(ContextCompat.getColor(requireContext(),R.color.elis_orange))
-            binding.bannerText.text = resources.getString(R.string.devFlavorText)
+            binding.debugBanner.visibility = View.VISIBLE
+            binding.bannerText.visibility = View.VISIBLE
+            binding.debugBanner.setBackgroundColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.elis_orange
+                )
+            )
+            binding.bannerText.text = resources.getString(R.string.testFlavorText)
         }
+    }
+
+    override fun onTotalPOSUpdated(totalPOS: Int) {
+        // Update the totalPOS value in your PosFragment
+        binding.totalPos1 = totalPOS.toString()
     }
 }

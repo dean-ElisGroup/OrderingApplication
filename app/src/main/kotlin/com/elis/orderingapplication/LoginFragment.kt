@@ -5,7 +5,6 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -30,24 +29,21 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import android.widget.ProgressBar
-import android.widget.TextView
-import androidx.compose.material3.AlertDialog
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation.findNavController
 import com.elis.orderingapplication.adapters.LoginAdapter
 import com.elis.orderingapplication.databinding.FragmentLoginBinding
 import com.elis.orderingapplication.model.OrderingLoginResponseStruct
-import com.elis.orderingapplication.model.OrderingOrderInfoResponseStruct
 import com.elis.orderingapplication.pojo2.OrderInfo
 import com.elis.orderingapplication.repositories.UserLoginRepository
 import com.elis.orderingapplication.utils.ApiResponse
+import com.elis.orderingapplication.utils.FirebaseRemoteConfigValues
 import com.elis.orderingapplication.utils.InternetCheck
 import com.elis.orderingapplication.viewModels.LoginViewModelFactory
-import com.google.firebase.remoteconfig.FirebaseRemoteConfigClientException
-import com.google.firebase.remoteconfig.FirebaseRemoteConfigFetchThrottledException
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.analytics.logEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -58,6 +54,7 @@ class LoginFragment : Fragment() {
     private val sharedViewModel: ParamsViewModel by activityViewModels()
     private lateinit var loginView: LoginViewModel
     lateinit var loginAdapter: LoginAdapter
+    private lateinit var analytics: FirebaseAnalytics
 
     private var username: Editable? = null
     private var password: Editable? = null
@@ -78,7 +75,6 @@ class LoginFragment : Fragment() {
         binding.apply { paramViewModel = sharedViewModel }
         binding.lifecycleOwner = this
         orderInfoLoading = binding.orderInfoLoading
-
         fireBaseRemoteConfig()
         // Find the anchor view (e.g., a button or an overflow icon)
         val anchorView = binding.overflowMenu
@@ -93,6 +89,7 @@ class LoginFragment : Fragment() {
                     showDeviceInfoDialog()
                     true
                 }
+
                 else -> false
             }
         }
@@ -113,19 +110,18 @@ class LoginFragment : Fragment() {
         sharedViewModel.setOrderDate(binding.date.text.toString())
         sharedViewModel.setAppVersion(BuildConfig.VERSION_NAME)
         sharedViewModel.setFlavor(BuildConfig.FLAVOR)
+        analytics = FirebaseAnalytics.getInstance(requireContext())
+        analytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, null)
         // sets Flavor banner details for login activity
         setFlavorBanner()
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
             var isInternetAvailable = checkInternetAvailability()
 
-            if(!isInternetAvailable)
-            {
+            if (!isInternetAvailable) {
                 showAlertDialog()
 
             }
         }
-
-
 
         with(binding) {
             loginButton.setOnClickListener {
@@ -186,26 +182,34 @@ class LoginFragment : Fragment() {
         val flavorBanner = binding.flavorBanner
         // sets banner text
         if (sharedViewModel.flavor.value == "development") {
+            binding.debugBanner.visibility = View.VISIBLE
+            binding.bannerText.visibility = View.VISIBLE
             flavorBanner.text = resources.getString(R.string.devFlavorText)
-            binding.debugBanner.setBackgroundColor(ContextCompat.getColor(requireContext(),R.color.purple_200))
+            binding.debugBanner.setBackgroundColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.purple_200
+                )
+            )
             binding.bannerText.text = resources.getString(R.string.devFlavorText)
         }
         // hides banner if PROD application
         if (sharedViewModel.flavor.value == "production") {
-            flavorBanner.isVisible = false
+            binding.debugBanner.visibility = View.GONE
+            binding.bannerText.visibility = View.GONE
         }
         // sets banner text and banner color
         if (sharedViewModel.flavor.value == "staging") {
+            binding.debugBanner.visibility = View.VISIBLE
+            binding.bannerText.visibility = View.VISIBLE
             flavorBanner.text = resources.getString(R.string.testFlavorText)
-            binding.debugBanner.setBackgroundColor(ContextCompat.getColor(requireContext(),R.color.elis_orange))
-            binding.bannerText.text = resources.getString(R.string.devFlavorText)
-            /*flavorBanner.run {
-                setBackgroundColor(
-                    ContextCompat.getColor(
-                        context, R.color.elis_orange
-                    )
+            binding.debugBanner.setBackgroundColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.elis_orange
                 )
-            }*/
+            )
+            binding.bannerText.text = resources.getString(R.string.testFlavorText)
         }
     }
 
@@ -216,9 +220,33 @@ class LoginFragment : Fragment() {
             minimumFetchIntervalInSeconds = 3600
         }
         remoteConfig.setConfigSettingsAsync(configSettings)
-        remoteConfig.setDefaultsAsync(R.xml.remote_config_defaults)
+        remoteConfig.setDefaultsAsync(R.xml.remote_config_defaults_orig)
         // Fetches remote config parameters setup in the Firebase console.
-        remoteConfig.fetchAndActivate()
+        remoteConfig.fetchAndActivate().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                FirebaseRemoteConfigValues.loginURL =
+                    remoteConfig.getString("SOLStock_LoginURL_test")
+                FirebaseRemoteConfigValues.logoutURL =
+                    remoteConfig.getString("SOLStock_LogoutURL_test")
+                FirebaseRemoteConfigValues.orderInfoURL =
+                    remoteConfig.getString("SOLStock_OrderInfoURL_test")
+                FirebaseRemoteConfigValues.orderEventURL =
+                    remoteConfig.getString("SOLStock_OrderEventURL_test")
+                FirebaseRemoteConfigValues.serviceCheckURL =
+                    remoteConfig.getString("SOLStock_ServiceCheckURL_test")
+                FirebaseRemoteConfigValues.mainURL = remoteConfig.getString("SOLStock_MainURL_test")
+            } else {
+                FirebaseRemoteConfigValues.loginURL = remoteConfig.getString("SOL_Login_URL")
+                FirebaseRemoteConfigValues.logoutURL = remoteConfig.getString("SOL_Logout_URL")
+                FirebaseRemoteConfigValues.orderInfoURL =
+                    remoteConfig.getString("SOL_OrderInfo_URL")
+                FirebaseRemoteConfigValues.orderEventURL =
+                    remoteConfig.getString("SOL_OrderEvent_URL")
+                FirebaseRemoteConfigValues.serviceCheckURL =
+                    remoteConfig.getString("SOL_IsServiceOnline_URL")
+                FirebaseRemoteConfigValues.mainURL = remoteConfig.getString("SOLStock_MainURL_test")
+            }
+        }
     }
 
     private fun checkUsernamePassword(): Boolean {
@@ -269,6 +297,16 @@ class LoginFragment : Fragment() {
                     orderInfoLoading?.visibility = VISIBLE
                     showToast(errorMessage)
                     orderInfoLoading?.visibility = INVISIBLE
+
+                    FirebaseAnalytics.getInstance(requireContext()).setAnalyticsCollectionEnabled(true)
+                    FirebaseAnalytics.getInstance(requireContext()).setUserProperty("debug_mode", "true")
+                    analytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, null)
+
+                    val bundle = Bundle()
+                    bundle.putString(FirebaseAnalytics.Param.METHOD, "Login error")
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, username.toString());
+                    bundle.putString(FirebaseAnalytics.Param.CONTENT, errorMessage)
+                    analytics.logEvent(FirebaseAnalytics.Event.LOGIN, bundle)
                 }
 
                 is ApiResponse.ErrorSendOrderDate -> {

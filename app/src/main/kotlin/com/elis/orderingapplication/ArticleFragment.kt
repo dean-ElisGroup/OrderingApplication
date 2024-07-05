@@ -1,9 +1,12 @@
 package com.elis.orderingapplication
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
@@ -66,6 +69,8 @@ class ArticleFragment : Fragment(), ArticleEntryCardFragment.LastArticleCallback
         super.onViewCreated(view, savedInstanceState)
         setFlavorBanner()
 
+        binding.progressBar.visibility = View.VISIBLE
+
         val fab = view.findViewById<ExtendedFloatingActionButton>(R.id.send_order_fab)
         fab.setOnClickListener {
             // Handle FAB click
@@ -78,10 +83,10 @@ class ArticleFragment : Fragment(), ArticleEntryCardFragment.LastArticleCallback
 
         sharedViewModel.setLastArticleCallback(this)
 
-       // articleViewModel.articles.observe(viewLifecycleOwner) { articles ->
-       //     viewPagerAdapter.updateData(articles)
-       //     sharedViewModel.setArticleTotal(articles.size)
-       // }
+        // articleViewModel.articles.observe(viewLifecycleOwner) { articles ->
+        //     viewPagerAdapter.updateData(articles)
+        //     sharedViewModel.setArticleTotal(articles.size)
+        // }
 
 
         val userLoginRepository = UserLoginRepository()
@@ -99,26 +104,50 @@ class ArticleFragment : Fragment(), ArticleEntryCardFragment.LastArticleCallback
             emptyList()
         )
         viewPager.adapter = viewPagerAdapter
+        Handler(Looper.getMainLooper()).postDelayed({
+            articleViewModel.articles.observe(viewLifecycleOwner) { articles ->
+                requireActivity().window.setFlags(
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+                )
+                viewPagerAdapter.updateData(articles)
+                binding.progressBar.visibility = View.GONE
+                requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+                sharedViewModel.setArticleTotal(articles.size)
 
-        articleViewModel.articles.observe(viewLifecycleOwner) { articles ->
-            viewPagerAdapter.updateData(articles)
-            sharedViewModel.setArticleTotal(articles.size)
-        }
+            }
+        }, 500)
     }
 
     private fun setFlavorBanner() {
         // sets banner text
         if (sharedViewModel.flavor.value == "development") {
-            binding.debugBanner.setBackgroundColor(ContextCompat.getColor(requireContext(),R.color.purple_200))
+            binding.debugBanner.visibility = View.VISIBLE
+            binding.bannerText.visibility = View.VISIBLE
+            binding.debugBanner.setBackgroundColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.purple_200
+                )
+            )
             binding.bannerText.text = resources.getString(R.string.devFlavorText)
         }
         // hides banner if PROD application
         if (sharedViewModel.flavor.value == "production") {
+            binding.debugBanner.visibility = View.GONE
+            binding.bannerText.visibility = View.GONE
         }
         // sets banner text and banner color
         if (sharedViewModel.flavor.value == "staging") {
-            binding.debugBanner.setBackgroundColor(ContextCompat.getColor(requireContext(),R.color.elis_orange))
-            binding.bannerText.text = resources.getString(R.string.devFlavorText)
+            binding.debugBanner.visibility = View.VISIBLE
+            binding.bannerText.visibility = View.VISIBLE
+            binding.debugBanner.setBackgroundColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.elis_orange
+                )
+            )
+            binding.bannerText.text = resources.getString(R.string.testFlavorText)
         }
     }
 

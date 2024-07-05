@@ -14,6 +14,10 @@
         <variable
             name="deliveryAddressName"
             type="String" />
+        <variable
+            name="totalPos1"
+            type="String" />
+
 
     </data>
 
@@ -68,7 +72,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
                 android:background="@drawable/instruction_background_v2"
                 android:elevation="2dp"
@@ -101,7 +105,7 @@
                     android:fontFamily="@font/gothic_a1_medium"
                     android:text="@{sharedViewModel.orderDate}"
                     android:textFontWeight="800"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/orderDateText" />
@@ -112,9 +116,14 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
+                    android:autoSizeMaxTextSize="16sp"
+                    android:autoSizeMinTextSize="14sp"
+                    android:autoSizeTextType="uniform"
                     android:fontFamily="@font/gothic_a1_medium"
+                    android:maxLines="1"
+                    android:textAlignment="center"
                     android:textFontWeight="800"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/deliveryAddressText" />
@@ -143,7 +152,7 @@
                     android:layout_marginEnd="8dp"
                     android:fontFamily="@font/gothic_a1_medium"
                     android:textFontWeight="800"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/orderingGroupText" />
@@ -216,7 +225,9 @@
                 android:id="@+id/constraint_total_pos"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
                 app:layout_constraintBottom_toTopOf="@id/guideline6"
                 app:layout_constraintEnd_toStartOf="@+id/guideline4"
@@ -227,14 +238,13 @@
                     android:id="@+id/totalPOS"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/untitled_1_01"
                     android:fontFamily="@font/elis_sharpsans"
-                    android:gravity="fill"
-
+                    android:text='@{totalPos1 != null ? "Total points of service: " + totalPos1 : ""}'
                     android:textAlignment="center"
                     android:textColor="@color/white"
-                    android:textSize="20sp"
+                    android:textSize="16sp"
                     android:textStyle="normal"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -259,11 +269,16 @@
 
             <ImageView
                 android:id="@+id/small_elis_logo"
-                android:layout_width="69dp"
-                android:layout_height="44dp"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
                 android:layout_centerHorizontal="true"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginBottom="8dp"
                 android:contentDescription="@string/elis_logo_bottom"
                 android:src="@drawable/elis_logo_white_circular_services_01"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/guideline4"
                 app:layout_constraintStart_toStartOf="@+id/guideline3"
                 app:layout_constraintTop_toTopOf="@+id/guideline6" />
@@ -287,6 +302,8 @@
                 app:layout_constraintTop_toTopOf="parent"
                 android:gravity="center_vertical"/>
 
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
@@ -296,7 +313,7 @@
             android:layout_gravity="end"
             android:layout_marginStart="-40dp"
             android:layout_marginTop="30dp"
-            android:background="#AA000000"
+            android:background="#99000000"
             android:orientation="vertical"
             android:padding="8dp"
             android:rotation="-45"
@@ -314,7 +331,26 @@
 
         </LinearLayout>
 
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            style="@style/Widget.AppCompat.ProgressBar"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="100dp"
+            android:layout_marginTop="300dp"
+            android:visibility="gone"
+            android:layout_marginEnd="100dp"
+            android:layout_marginBottom="232dp"
+            android:contentDescription="@string/data_loading_icon"
+            android:indeterminateDrawable="@drawable/elis_loading_icon_white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
 
 </layout>

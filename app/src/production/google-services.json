@@ -1,96 +1,26 @@
 {
   "project_info": {
-    "project_number": "681821359034",
-    "firebase_url": "https://elis-solinventory-default-rtdb.firebaseio.com",
-    "project_id": "elis-solinventory",
-    "storage_bucket": "elis-solinventory.appspot.com"
+    "project_number": "1077779832426",
+    "project_id": "sol-stock-ordering-prod",
+    "storage_bucket": "sol-stock-ordering-prod.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:681821359034:android:4fbb129c6c1b6a27d1ab83",
+        "mobilesdk_app_id": "1:1077779832426:android:5dc0c9eded228a6c8ab413",
         "android_client_info": {
-          "package_name": "com.flutterflow.elisinventoryorderingapp"
+          "package_name": "com.solstockorder.prod"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "681821359034-d23t7vr687or2v7mc78kl8q92cqkd9f6.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.flutterflow.elisinventoryorderingapp",
-            "certificate_hash": "9bbb3186b2189ef16d8f272bdab59362c395cbb4"
-          }
-        },
-        {
-          "client_id": "681821359034-nkbkelcbh1f1gtk8ro0401ppel27t9ib.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyA0qNE6RnHbeM4x70ugfc2smIkp8BVm6J0"
+          "current_key": "AIzaSyCtr_QhbCJK_WoOuEPsX-kpfHAoiva2wyo"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "681821359034-nkbkelcbh1f1gtk8ro0401ppel27t9ib.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "681821359034-e5ka82ss0i1vspdl7hk71v0f3nj1a7dm.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.flutterflow.elisinventoryorderingapp"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:681821359034:android:87799a7fc038e7e2d1ab83",
-        "android_client_info": {
-          "package_name": "elis.inventoryOrdering"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "681821359034-o0g9qt166rva59e4pdk01luh7tb7u3mm.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "elis.inventoryOrdering",
-            "certificate_hash": "9bbb3186b2189ef16d8f272bdab59362c395cbb4"
-          }
-        },
-        {
-          "client_id": "681821359034-nkbkelcbh1f1gtk8ro0401ppel27t9ib.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyA0qNE6RnHbeM4x70ugfc2smIkp8BVm6J0"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "681821359034-nkbkelcbh1f1gtk8ro0401ppel27t9ib.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "681821359034-e5ka82ss0i1vspdl7hk71v0f3nj1a7dm.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.flutterflow.elisinventoryorderingapp"
-              }
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }

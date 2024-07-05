@@ -8,9 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.widget.TextView
 import android.widget.Toast
-import androidx.compose.ui.graphics.Color
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
@@ -24,7 +22,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.elis.orderingapplication.CardViewDecoration
 import com.elis.orderingapplication.R
 import com.elis.orderingapplication.viewModels.ParamsViewModel
-import com.elis.orderingapplication.adapters.listAdapters.OrdersAdapter
 import com.elis.orderingapplication.adapters.listAdapters.SendOrdersAdapter
 import com.elis.orderingapplication.databinding.FragmentSendOrderOrderBinding
 import com.elis.orderingapplication.pojo2.Order
@@ -32,7 +29,7 @@ import com.elis.orderingapplication.pojo2.OrderEvent
 import com.elis.orderingapplication.pojo2.OrderParcelable
 import com.elis.orderingapplication.repositories.UserLoginRepository
 import com.elis.orderingapplication.utils.ApiResponse
-import com.elis.orderingapplication.viewModels.ArticleEntryViewModel
+import com.elis.orderingapplication.utils.NetworkUtils
 import com.elis.orderingapplication.viewModels.ArticleEntryViewModelFactory
 import com.elis.orderingapplication.viewModels.SharedViewModelFactory
 import java.time.LocalDate
@@ -88,7 +85,7 @@ class SendOrderFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        setFlavorBanner()
         recyclerView = binding.orderSelection
 
         val spacingInPixels = resources.getDimensionPixelSize(R.dimen.spacing)
@@ -134,7 +131,6 @@ class SendOrderFragment : Fragment() {
             viewLifecycleOwner,
             Observer { order ->
                 sendOrderDialog(order)
-                //Toast.makeText(activity, order?.appOrderId, Toast.LENGTH_LONG).show()
             })
 
 
@@ -171,19 +167,40 @@ class SendOrderFragment : Fragment() {
     }
 
     private fun sendOrderDialog(order: Order?) {
-        val builder = AlertDialog.Builder(requireContext())
-        builder.setTitle("Send order")
-        builder.setMessage("${order?.posName}\n\nAre you sure you wish to send this order to SOL?")
+        val isInternetAvailable = NetworkUtils.isInternetAvailable(requireContext())
+        if (isInternetAvailable) {
+            val builder = AlertDialog.Builder(requireContext())
+            builder.setTitle("Send order")
+            builder.setMessage("${order?.posName}\n\nAre you sure you wish to send this order to SOL?")
 
-        builder.setPositiveButton("OK") { dialog, _ ->
-            dialog.dismiss()
-            if (order != null) {
-                sendOrderToSOL(order, externalOrderId())
+            builder.setPositiveButton("OK") { dialog, _ ->
+                dialog.dismiss()
+                if (order != null) {
+                    sendOrderToSOL(order, externalOrderId())
+                }
             }
+            builder.setNegativeButton("Cancel") { dialog, _ ->
+                dialog.dismiss()
+            }
+            val dialog = builder.create()
+            dialog.show()
+        } else {
+            showNoConnectionDialog()
         }
-        builder.setNegativeButton("Cancel") { dialog, _ ->
+    }
+
+    private fun showNoConnectionDialog() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Internet Connection")
+        builder.setMessage("There is currently no internet connection. Please check your connection and try again.")
+        builder.setIcon(R.drawable.outline_error_24)
+        builder.setPositiveButton("OK") { dialog, which ->
+            // Handle positive button click
             dialog.dismiss()
         }
+
+        builder.setCancelable(true)
+
         val dialog = builder.create()
         dialog.show()
     }
@@ -222,7 +239,11 @@ class SendOrderFragment : Fragment() {
     private fun handleSuccessResponse(success: Boolean?, order: Order?) {
         order?.let { orderViewModel.updateOrderStatus(it) }
         if (success == true) {
-            Toast.makeText(requireContext(), "Order has been successfully submitted.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                requireContext(),
+                "Order has been successfully submitted.",
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 
@@ -291,6 +312,38 @@ class SendOrderFragment : Fragment() {
 
     private fun clearNotTouchableFlag() {
         requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+    }
+
+    private fun setFlavorBanner() {
+        // sets banner text
+        if (sharedViewModel.flavor.value == "development") {
+            binding.debugBanner.visibility = View.VISIBLE
+            binding.bannerText.visibility = View.VISIBLE
+            binding.debugBanner.setBackgroundColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.purple_200
+                )
+            )
+            binding.bannerText.text = resources.getString(R.string.devFlavorText)
+        }
+        // hides banner if PROD application
+        if (sharedViewModel.flavor.value == "production") {
+            binding.debugBanner.visibility = View.GONE
+            binding.bannerText.visibility = View.GONE
+        }
+        // sets banner text and banner color
+        if (sharedViewModel.flavor.value == "staging") {
+            binding.debugBanner.visibility = View.VISIBLE
+            binding.bannerText.visibility = View.VISIBLE
+            binding.debugBanner.setBackgroundColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.elis_orange
+                )
+            )
+            binding.bannerText.text = resources.getString(R.string.testFlavorText)
+        }
     }
 
 

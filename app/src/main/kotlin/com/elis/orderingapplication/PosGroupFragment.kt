@@ -112,16 +112,32 @@ class PosGroupFragment : Fragment() {
     private fun setFlavorBanner() {
         // sets banner text
         if (sharedViewModel.flavor.value == "development") {
-            binding.debugBanner.setBackgroundColor(ContextCompat.getColor(requireContext(),R.color.purple_200))
+            binding.debugBanner.visibility = View.VISIBLE
+            binding.bannerText.visibility = View.VISIBLE
+            binding.debugBanner.setBackgroundColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.purple_200
+                )
+            )
             binding.bannerText.text = resources.getString(R.string.devFlavorText)
         }
         // hides banner if PROD application
         if (sharedViewModel.flavor.value == "production") {
+            binding.debugBanner.visibility = View.GONE
+            binding.bannerText.visibility = View.GONE
         }
         // sets banner text and banner color
         if (sharedViewModel.flavor.value == "staging") {
-            binding.debugBanner.setBackgroundColor(ContextCompat.getColor(requireContext(),R.color.elis_orange))
-            binding.bannerText.text = resources.getString(R.string.devFlavorText)
+            binding.debugBanner.visibility = View.VISIBLE
+            binding.bannerText.visibility = View.VISIBLE
+            binding.debugBanner.setBackgroundColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.elis_orange
+                )
+            )
+            binding.bannerText.text = resources.getString(R.string.testFlavorText)
         }
     }
 }

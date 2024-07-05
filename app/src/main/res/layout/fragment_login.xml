@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".LoginFragment">
 
-    <data>
-
+   <data>
         <variable
             name="viewModel"
             type="com.elis.orderingapplication.viewModels.LoginViewModel" />
@@ -15,10 +14,14 @@
             type="com.elis.orderingapplication.viewModels.ParamsViewModel" />
     </data>
 
+
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
+
 
         <ImageView
             android:id="@+id/background_image"
@@ -246,11 +249,11 @@
             android:paddingEnd="70dp"
             android:translationZ="90dp"
             android:visibility="gone"
-            android:text="Loading..."
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
 
         <LinearLayout
             android:id="@+id/debug_banner"
@@ -276,6 +279,7 @@
                 android:textStyle="bold" />
 
         </LinearLayout>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
