@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -18,6 +19,8 @@ import com.elis.orderingapplication.adapters.listAdapters.DeliveryAdapter
 import com.elis.orderingapplication.databinding.FragmentDeliveryAddressBinding
 import com.elis.orderingapplication.databinding.FragmentSendOrderDeliveryAddressBinding
 import com.elis.orderingapplication.pojo2.DeliveryAddress
+import com.elis.orderingapplication.utils.DeviceInfo
+import com.elis.orderingapplication.utils.DeviceInfoDialog
 import com.elis.orderingapplication.viewModels.DeliveryAddressViewModel
 import com.elis.orderingapplication.viewModels.ParamsViewModel
 
@@ -46,6 +49,27 @@ class SendDeliveryAddressFragment : Fragment() {
                 Navigation.findNavController(it)
                     .navigate(R.id.action_sendDeliveryAddressFragment_to_landingPageFragment)
             }
+        }
+        val anchorView = binding.overflowMenu2
+        // Inflate the overflow menu
+        val overflowMenu = PopupMenu(requireContext(), anchorView)
+        overflowMenu.menuInflater.inflate(R.menu.login_menu, overflowMenu.menu)
+        // Set up the OnMenuItemClickListener
+        overflowMenu.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.login_menu_overflow -> {
+                    val deviceInfo = DeviceInfo(requireContext())
+                    DeviceInfoDialog.showAlertDialog(requireContext(), deviceInfo.getDeviceInfo())
+                    true
+                }
+
+                else -> false
+            }
+        }
+        // Show the overflow menu when needed (e.g., on a button click)
+        val overflowButton = binding.overflowMenu2 //findViewById<Button>(R.id.overflow_menu)
+        overflowButton.setOnClickListener {
+            overflowMenu.show()
         }
         return binding.root
     }

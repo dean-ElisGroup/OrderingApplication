@@ -13,7 +13,6 @@ import kotlinx.coroutines.launch
 class LandingPageViewModel(
     application: Application,
     private val loginRep: UserLoginRepository,
-    private val sharedViewModel: ParamsViewModel
 ) : AndroidViewModel(application) {
 
     val userLoginResponse: MutableLiveData<ApiResponse<Boolean>> = MutableLiveData()

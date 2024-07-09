@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
@@ -23,12 +24,10 @@ import com.elis.orderingapplication.pojo2.PointsOfService
 import com.elis.orderingapplication.viewModels.ParamsViewModel
 import com.elis.orderingapplication.viewModels.PosViewModel
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.viewModelScope
 import com.elis.orderingapplication.adapters.listAdapters.PointOfServiceAdapter
-import com.elis.orderingapplication.databinding.LoadingBackgroundBinding
+import com.elis.orderingapplication.utils.DeviceInfo
+import com.elis.orderingapplication.utils.DeviceInfoDialog
 import com.elis.orderingapplication.viewModels.SharedViewModelFactory
-import kotlinx.coroutines.launch
 
 class PosFragment : Fragment(), PointOfServiceAdapter.TotalPOSCallback {
 
@@ -85,6 +84,27 @@ class PosFragment : Fragment(), PointOfServiceAdapter.TotalPOSCallback {
         // Sets ordering group and ordering name to shared ViewModel
         args.orderingGroupNo?.let { sharedViewModel.setOrderingGroupNo(it) }
         sharedViewModel.setOrderingGroupName(args.orderingGroupName)
+        val anchorView = binding.overflowMenu2
+        // Inflate the overflow menu
+        val overflowMenu = PopupMenu(requireContext(), anchorView)
+        overflowMenu.menuInflater.inflate(R.menu.login_menu, overflowMenu.menu)
+        // Set up the OnMenuItemClickListener
+        overflowMenu.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.login_menu_overflow -> {
+                    val deviceInfo = DeviceInfo(requireContext())
+                    DeviceInfoDialog.showAlertDialog(requireContext(), deviceInfo.getDeviceInfo())
+                    true
+                }
+
+                else -> false
+            }
+        }
+        // Show the overflow menu when needed (e.g., on a button click)
+        val overflowButton = binding.overflowMenu2 //findViewById<Button>(R.id.overflow_menu)
+        overflowButton.setOnClickListener {
+            overflowMenu.show()
+        }
         // Inflate the layout for this fragment
         return binding.root
     }

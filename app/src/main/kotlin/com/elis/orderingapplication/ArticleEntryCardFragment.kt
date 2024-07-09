@@ -27,7 +27,7 @@ import com.elis.orderingapplication.viewModels.ArticleEntryViewModelFactory
 import com.elis.orderingapplication.viewModels.ParamsViewModel
 import com.elis.orderingapplication.viewModels.SharedViewModelFactory
 import com.elis.orderingapplication.pojo2.Order
-import com.elis.orderingapplication.utils.InternetCheck
+import com.elis.orderingapplication.pojo2.OrderEventResponse
 import com.elis.orderingapplication.utils.NetworkUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.isActive
@@ -80,14 +80,9 @@ class ArticleEntryCardFragment : Fragment() {
         currentArticlePosition = arguments?.getInt("currentArticlePosition")
         currentArticleOrder = arguments?.getInt("currentArticle")
         totalArticles = arguments?.getInt("totalArticles")
-
-
-
         observeOrderData()
         observeArticleData()
         setupCountedQtyTextChangeListener()
-
-
     }
 
 
@@ -108,16 +103,11 @@ class ArticleEntryCardFragment : Fragment() {
 
     private fun updateUI(article: Article?) {
         article?.let {
-            //binding.articleNo.text = it.articleNo
-            //binding.articleDescription.text = it.articleDescription
-            //binding.targetQty.text = it.articleTargetQty.toString()
-//            binding.article = article
             _binding?.article = article
         }
 
         val isLastArticle = currentArticlePosition == totalArticles //numberOfArticles
         binding.lastArticleText.isVisible = isLastArticle
-        //binding.sendOrderButton.isVisible = isLastArticle
         val lastArticleCallback = sharedViewModel.getLastArticleCallback()
 
         lastArticleCallback?.onLastArticleChanged(isLastArticle)
@@ -169,7 +159,7 @@ class ArticleEntryCardFragment : Fragment() {
     //override fun onDestroyView() {
     //    super.onDestroyView()
     //    _binding = null
-   // }
+    // }
 // Starts a check to see if there's a physical connection to the internet.
     fun startInternetCheckJob() {
         lifecycleScope.launch {
@@ -207,7 +197,7 @@ class ArticleEntryCardFragment : Fragment() {
         return hexString.take(length)
     }
 
-    private fun sendOrderToSOL(order: Order, externalOrderId: String = externalOrderId()) {
+    /*private fun sendOrderToSOL(order: Order, externalOrderId: String = externalOrderId()) {
         val sendOrder = articleEntryViewModel.sendOrderToSOL(order, externalOrderId)
         val sendOrderEvent = OrderEvent(sharedViewModel.getSessionKey(), sendOrder)
         articleEntryViewModel.orderEvent(sendOrderEvent)
@@ -225,6 +215,34 @@ class ArticleEntryCardFragment : Fragment() {
                 }
             }
         }
+    }*/
+
+    private fun sendOrderToSOL(order: Order, externalOrderId: String = externalOrderId()) {
+        val sendOrder = articleEntryViewModel.sendOrderToSOL(order, externalOrderId)
+        val sendOrderEvent = OrderEvent(sharedViewModel.getSessionKey(), sendOrder)
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            val response = articleEntryViewModel.orderEvent(sendOrderEvent)
+            handleResponse(response)
+        }
+    }
+
+    private suspend fun handleResponse(response: ApiResponse<OrderEventResponse>?) {
+        response?.let { apiResponse ->
+            when (apiResponse) {
+                is ApiResponse.Success<*> -> {
+                    val successResponse = apiResponse as ApiResponse.Success<OrderEventResponse>
+                    handleSuccessResponse(successResponse.data?.success)
+                }
+                is ApiResponse.Loading<*> -> handleLoadingState()
+                is ApiResponse.Error<*> -> handleErrorResponse(apiResponse.message)
+                is ApiResponse.ErrorSendOrderDate<*> -> handleErrorResponse(apiResponse.message)
+                is ApiResponse.NoDataError<*> -> handleNoDataError()
+                is ApiResponse.ErrorLogin<*> -> handleUnknownError()
+                is ApiResponse.UnknownError<*> -> handleUnknownError()
+                else -> handleUnknownError()
+            }
+        }
     }
 
     private fun handleSuccessResponse(success: Boolean?) {
@@ -236,7 +254,7 @@ class ArticleEntryCardFragment : Fragment() {
         }
         if (success == true) {
             Toast.makeText(requireContext(), "Order sent to Sol", Toast.LENGTH_SHORT).show()
-            findNavController().navigate(R.id.action_articleFragment_to_orderFragment)
+            //findNavController().navigate(R.id.action_articleFragment_to_orderFragment)
         }
     }
 
@@ -283,12 +301,12 @@ class ArticleEntryCardFragment : Fragment() {
     }
 
     private fun handleUnknownError() {
-        val noDataMessage = "There was an unkown error. Please try again.1"
+        val noDataMessage = "There was an unknown error. Please try again."
         Log.e("TAG", noDataMessage)
 
         // Create an AlertDialog.Builder
         val builder = AlertDialog.Builder(requireContext())
-        builder.setTitle("Login Error")
+        builder.setTitle("Unknown Error")
             .setMessage(noDataMessage)
             .setPositiveButton("OK") { _, _ ->
                 // Handle OK button click if needed

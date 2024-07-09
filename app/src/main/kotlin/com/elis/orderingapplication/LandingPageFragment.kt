@@ -9,36 +9,33 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
-import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.room.Room
-import com.elis.orderingapplication.database.OrderInfo
 import com.elis.orderingapplication.database.OrderInfoDatabase
 import com.elis.orderingapplication.databinding.FragmentLandingPageBinding
-import com.elis.orderingapplication.model.LoginRequest
 import com.elis.orderingapplication.model.LogoutRequest
 import com.elis.orderingapplication.repositories.UserLoginRepository
 import com.elis.orderingapplication.utils.ApiResponse
+import com.elis.orderingapplication.utils.DeviceInfo
+import com.elis.orderingapplication.utils.DeviceInfoDialog
 import com.elis.orderingapplication.viewModels.ArticleEntryViewModelFactory
 import com.elis.orderingapplication.viewModels.LandingPageViewModel
-import com.elis.orderingapplication.viewModels.LoginViewModel
-import com.elis.orderingapplication.viewModels.LoginViewModelFactory
 import com.elis.orderingapplication.viewModels.ParamsViewModel
 
 class LandingPageFragment : Fragment() {
 
     private lateinit var binding: FragmentLandingPageBinding
     private val sharedViewModel: ParamsViewModel by activityViewModels()
-    private lateinit var landingPageView: LandingPageViewModel
     lateinit var database: OrderInfoDatabase
 
     override fun onCreateView(
@@ -49,6 +46,27 @@ class LandingPageFragment : Fragment() {
             DataBindingUtil.inflate(inflater, R.layout.fragment_landing_page, container, false)
         // Clears hold on UI interaction when progress bar is visible
         requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+        val anchorView = binding.overflowMenu2
+        // Inflate the overflow menu
+        val overflowMenu = PopupMenu(requireContext(), anchorView)
+        overflowMenu.menuInflater.inflate(R.menu.login_menu, overflowMenu.menu)
+        // Set up the OnMenuItemClickListener
+        overflowMenu.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.login_menu_overflow -> {
+                    val deviceInfo = DeviceInfo(requireContext())
+                    DeviceInfoDialog.showAlertDialog(requireContext(), deviceInfo.getDeviceInfo())
+                    true
+                }
+
+                else -> false
+            }
+        }
+        // Show the overflow menu when needed (e.g., on a button click)
+        val overflowButton = binding.overflowMenu2 //findViewById<Button>(R.id.overflow_menu)
+        overflowButton.setOnClickListener {
+            overflowMenu.show()
+        }
 
         val rep = UserLoginRepository()
         val provider = ArticleEntryViewModelFactory(
@@ -61,13 +79,13 @@ class LandingPageFragment : Fragment() {
         // Inflate the layout for this fragment
         with(binding) {
             ordersButton.setOnClickListener {
-                view?.let { it ->
+                view?.let {
                     Navigation.findNavController(it)
                         .navigate(R.id.action_landingPageFragment_to_deliveryAddressFragment)
                 }
             }
             buttonSendOrders.setOnClickListener {
-                view?.let { it ->
+                view?.let {
                     Navigation.findNavController(it)
                         .navigate(R.id.action_landingPageFragment_to_sendDeliveryAddressFragment)
                 }
@@ -76,10 +94,10 @@ class LandingPageFragment : Fragment() {
             buttonLogout.setOnClickListener {
                 val logoutSessionKey = LogoutRequest(sharedViewModel.getSessionKey())
                 val response = landingPageView.getUserLogout(logoutSessionKey)
-                landingPageView.userLoginResponse.observe(viewLifecycleOwner) { response ->
-                    when (response) {
+                landingPageView.userLoginResponse.observe(viewLifecycleOwner) { observeResponse ->
+                    when (observeResponse) {
                         is ApiResponse.Success -> {
-                            view?.let { it ->
+                            view?.let {
                                 Navigation.findNavController(it)
                                     .navigate(R.id.action_landingPageFragment_to_loginFragment)
                                 Toast.makeText(
@@ -92,7 +110,7 @@ class LandingPageFragment : Fragment() {
                         }
 
                         is ApiResponse.Error -> {
-                            Toast.makeText(requireContext(), response.message, Toast.LENGTH_LONG)
+                            Toast.makeText(requireContext(), observeResponse.message, Toast.LENGTH_LONG)
                                 .show()
 
                         }
@@ -106,7 +124,7 @@ class LandingPageFragment : Fragment() {
                     }
                 }
             }
-            return binding.root //inflater.inflate(layout.fragment_landing_page, container, false)
+            return binding.root
         }
     }
 
@@ -129,7 +147,6 @@ class LandingPageFragment : Fragment() {
                 // Handle the menu selection
                 return when (menuItem.itemId) {
                     R.id.login_menu_overflow -> {
-                        // loadTasks(true)
                         true
                     }
 

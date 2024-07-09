@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
@@ -21,6 +22,8 @@ import androidx.viewpager2.widget.ViewPager2
 import com.elis.orderingapplication.adapters.ArticleEntryAdapter
 import com.elis.orderingapplication.databinding.FragmentArticleBinding
 import com.elis.orderingapplication.repositories.UserLoginRepository
+import com.elis.orderingapplication.utils.DeviceInfo
+import com.elis.orderingapplication.utils.DeviceInfoDialog
 import com.elis.orderingapplication.viewModels.ArticleEntryViewModel
 import com.elis.orderingapplication.viewModels.ArticleEntryViewModelFactory
 import com.elis.orderingapplication.viewModels.ArticleViewModel
@@ -61,6 +64,27 @@ class ArticleFragment : Fragment(), ArticleEntryCardFragment.LastArticleCallback
         }
 
         viewPager = binding.articleEntryViewpager
+        val anchorView = binding.overflowMenu2
+        // Inflate the overflow menu
+        val overflowMenu = PopupMenu(requireContext(), anchorView)
+        overflowMenu.menuInflater.inflate(R.menu.login_menu, overflowMenu.menu)
+        // Set up the OnMenuItemClickListener
+        overflowMenu.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.login_menu_overflow -> {
+                    val deviceInfo = DeviceInfo(requireContext())
+                    DeviceInfoDialog.showAlertDialog(requireContext(), deviceInfo.getDeviceInfo())
+                    true
+                }
+
+                else -> false
+            }
+        }
+        // Show the overflow menu when needed (e.g., on a button click)
+        val overflowButton = binding.overflowMenu2 //findViewById<Button>(R.id.overflow_menu)
+        overflowButton.setOnClickListener {
+            overflowMenu.show()
+        }
         // Inflate the layout for this fragment
         return binding.root
     }

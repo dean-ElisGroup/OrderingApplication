@@ -102,14 +102,14 @@ interface OrderInfoDao {
                   WHERE pos_order.point_of_service_no = p.point_of_service
                   AND pos_order.deliveryAddressNo = p.deliveryAddressNo
                   AND pos_order.orderDate = :orderDate
-                  AND pos_order.orderType == "inventory"
+                  AND pos_order.orderType == "inventory" 
                   AND pos_order.totalArticles > 0) > 0) AS totalPOS,
             points_of_service.*,
             (SELECT COUNT(*) FROM pos_order
              WHERE pos_order.point_of_service_no = points_of_service.point_of_service
              AND pos_order.deliveryAddressNo = points_of_service.deliveryAddressNo
              AND pos_order.orderDate = :orderDate
-             AND pos_order.orderType == "inventory"
+             AND pos_order.orderType == "inventory" 
              AND pos_order.totalArticles > 0) AS totalOrders
         FROM points_of_service
         WHERE deliveryAddressNo = :deliveryAddressNo
@@ -134,6 +134,15 @@ interface OrderInfoDao {
     ): LiveData<List<Order>>
 
     @Transaction
+    @Query("SELECT * FROM pos_order WHERE deliveryAddressNo = :deliveryAddressNo AND point_of_service_no = :posNumber AND orderDate = :deliveryDate AND pos_order.orderType == 'inventory' AND pos_order.totalArticles > 0 AND orderStatus IN (:orderStatus)")
+    fun getSendOrders(
+        deliveryAddressNo: String,
+        posNumber: String,
+        deliveryDate: String,
+        orderStatus: List<Int>
+    ): LiveData<List<Order>>
+
+    @Transaction
     @Query("SELECT * FROM article WHERE order_date = :orderDate AND app_order_id = :appOrderId")
     fun getArticles(orderDate: String, appOrderId: String): LiveData<List<Article>>
 
@@ -141,8 +150,12 @@ interface OrderInfoDao {
     @Query("SELECT * FROM pos_order WHERE appOrderId = :appOrderId")
     fun getOrderByOrderId(appOrderId: String): LiveData<List<Order>>
 
+    //@Transaction
+    //@Query("SELECT articleSize AS size, solOrderQty AS qty, articleNo FROM article WHERE delivery_date_article = :deliveryDate AND app_order_id = :appOrderId")
+    //fun getSendOrderArticles(deliveryDate: String?, appOrderId: String?): List<OrderRowsItem>
+
     @Transaction
-    @Query("SELECT articleSize AS size, solOrderQty AS qty, articleNo FROM article WHERE delivery_date_article = :deliveryDate AND app_order_id = :appOrderId")
+    @Query("SELECT articleSize AS size, solCountedQty AS qty, articleNo FROM article WHERE delivery_date_article = :deliveryDate AND app_order_id = :appOrderId")
     fun getSendOrderArticles(deliveryDate: String?, appOrderId: String?): List<OrderRowsItem>
 
     // Query used for the Send Orders functionality

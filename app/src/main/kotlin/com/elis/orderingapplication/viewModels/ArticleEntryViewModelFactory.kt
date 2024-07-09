@@ -16,8 +16,11 @@ class ArticleEntryViewModelFactory(
             return ArticleEntryViewModel(application, articleEntryRepository, sharedViewModel) as T
         }
         if (modelClass.isAssignableFrom(LandingPageViewModel::class.java)) {
-            return LandingPageViewModel(application, articleEntryRepository, sharedViewModel) as T
+            return LandingPageViewModel(application, articleEntryRepository) as T
         }
+        //if (modelClass.isAssignableFrom(LandingPageViewModel::class.java)) {
+        //    return LandingPageViewModel(application, articleEntryRepository, sharedViewModel) as T
+        //}
         if (modelClass.isAssignableFrom(SendOrderViewModel::class.java)) {
             return SendOrderViewModel(application, articleEntryRepository, sharedViewModel) as T
         }

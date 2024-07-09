@@ -67,16 +67,17 @@ class ArticleEntryViewModel(
     }
 
     fun sendOrderToSOL(order: Order, sendOrderExternalOrderId: String): SendOrder {
-            val sendOrder = SendOrder(
-                order.appPosNo.toIntOrNull(),
-                order.deliveryAddressNo.toIntOrNull(),
-                sendOrderExternalOrderId,
-                order.deliveryDate,
-                sendOrderExternalOrderId,
-                articleRows(order.deliveryDate, order.appOrderId)
-            )
+        val sendOrder = SendOrder(
+            order.appPosNo.toIntOrNull(),
+            order.deliveryAddressNo.toIntOrNull(),
+            sendOrderExternalOrderId,
+            order.deliveryDate,
+            sendOrderExternalOrderId,
+            articleRows(order.deliveryDate, order.appOrderId)
+        )
         return sendOrder
-        }
+    }
+
     private fun articleRows(orderDate: String?, orderId: String?): List<OrderRowsItem> =
         runBlocking {
             withContext(Dispatchers.IO) {
@@ -115,9 +116,10 @@ class ArticleEntryViewModel(
 
     fun updateOrderStatus(order: Order, appStatus: String, orderStatus: Int) {
         viewModelScope.launch {
-            withContext(Dispatchers.IO){
-                withContext(Dispatchers.IO){
-                    database.orderInfoDao.updateOrderStatus(order.appOrderId,
+            withContext(Dispatchers.IO) {
+                withContext(Dispatchers.IO) {
+                    database.orderInfoDao.updateOrderStatus(
+                        order.appOrderId,
                         appStatus,
                         orderStatus
                     )
@@ -126,20 +128,25 @@ class ArticleEntryViewModel(
         }
     }
 
-    fun orderEvent(orderEvent: OrderEvent) = viewModelScope.launch {
-        orderEventResponse.value = null
+    /*fun orderEvent(orderEvent: OrderEvent) = viewModelScope.launch {
+        //orderEventResponse.value = null
         orderEventResponse.postValue(ApiResponse.Loading())
         val response = loginRep.sendOrderEvent(orderEvent)
         orderEventResponse.postValue(handleSendOrderResponse(response))
+    }*/
+
+    fun orderEvent(orderEvent: OrderEvent): ApiResponse<OrderEventResponse> = runBlocking {
+        orderEventResponse.postValue(ApiResponse.Loading())
+        val response = loginRep.sendOrderEvent(orderEvent)
+        handleSendOrderResponse(response)
     }
 
     private fun handleSendOrderResponse(response: Response<OrderEventResponse>): ApiResponse<OrderEventResponse> {
-        orderEventResponse.value = null
+        //orderEventResponse.value = null
         return when {
             response.isSuccessful && response.body()?.success == true && response.body()?.messages?.isEmpty() == true -> {
                 ApiResponse.Success(response.body())
-            }
-
+        }
             response.isSuccessful && response.body()?.messages?.any {
                 it!!.contains(
                     DATE_TOO_LATE,
@@ -171,12 +178,6 @@ class ArticleEntryViewModel(
             }
         }
     }
-
-
-
-
-
-
 
     fun updateSolOrderQty(orderQty: String?) {
         _solOrderQty.value = orderQty

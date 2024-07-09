@@ -10,6 +10,7 @@ plugins {
     id("com.google.devtools.ksp").version("1.9.10-1.0.13") // Or latest version of KSP
     id("io.objectbox")
     id 'androidx.navigation.safeargs.kotlin'
+    id 'com.google.firebase.firebase-perf'
 }
 
 android {
@@ -45,7 +46,7 @@ android {
             applicationId "com.elissolstockorder"
             manifestPlaceholders = [appLabel: "Stock Ordering - Test"]
             namespace 'com.solstockorder.test'
-            versionName "2.0.0"
+            versionName '2.0.1'
             buildConfigField "String", "API_BASE_URL", '"http://serviceonlinetest.elisonline.co.uk/SolMasterTraining5/Ordering.wso/"'
             sourceSets{
                     main{
@@ -113,6 +114,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-crashlytics:19.0.2'
     implementation 'com.google.firebase:firebase-analytics:22.0.2'
     implementation 'com.google.gms:google-services:4.4.2'
+    implementation 'com.google.firebase:firebase-perf:21.0.1'
     def room_version = '2.6.1'
 
     implementation("androidx.room:room-runtime:2.6.1")

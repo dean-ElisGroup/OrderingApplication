@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import androidx.compose.ui.unit.Constraints
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
@@ -26,6 +27,8 @@ import com.elis.orderingapplication.pojo2.Article
 import com.elis.orderingapplication.pojo2.ArticleParcelable
 import com.elis.orderingapplication.pojo2.Order
 import com.elis.orderingapplication.pojo2.OrderParcelable
+import com.elis.orderingapplication.utils.DeviceInfo
+import com.elis.orderingapplication.utils.DeviceInfoDialog
 import com.elis.orderingapplication.viewModels.OrderViewModel
 import com.elis.orderingapplication.viewModels.SharedViewModelFactory
 import java.text.SimpleDateFormat
@@ -62,6 +65,29 @@ class OrderFragment : Fragment() {
             }
         }
         observeArgsBundleFromTest()
+        val anchorView = binding.overflowMenu2
+        // Inflate the overflow menu
+        val overflowMenu = PopupMenu(requireContext(), anchorView)
+        overflowMenu.menuInflater.inflate(R.menu.login_menu, overflowMenu.menu)
+        // Set up the OnMenuItemClickListener
+        overflowMenu.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.login_menu_overflow -> {
+                    val deviceInfo = DeviceInfo(requireContext())
+                    DeviceInfoDialog.showAlertDialog(requireContext(), deviceInfo.getDeviceInfo())
+                    true
+                }
+
+                else -> false
+            }
+        }
+        // Show the overflow menu when needed (e.g., on a button click)
+        val overflowButton = binding.overflowMenu2 //findViewById<Button>(R.id.overflow_menu)
+        overflowButton.setOnClickListener {
+            overflowMenu.show()
+        }
+
+
         // Inflate the layout for this fragment
         return binding.root
     }

@@ -13,11 +13,9 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import com.elis.orderingapplication.model.LoginRequest
@@ -32,18 +30,17 @@ import android.widget.ProgressBar
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation.findNavController
-import com.elis.orderingapplication.adapters.LoginAdapter
 import com.elis.orderingapplication.databinding.FragmentLoginBinding
 import com.elis.orderingapplication.model.OrderingLoginResponseStruct
 import com.elis.orderingapplication.pojo2.OrderInfo
 import com.elis.orderingapplication.repositories.UserLoginRepository
 import com.elis.orderingapplication.utils.ApiResponse
+import com.elis.orderingapplication.utils.DeviceInfo
+import com.elis.orderingapplication.utils.DeviceInfoDialog
 import com.elis.orderingapplication.utils.FirebaseRemoteConfigValues
 import com.elis.orderingapplication.utils.InternetCheck
 import com.elis.orderingapplication.viewModels.LoginViewModelFactory
 import com.google.firebase.analytics.FirebaseAnalytics
-import com.google.firebase.analytics.ktx.analytics
-import com.google.firebase.analytics.logEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -53,7 +50,6 @@ class LoginFragment : Fragment() {
     private lateinit var binding: FragmentLoginBinding
     private val sharedViewModel: ParamsViewModel by activityViewModels()
     private lateinit var loginView: LoginViewModel
-    lateinit var loginAdapter: LoginAdapter
     private lateinit var analytics: FirebaseAnalytics
 
     private var username: Editable? = null
@@ -81,19 +77,18 @@ class LoginFragment : Fragment() {
         // Inflate the overflow menu
         val overflowMenu = PopupMenu(requireContext(), anchorView)
         overflowMenu.menuInflater.inflate(R.menu.login_menu, overflowMenu.menu)
-
         // Set up the OnMenuItemClickListener
         overflowMenu.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.login_menu_overflow -> {
-                    showDeviceInfoDialog()
+                    val deviceInfo = DeviceInfo(requireContext())
+                    DeviceInfoDialog.showAlertDialog(requireContext(), deviceInfo.getDeviceInfo())
                     true
                 }
 
                 else -> false
             }
         }
-
         // Show the overflow menu when needed (e.g., on a button click)
         val overflowButton = binding.overflowMenu //findViewById<Button>(R.id.overflow_menu)
         overflowButton.setOnClickListener {
@@ -111,11 +106,12 @@ class LoginFragment : Fragment() {
         sharedViewModel.setAppVersion(BuildConfig.VERSION_NAME)
         sharedViewModel.setFlavor(BuildConfig.FLAVOR)
         analytics = FirebaseAnalytics.getInstance(requireContext())
-        analytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, null)
+        FirebaseAnalytics.getInstance(requireContext()).setAnalyticsCollectionEnabled(true)
+        FirebaseAnalytics.getInstance(requireContext()).setUserProperty("debug_mode", "true")
         // sets Flavor banner details for login activity
         setFlavorBanner()
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
-            var isInternetAvailable = checkInternetAvailability()
+            val isInternetAvailable = checkInternetAvailability()
 
             if (!isInternetAvailable) {
                 showAlertDialog()
@@ -126,7 +122,7 @@ class LoginFragment : Fragment() {
         with(binding) {
             loginButton.setOnClickListener {
                 viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
-                    var isInternetAvailable = checkInternetAvailability()
+                    val isInternetAvailable = checkInternetAvailability()
                     //isInternetAvailable = true
                     if (isInternetAvailable) {
                         // Internet is available, proceed with network operations
@@ -161,7 +157,7 @@ class LoginFragment : Fragment() {
         builder.setTitle("Internet Connection")
         builder.setMessage("There is currently no internet connection. Please check your connection and try again.")
         builder.setIcon(R.drawable.outline_error_24)
-        builder.setPositiveButton("OK") { dialog, which ->
+        builder.setPositiveButton("OK") { dialog, _ ->
             // Handle positive button click
             dialog.dismiss()
         }
@@ -182,8 +178,8 @@ class LoginFragment : Fragment() {
         val flavorBanner = binding.flavorBanner
         // sets banner text
         if (sharedViewModel.flavor.value == "development") {
-            binding.debugBanner.visibility = View.VISIBLE
-            binding.bannerText.visibility = View.VISIBLE
+            binding.debugBanner.visibility = VISIBLE
+            binding.bannerText.visibility = VISIBLE
             flavorBanner.text = resources.getString(R.string.devFlavorText)
             binding.debugBanner.setBackgroundColor(
                 ContextCompat.getColor(
@@ -200,8 +196,8 @@ class LoginFragment : Fragment() {
         }
         // sets banner text and banner color
         if (sharedViewModel.flavor.value == "staging") {
-            binding.debugBanner.visibility = View.VISIBLE
-            binding.bannerText.visibility = View.VISIBLE
+            binding.debugBanner.visibility = VISIBLE
+            binding.bannerText.visibility = VISIBLE
             flavorBanner.text = resources.getString(R.string.testFlavorText)
             binding.debugBanner.setBackgroundColor(
                 ContextCompat.getColor(
@@ -285,6 +281,14 @@ class LoginFragment : Fragment() {
                             handleOrderInfoResponse(orderInfoResponse)
                         }
                     }
+                    val bundle = Bundle()
+                    bundle.putString(FirebaseAnalytics.Param.METHOD, "Login Successful")
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, username.toString())
+                    bundle.putString(
+                        FirebaseAnalytics.Param.CONTENT,
+                        sharedViewModel.getSessionKey()
+                    )
+                    analytics.logEvent(FirebaseAnalytics.Event.LOGIN, bundle)
                 }
 
                 is ApiResponse.Error -> {
@@ -297,14 +301,10 @@ class LoginFragment : Fragment() {
                     orderInfoLoading?.visibility = VISIBLE
                     showToast(errorMessage)
                     orderInfoLoading?.visibility = INVISIBLE
-
-                    FirebaseAnalytics.getInstance(requireContext()).setAnalyticsCollectionEnabled(true)
-                    FirebaseAnalytics.getInstance(requireContext()).setUserProperty("debug_mode", "true")
-                    analytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, null)
-
+                    // Logs login error to Firebase Analytics
                     val bundle = Bundle()
                     bundle.putString(FirebaseAnalytics.Param.METHOD, "Login error")
-                    bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, username.toString());
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, username.toString())
                     bundle.putString(FirebaseAnalytics.Param.CONTENT, errorMessage)
                     analytics.logEvent(FirebaseAnalytics.Event.LOGIN, bundle)
                 }
@@ -369,14 +369,6 @@ class LoginFragment : Fragment() {
         Toast.makeText(
             requireContext(),
             "There is no Internet connection!\nPlease check you have a connection.",
-            Toast.LENGTH_SHORT
-        ).show()
-    }
-
-    private fun showGenericErrorToast() {
-        Toast.makeText(
-            requireContext(),
-            "There was an issue loading data. Please try logging in again.",
             Toast.LENGTH_SHORT
         ).show()
     }

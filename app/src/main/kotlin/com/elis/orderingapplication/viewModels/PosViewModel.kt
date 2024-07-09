@@ -24,6 +24,7 @@ class PosViewModel(application: Application, private val sharedViewModel: Params
     val database = OrderInfoDatabase.getInstance(application)
     //val pointOfService: LiveData<List<PointsOfService>> = database.orderInfoDao.getPointsOfService(getDeliveryAddressNum().value.toString(), getOrderingGroupNum().value.toString())
     val pointsOfService = getPointsOfServiceWithTotalOrders(getDeliveryAddressNum().value.toString(), getOrderingGroupNum().value.toString(), getOrderDate() )
+
     private fun getPointsOfServiceWithTotalOrders(
         deliveryAddressNo: String,
         orderingGroup: String,

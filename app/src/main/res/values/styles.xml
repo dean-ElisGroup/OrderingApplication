@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="CustomAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:textSize">12sp</item>
+        <item name="autoSizeTextType">uniform</item>
+        <item name="android:fontFamily">@font/gothic_a1_medium</item>
+        <item name="autoSizeMinTextSize">10sp</item>
+        <item name="autoSizeMaxTextSize">12sp</item>
+    </style>
+
+</resources>
