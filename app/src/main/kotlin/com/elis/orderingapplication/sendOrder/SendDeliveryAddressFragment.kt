@@ -41,36 +41,31 @@ class SendDeliveryAddressFragment : Fragment() {
         binding = FragmentSendOrderDeliveryAddressBinding.inflate(inflater)
         binding.lifecycleOwner = this
         binding.viewModel = sharedViewModel
-
         binding.toolbar.title = getString(R.string.send_order_delivery_address)
         binding.toolbar.setNavigationIcon(R.drawable.ic_back)
+        binding.toolbar.setTitleTextAppearance(requireContext(),R.style.titleTextStyle)
         binding.toolbar.setNavigationOnClickListener {
             view?.let { it ->
                 Navigation.findNavController(it)
                     .navigate(R.id.action_sendDeliveryAddressFragment_to_landingPageFragment)
             }
         }
-        val anchorView = binding.overflowMenu2
-        // Inflate the overflow menu
-        val overflowMenu = PopupMenu(requireContext(), anchorView)
-        overflowMenu.menuInflater.inflate(R.menu.login_menu, overflowMenu.menu)
-        // Set up the OnMenuItemClickListener
-        overflowMenu.setOnMenuItemClickListener { menuItem ->
+        binding.toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.login_menu_overflow -> {
+                R.id.overflow -> {
                     val deviceInfo = DeviceInfo(requireContext())
                     DeviceInfoDialog.showAlertDialog(requireContext(), deviceInfo.getDeviceInfo())
+                    true
+                }
+                R.id.home_button -> {
+                    findNavController().navigate(R.id.action_sendDeliveryAddressFragment_to_landingPageFragment)
                     true
                 }
 
                 else -> false
             }
         }
-        // Show the overflow menu when needed (e.g., on a button click)
-        val overflowButton = binding.overflowMenu2 //findViewById<Button>(R.id.overflow_menu)
-        overflowButton.setOnClickListener {
-            overflowMenu.show()
-        }
+
         return binding.root
     }
 

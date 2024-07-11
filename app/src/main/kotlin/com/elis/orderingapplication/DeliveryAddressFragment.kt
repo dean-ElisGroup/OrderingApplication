@@ -1,12 +1,19 @@
 package com.elis.orderingapplication
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -39,43 +46,37 @@ class DeliveryAddressFragment : Fragment() {
         binding = FragmentDeliveryAddressBinding.inflate(inflater)
         binding.lifecycleOwner = this
         binding.viewModel = sharedViewModel
-
         binding.toolbar.title = getString(R.string.delivery_address_title)
         binding.toolbar.setNavigationIcon(R.drawable.ic_back)
+        binding.toolbar.setTitleTextAppearance(requireContext(),R.style.titleTextStyle)
         binding.toolbar.setNavigationOnClickListener {
             view?.let { it ->
                 Navigation.findNavController(it)
                     .navigate(R.id.action_deliveryAddressFragment_to_landingPageFragment)
             }
         }
-        val anchorView = binding.overflowMenu2
-        // Inflate the overflow menu
-        val overflowMenu = PopupMenu(requireContext(), anchorView)
-        overflowMenu.menuInflater.inflate(R.menu.login_menu, overflowMenu.menu)
-        // Set up the OnMenuItemClickListener
-        overflowMenu.setOnMenuItemClickListener { menuItem ->
+        binding.toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.login_menu_overflow -> {
+                R.id.overflow -> {
                     val deviceInfo = DeviceInfo(requireContext())
                     DeviceInfoDialog.showAlertDialog(requireContext(), deviceInfo.getDeviceInfo())
+                    true
+                }
+                R.id.home_button -> {
+                    findNavController().navigate(R.id.action_deliveryAddressFragment_to_landingPageFragment)
                     true
                 }
 
                 else -> false
             }
         }
-        // Show the overflow menu when needed (e.g., on a button click)
-        val overflowButton = binding.overflowMenu2 //findViewById<Button>(R.id.overflow_menu)
-        overflowButton.setOnClickListener {
-            overflowMenu.show()
-        }
-
 
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        // Calls function to set the environment banner
         setFlavorBanner()
         val recyclerView: RecyclerView = binding.deliveryAddressSelection
         val spacingInPixels = resources.getDimensionPixelSize(R.dimen.spacing)

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="CustomAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:textSize">12sp</item>
+        <item name="autoSizeTextType">uniform</item>
+        <item name="android:fontFamily">@font/gothic_a1_medium</item>
+        <item name="autoSizeMinTextSize">10sp</item>
+        <item name="autoSizeMaxTextSize">12sp</item>
+    </style>
+
+    <style name="CustomToolbarStyle" parent="Widget.AppCompat.Toolbar">
+        <item name="android:background">@color/elis_blue</item>
+        <item name="navigationIcon">@drawable/ic_back</item>
+        <item name="android:titleTextAppearance">@style/titleTextStyle</item>
+        <item name="menu">@menu/toolbar_menu</item>
+    </style>
+
+    <style name="titleTextStyle" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">16sp</item>
+        <item name="fontFamily">@font/gothic_a1_medium</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+
+</resources>

@@ -54,7 +54,7 @@ class PosFragment : Fragment(), PointOfServiceAdapter.TotalPOSCallback {
         binding.posViewModel = posViewModel
         binding.toolbar.title = getString(R.string.pos_title)
         binding.toolbar.setNavigationIcon(R.drawable.ic_back)
-
+        binding.toolbar.setTitleTextAppearance(requireContext(),R.style.titleTextStyle)
         binding.toolbar.setNavigationOnClickListener {
             view?.let { it ->
                 val action = PosFragmentDirections.actionPosFragmentToPosGroupFragment(
@@ -62,6 +62,21 @@ class PosFragment : Fragment(), PointOfServiceAdapter.TotalPOSCallback {
                     deliveryAddressForArgs
                 )
                 Navigation.findNavController(it).navigate(action)
+            }
+        }
+        binding.toolbar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.overflow -> {
+                    val deviceInfo = DeviceInfo(requireContext())
+                    DeviceInfoDialog.showAlertDialog(requireContext(), deviceInfo.getDeviceInfo())
+                    true
+                }
+                R.id.home_button -> {
+                    findNavController().navigate(R.id.action_posFragment_to_landingPageFragment)
+                    true
+                }
+
+                else -> false
             }
         }
 
@@ -84,27 +99,6 @@ class PosFragment : Fragment(), PointOfServiceAdapter.TotalPOSCallback {
         // Sets ordering group and ordering name to shared ViewModel
         args.orderingGroupNo?.let { sharedViewModel.setOrderingGroupNo(it) }
         sharedViewModel.setOrderingGroupName(args.orderingGroupName)
-        val anchorView = binding.overflowMenu2
-        // Inflate the overflow menu
-        val overflowMenu = PopupMenu(requireContext(), anchorView)
-        overflowMenu.menuInflater.inflate(R.menu.login_menu, overflowMenu.menu)
-        // Set up the OnMenuItemClickListener
-        overflowMenu.setOnMenuItemClickListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.login_menu_overflow -> {
-                    val deviceInfo = DeviceInfo(requireContext())
-                    DeviceInfoDialog.showAlertDialog(requireContext(), deviceInfo.getDeviceInfo())
-                    true
-                }
-
-                else -> false
-            }
-        }
-        // Show the overflow menu when needed (e.g., on a button click)
-        val overflowButton = binding.overflowMenu2 //findViewById<Button>(R.id.overflow_menu)
-        overflowButton.setOnClickListener {
-            overflowMenu.show()
-        }
         // Inflate the layout for this fragment
         return binding.root
     }

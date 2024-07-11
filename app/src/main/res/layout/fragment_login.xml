@@ -22,52 +22,50 @@
         android:orientation="vertical">
 
 
-
         <ImageView
             android:id="@+id/background_image"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:contentDescription="@string/background_image"
             android:scaleType="centerCrop"
             android:src="@drawable/new_applogin_design_background_centre_01"
-            app:layout_constraintTop_toTopOf="@+id/username_input"
-            tools:layout_editor_absoluteX="8dp" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/username_input" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/overflow_menu"
             style="@style/Widget.Material3.Button.Icon"
-            android:layout_width="50dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:background="@android:color/transparent"
             android:backgroundTint="#00FFFFFF"
             android:contentDescription="@string/overflow_menu_text"
+            android:paddingStart="1dp"
             android:paddingTop="1dp"
             android:paddingEnd="1dp"
-            app:icon="@drawable/ic_more_vert"
+            app:icon="@drawable/device_info"
             app:iconGravity="start|end"
-            app:iconSize="30dp"
+            app:iconSize="25dp"
             app:iconTint="@color/white"
-            app:layout_constraintEnd_toStartOf="@+id/right_guideline"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/guideline" />
-
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="0dp"
-            android:layout_height="30dp"
-            android:layout_marginStart="156dp"
-            android:layout_marginEnd="162dp"
-            android:layout_marginBottom="8dp"
-            android:src="@drawable/device_online"
-            app:layout_constraintBottom_toTopOf="@+id/date"
-            app:layout_constraintEnd_toStartOf="@+id/right_guideline"
-            app:layout_constraintStart_toEndOf="@+id/left_guideline" />
 
         <TextView
             android:id="@+id/date"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:autoSizeMaxTextSize="32sp"
+            android:autoSizeMinTextSize="16sp"
+            android:autoSizeTextType="uniform"
             android:background="@color/elis_blue"
             android:fontFamily="@font/gothic_a1_medium"
+            android:paddingStart="30dp"
             android:paddingTop="5dp"
+            android:paddingEnd="30dp"
             android:paddingBottom="5dp"
             android:textAlignment="center"
             android:textColor="@color/white"
@@ -75,13 +73,17 @@
             android:textSize="16sp"
             app:layout_constraintEnd_toStartOf="@+id/right_guideline"
             app:layout_constraintStart_toStartOf="@+id/left_guideline"
-            app:layout_constraintTop_toBottomOf="@+id/main_guideline"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/main_guideline" />
 
         <TextView
             android:id="@+id/welcome"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:autoSizeMaxTextSize="60sp"
+            android:autoSizeMinTextSize="30sp"
+            android:autoSizeTextType="none"
             android:fontFamily="@font/gothic_a1_medium"
             android:letterSpacing="@dimen/welcome_letter_spacing"
             android:text="@string/welcome_text"
@@ -97,7 +99,9 @@
             android:id="@+id/password_input"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="14dp"
+            android:layout_marginEnd="8dp"
             android:fontFamily="@font/gothic_a1_medium"
             android:hint="@string/password"
             android:textColorHint="@color/elis_black"
@@ -132,6 +136,9 @@
             android:id="@+id/username_input"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/gothic_a1_medium"
             android:hint="@string/username"
             android:paddingTop="10dp"
             android:textColorHint="@color/elis_black"
@@ -145,7 +152,6 @@
             app:endIconMode="clear_text"
             app:endIconTint="@color/elis_black"
             app:hintEnabled="false"
-            android:fontFamily="@font/gothic_a1_medium"
             app:layout_constraintEnd_toStartOf="@+id/right_guideline"
             app:layout_constraintStart_toStartOf="@+id/left_guideline"
             app:layout_constraintTop_toBottomOf="@+id/welcome"
@@ -170,7 +176,9 @@
             style="@style/Widget.Material3.Button.ElevatedButton.Icon"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="14dp"
+            android:layout_marginEnd="8dp"
             android:fontFamily="@font/gothic_a1_medium"
             android:text="@string/loginButton"
             android:textAlignment="center"
@@ -178,7 +186,7 @@
             android:textSize="20sp"
             android:textStyle="bold"
             app:backgroundTint="@color/white"
-            app:icon="@drawable/login_fill0_wght400_grad0_opsz48"
+            app:icon="@drawable/login_icon"
             app:iconGravity="textStart"
             app:iconSize="30dp"
             app:iconTint="@color/elis_black"
@@ -213,17 +221,15 @@
             android:id="@+id/app_version"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:fontFamily="@font/gothic_a1_medium"
             android:paddingBottom="10dp"
             android:text="@{paramViewModel.appVersion}"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="11sp"
-            android:fontFamily="@font/gothic_a1_medium"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/right_guideline"
             app:layout_constraintStart_toStartOf="@+id/left_guideline"
-            app:layout_constraintTop_toBottomOf="@id/flavor_banner" />
+            app:layout_constraintTop_toBottomOf="@+id/loginButton" />
 
         <TextView
             android:id="@+id/flavor_banner"
@@ -286,7 +292,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 

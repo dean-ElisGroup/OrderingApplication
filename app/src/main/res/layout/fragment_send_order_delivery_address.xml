@@ -43,7 +43,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:navigationContentDescription="@string/go_back_to_options"
-            app:titleTextAppearance="@style/Toolbar.TitleText" />
+            app:titleTextAppearance="@style/titleTextStyle" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/button_layout"
@@ -181,25 +181,6 @@
                 app:layout_constraintStart_toStartOf="@+id/guideline3"
                 app:layout_constraintTop_toTopOf="@+id/guideline6" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/overflow_menu2"
-                style="@style/Widget.Material3.Button.Icon"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:backgroundTint="#00FFFFFF"
-                android:contentDescription="@string/overflow_menu_text"
-                android:gravity="center_vertical"
-                android:paddingTop="1dp"
-                android:paddingEnd="1dp"
-                android:translationZ="90dp"
-                app:icon="@drawable/ic_more_vert"
-                app:iconGravity="start|end"
-                app:iconSize="30dp"
-                app:iconTint="@color/white"
-                app:layout_constraintEnd_toStartOf="@+id/guideline4"
-                app:layout_constraintTop_toTopOf="parent" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
@@ -221,7 +202,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 

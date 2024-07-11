@@ -72,27 +72,10 @@ class LoginFragment : Fragment() {
         binding.lifecycleOwner = this
         orderInfoLoading = binding.orderInfoLoading
         fireBaseRemoteConfig()
-        // Find the anchor view (e.g., a button or an overflow icon)
-        val anchorView = binding.overflowMenu
-        // Inflate the overflow menu
-        val overflowMenu = PopupMenu(requireContext(), anchorView)
-        overflowMenu.menuInflater.inflate(R.menu.login_menu, overflowMenu.menu)
-        // Set up the OnMenuItemClickListener
-        overflowMenu.setOnMenuItemClickListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.login_menu_overflow -> {
-                    val deviceInfo = DeviceInfo(requireContext())
-                    DeviceInfoDialog.showAlertDialog(requireContext(), deviceInfo.getDeviceInfo())
-                    true
-                }
-
-                else -> false
-            }
-        }
-        // Show the overflow menu when needed (e.g., on a button click)
-        val overflowButton = binding.overflowMenu //findViewById<Button>(R.id.overflow_menu)
-        overflowButton.setOnClickListener {
-            overflowMenu.show()
+        // Sets info button to slow device info dialog
+        binding.overflowMenu.setOnClickListener {
+            val deviceInfo = DeviceInfo(requireContext())
+            DeviceInfoDialog.showAlertDialog(requireContext(), deviceInfo.getDeviceInfo())
         }
 
         return view

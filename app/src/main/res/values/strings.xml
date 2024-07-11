@@ -68,6 +68,17 @@
     <string name="article_entry_send_order_button">Send order</string>
     <string name="please_select_an_order_to_send">Select an order to send</string>
     <string name="submit_order_text">Submit order</string>
+    <string name="proceed_arrow">Proceed</string>
+    <string name="article_entry_total_articles_divider">/</string>
+    <string name="home_button">Home button</string>
+    <string name="overflow_menu_button">Overflow menu</string>
+    <string name="device_info_error">Error</string>
+    <string name="app_header_name">App header</string>
+    <string name="status_icon_new">Status new</string>
+    <string name="article_cardview_qty">Qty</string>
+    <string name="device_info">Device info</string>
+    <string name="total_articles">Total articles:</string>
+    <string name="delivery_date_text">Delivery date:</string>
 
 
 </resources>

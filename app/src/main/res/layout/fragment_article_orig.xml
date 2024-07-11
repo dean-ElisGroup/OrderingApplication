@@ -39,7 +39,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:navigationContentDescription="@string/go_back_to_options"
-            app:titleTextAppearance="@style/Toolbar.TitleText"
+            app:titleTextAppearance="@style/titleTextStyle"
             style="@style/overflowMenuColour"
             />
 
@@ -226,6 +226,7 @@
                 android:contentDescription="@string/overflow_menu_text"
                 android:paddingTop="1dp"
                 android:paddingEnd="1dp"
+                android:paddingStart="1dp"
                 android:layout_marginTop="8dp"
                 android:translationZ="90dp"
                 app:icon="@drawable/ic_more_vert"

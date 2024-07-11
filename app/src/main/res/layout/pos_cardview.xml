@@ -55,10 +55,12 @@
                 android:nestedScrollingEnabled="false"
                 android:singleLine="false"
                 android:text="@{pos.pointOfServiceName}"
+                android:contentDescription="@{pos.pointOfServiceName}"
                 android:textAlignment="textStart"
                 android:textColor="@color/elis_black"
                 android:textSize="18sp"
                 android:textStyle="bold"
+
                 app:layout_constraintEnd_toStartOf="@+id/proceed_arrow"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -75,6 +77,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.5"
                 app:srcCompat="@drawable/baseline_arrow_right_24_black"
+                android:contentDescription="@string/proceed_arrow"
                 app:tint="@color/elis_black" />
 
             <TextView

@@ -46,26 +46,9 @@ class LandingPageFragment : Fragment() {
             DataBindingUtil.inflate(inflater, R.layout.fragment_landing_page, container, false)
         // Clears hold on UI interaction when progress bar is visible
         requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
-        val anchorView = binding.overflowMenu2
-        // Inflate the overflow menu
-        val overflowMenu = PopupMenu(requireContext(), anchorView)
-        overflowMenu.menuInflater.inflate(R.menu.login_menu, overflowMenu.menu)
-        // Set up the OnMenuItemClickListener
-        overflowMenu.setOnMenuItemClickListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.login_menu_overflow -> {
-                    val deviceInfo = DeviceInfo(requireContext())
-                    DeviceInfoDialog.showAlertDialog(requireContext(), deviceInfo.getDeviceInfo())
-                    true
-                }
-
-                else -> false
-            }
-        }
-        // Show the overflow menu when needed (e.g., on a button click)
-        val overflowButton = binding.overflowMenu2 //findViewById<Button>(R.id.overflow_menu)
-        overflowButton.setOnClickListener {
-            overflowMenu.show()
+        binding.overflowMenu2.setOnClickListener {
+            val deviceInfo = DeviceInfo(requireContext())
+            DeviceInfoDialog.showAlertDialog(requireContext(), deviceInfo.getDeviceInfo())
         }
 
         val rep = UserLoginRepository()

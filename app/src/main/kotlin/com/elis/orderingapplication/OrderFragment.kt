@@ -58,36 +58,29 @@ class OrderFragment : Fragment() {
         binding.orderViewModel = orderViewModel
         binding.toolbar.title = getString(R.string.order_selection_title)
         binding.toolbar.setNavigationIcon(R.drawable.ic_back)
+        binding.toolbar.setTitleTextAppearance(requireContext(),R.style.titleTextStyle)
         binding.toolbar.setNavigationOnClickListener {
             view?.let { it ->
                 Navigation.findNavController(it)
                     .navigate(R.id.action_orderFragment_to_posFragment)
             }
         }
-        observeArgsBundleFromTest()
-        val anchorView = binding.overflowMenu2
-        // Inflate the overflow menu
-        val overflowMenu = PopupMenu(requireContext(), anchorView)
-        overflowMenu.menuInflater.inflate(R.menu.login_menu, overflowMenu.menu)
-        // Set up the OnMenuItemClickListener
-        overflowMenu.setOnMenuItemClickListener { menuItem ->
+        binding.toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.login_menu_overflow -> {
+                R.id.overflow -> {
                     val deviceInfo = DeviceInfo(requireContext())
                     DeviceInfoDialog.showAlertDialog(requireContext(), deviceInfo.getDeviceInfo())
+                    true
+                }
+                R.id.home_button -> {
+                    findNavController().navigate(R.id.action_orderFragment_to_landingPageFragment)
                     true
                 }
 
                 else -> false
             }
         }
-        // Show the overflow menu when needed (e.g., on a button click)
-        val overflowButton = binding.overflowMenu2 //findViewById<Button>(R.id.overflow_menu)
-        overflowButton.setOnClickListener {
-            overflowMenu.show()
-        }
-
-
+        observeArgsBundleFromTest()
         // Inflate the layout for this fragment
         return binding.root
     }
