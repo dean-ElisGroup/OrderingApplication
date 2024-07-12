@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="orderingGroup"
+            type="com.elis.orderingapplication.pojo2.JoinOrderingGroup" />
+
+        <variable
+            name="clickListener"
+            type="com.elis.orderingapplication.adapters.listAdapters.OrderingGroupAdapter.MyClickListener" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="100dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="100dp"
+            android:backgroundTint="@color/white"
+            android:clickable="true"
+            android:elevation="5dp"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:strokeColor="@color/elis_light_blue"
+            app:strokeWidth="4dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_margin="5dp"
+                android:backgroundTint="@color/white"
+                android:gravity="center|fill"
+                android:minHeight="100dp"
+                android:onClick="@{() -> clickListener.onItemClick(orderingGroup)}"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+                <ImageView
+                    android:id="@+id/delivery_address_icon"
+                    android:layout_width="68dp"
+                    android:layout_height="68dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:contentDescription="@string/delivery_address_icon"
+                    android:scaleType="fitCenter"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/baseline_pin_drop_24"
+                    app:tint="@color/elis_black" />
+
+                <ImageView
+                    android:id="@+id/proceed_button_icon"
+                    android:layout_width="98dp"
+                    android:layout_height="98dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:adjustViewBounds="false"
+                    android:contentDescription="@string/proceed_button_icon"
+                    android:cropToPadding="false"
+                    android:paddingStart="35dp"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/baseline_arrow_right_24_black"
+                    app:tint="@color/elis_black"
+                    tools:ignore="RedundantDescriptionCheck" />
+
+                <TextView
+                    android:id="@+id/deliveryAddressName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:autoSizeMinTextSize="16sp"
+                    android:autoSizeTextType="uniform"
+                    android:contentDescription="@{orderingGroup.orderingGroupDescription}"
+                    android:fontFamily="@font/elis_sharpsans"
+                    android:maxLines="2"
+                    android:singleLine="false"
+                    android:textAlignment="viewStart"
+                    android:textSize="26sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/proceed_button_icon"
+                    app:layout_constraintStart_toEndOf="@+id/delivery_address_icon"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>

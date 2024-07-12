@@ -93,15 +93,15 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
-                android:background="@drawable/instruction_background_v2"
+                android:background="@drawable/instruction_background_tablet_v4"
                 android:fontFamily="@font/gothic_a1_medium"
                 android:letterSpacing=".1"
                 android:text="@string/please_select_an_option"
                 android:textAlignment="center"
                 android:textColor="@color/elis_black"
-                android:textSize="26sp"
+                android:textSize="@dimen/select_an_option_tablet"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/headerBlock" />
@@ -115,8 +115,8 @@
                 android:layout_marginTop="32dp"
                 android:layout_marginEnd="32dp"
                 android:layout_marginBottom="32dp"
-                android:drawableLeft="@drawable/baseline_local_shipping_24"
-                android:drawableRight="@drawable/baseline_arrow_right_24"
+                android:drawableLeft="@drawable/landing_page_button_orders"
+                android:drawableRight="@drawable/landing_page_arrow"
                 android:drawablePadding="20dp"
                 android:drawableTint="@color/elis_black"
                 android:fontFamily="@font/gothic_a1_medium"
@@ -127,14 +127,15 @@
                 android:paddingEnd="3dp"
                 android:text="@string/button_orders"
                 android:textColor="@color/elis_black"
-                android:textSize="60sp"
+                android:textSize="@dimen/landing_page_tablet_button_textSize"
+                app:backgroundTint="@color/white"
                 app:cornerRadius="10dp"
                 app:layout_constraintBottom_toTopOf="@+id/button_view_orders"
                 app:layout_constraintEnd_toStartOf="@+id/guideline4"
                 app:layout_constraintStart_toStartOf="@+id/guideline3"
                 app:layout_constraintTop_toBottomOf="@+id/selectAnOption"
                 app:strokeColor="@color/elis_light_blue"
-                app:strokeWidth="2dp" />
+                app:strokeWidth="4dp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_send_orders"
@@ -145,8 +146,8 @@
                 android:layout_marginTop="32dp"
                 android:layout_marginEnd="32dp"
                 android:layout_marginBottom="32dp"
-                android:drawableLeft="@drawable/send_fill0_wght400_grad0_opsz24"
-                android:drawableRight="@drawable/baseline_arrow_right_24"
+                android:drawableLeft="@drawable/landing_page_button_send"
+                android:drawableRight="@drawable/landing_page_arrow"
                 android:drawableTint="@color/elis_black"
                 android:fontFamily="@font/gothic_a1_medium"
                 android:gravity="center"
@@ -156,7 +157,7 @@
                 android:paddingEnd="3dp"
                 android:text="@string/button_send_orders"
                 android:textColor="@color/elis_black"
-                android:textSize="60sp"
+                android:textSize="@dimen/landing_page_tablet_button_textSize"
                 app:backgroundTint="@color/white"
                 app:cornerRadius="@dimen/button_corner_radius"
                 app:layout_constraintBottom_toTopOf="@+id/button_settings"
@@ -164,7 +165,7 @@
                 app:layout_constraintStart_toStartOf="@+id/guideline3"
                 app:layout_constraintTop_toBottomOf="@+id/button_view_orders"
                 app:strokeColor="@color/elis_light_blue"
-                app:strokeWidth="2dp" />
+                app:strokeWidth="4dp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_view_orders"
@@ -173,7 +174,7 @@
                 android:layout_height="0dp"
                 android:layout_marginBottom="10dp"
                 android:drawableLeft="@drawable/baseline_list_24"
-                android:drawableRight="@drawable/baseline_arrow_right_24"
+                android:drawableRight="@drawable/landing_page_arrow"
                 android:drawableTint="@color/elis_black"
                 android:fontFamily="@font/gothic_a1_medium"
                 android:gravity="center"
@@ -198,7 +199,7 @@
                 android:layout_height="0dp"
                 android:layout_marginBottom="10dp"
                 android:drawableLeft="@drawable/baseline_settings_24"
-                android:drawableRight="@drawable/baseline_arrow_right_24"
+                android:drawableRight="@drawable/landing_page_arrow"
                 android:drawableTint="@color/elis_black"
                 android:fontFamily="@font/gothic_a1_medium"
                 android:gravity="center"
@@ -225,8 +226,8 @@
                 android:layout_marginTop="32dp"
                 android:layout_marginEnd="32dp"
                 android:layout_marginBottom="32dp"
-                android:drawableLeft="@drawable/baseline_logout_24"
-                android:drawableRight="@drawable/baseline_arrow_right_24"
+                android:drawableLeft="@drawable/landing_page_button_logout"
+                android:drawableRight="@drawable/landing_page_arrow"
                 android:drawableTint="@color/elis_black"
                 android:fontFamily="@font/gothic_a1_medium"
                 android:gravity="center"
@@ -236,7 +237,7 @@
                 android:text="@string/button_logout"
 
                 android:textColor="@color/elis_black"
-                android:textSize="60sp"
+                android:textSize="@dimen/landing_page_tablet_button_textSize"
                 app:backgroundTint="@color/white"
                 app:cornerRadius="@dimen/button_corner_radius"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -244,7 +245,7 @@
                 app:layout_constraintStart_toStartOf="@+id/guideline3"
                 app:layout_constraintTop_toBottomOf="@+id/button_settings"
                 app:strokeColor="@color/elis_light_blue"
-                app:strokeWidth="2dp" />
+                app:strokeWidth="4dp" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline3"

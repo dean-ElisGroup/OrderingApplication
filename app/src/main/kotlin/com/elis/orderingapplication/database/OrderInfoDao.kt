@@ -155,7 +155,7 @@ interface OrderInfoDao {
     //fun getSendOrderArticles(deliveryDate: String?, appOrderId: String?): List<OrderRowsItem>
 
     @Transaction
-    @Query("SELECT articleSize AS size, solCountedQty AS qty, articleNo FROM article WHERE delivery_date_article = :deliveryDate AND app_order_id = :appOrderId")
+    @Query("SELECT articleSize AS size, COALESCE(solOrderQty, 0) AS qty,articleNo FROM article WHERE delivery_date_article = :deliveryDate AND app_order_id = :appOrderId")
     fun getSendOrderArticles(deliveryDate: String?, appOrderId: String?): List<OrderRowsItem>
 
     // Query used for the Send Orders functionality

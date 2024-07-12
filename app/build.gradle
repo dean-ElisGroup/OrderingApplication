@@ -36,7 +36,7 @@ android {
             applicationIdSuffix ".dev"
             manifestPlaceholders = [appLabel: "Stock Ordering - Dev"]
             namespace 'com.solstockorder.dev'
-            versionName "2.0.0"
+            versionName '2.0.2'
             buildConfigField "String", "API_BASE_URL", '"http://serviceonlinetest.elisonline.co.uk/SolMasterTraining5/Ordering.wso/"'
 
         }
@@ -115,6 +115,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics:22.0.2'
     implementation 'com.google.gms:google-services:4.4.2'
     implementation 'com.google.firebase:firebase-perf:21.0.1'
+    implementation 'com.google.firebase:firebase-config:22.0.0'
     def room_version = '2.6.1'
 
     implementation("androidx.room:room-runtime:2.6.1")

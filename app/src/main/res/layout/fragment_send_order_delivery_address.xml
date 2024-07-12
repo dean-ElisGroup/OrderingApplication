@@ -35,7 +35,7 @@
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
-            style="@style/overflowMenuColour"
+            style="@style/CustomToolbarStyle"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/elis_blue"
@@ -72,7 +72,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
-                android:background="@drawable/instruction_background_v2"
+                android:background="@drawable/instruction_background_v3"
                 android:elevation="2dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -115,7 +115,7 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="8dp"
                 android:autoSizeTextType="uniform"
-                android:background="@drawable/instruction_background_v2"
+                android:background="@drawable/instruction_background_v3"
                 android:fontFamily="@font/gothic_a1_medium"
                 android:letterSpacing=".1"
                 android:maxLines="1"

@@ -26,18 +26,18 @@
     </entry>
     <entry>
         <key>SOL_Login_URL</key>
-        <value>http://serviceonlinetest.elisonline.co.uk/SolMasterTraining5/Ordering.wso/Login</value>
+        <value>http://serviceonlinetest.elisonline.co.uk/SolMasterTraining5/Ordering.wso/Login/</value>
     </entry>
     <entry>
         <key>SOL_Logout_URL</key>
-        <value>http://serviceonlinetest.elisonline.co.uk/SolMasterTraining5/Ordering.wso/Logout</value>
+        <value>http://serviceonlinetest.elisonline.co.uk/SolMasterTraining5/Ordering.wso/Logout/</value>
     </entry>
     <entry>
         <key>SOL_OrderEvent_URL</key>
-        <value>http://serviceonlinetest.elisonline.co.uk/SolMasterTraining5/Ordering.wso/OrderEvent</value>
+        <value>http://serviceonlinetest.elisonline.co.uk/SolMasterTraining5/Ordering.wso/OrderEvent/</value>
     </entry>
     <entry>
         <key>SOL_OrderInfo_URL</key>
-        <value>http://serviceonlinetest.elisonline.co.uk/SolMasterTraining5/Ordering.wso/OrderInfo</value>
+        <value>http://serviceonlinetest.elisonline.co.uk/SolMasterTraining5/Ordering.wso/OrderInfo/</value>
     </entry>
 </defaults>

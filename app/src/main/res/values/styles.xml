@@ -14,6 +14,7 @@
         <item name="navigationIconTint">@color/white</item>
         <item name="navigationIcon">@drawable/ic_back</item>
         <item name="android:titleTextAppearance">@style/titleTextStyle</item>
+        <item name="menu">@menu/toolbar_menu</item>
     </style>
 
 

@@ -32,6 +32,7 @@
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
+            style="@style/CustomToolbarStyle"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/elis_blue"
@@ -39,9 +40,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:navigationContentDescription="@string/go_back_to_options"
-            app:titleTextAppearance="@style/titleTextStyle"
-            style="@style/overflowMenuColour"
-            />
+            app:titleTextAppearance="@style/titleTextStyle" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/button_layout"
