@@ -37,7 +37,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="200dp"
                 android:layout_margin="5dp"
                 android:backgroundTint="@color/white"
                 android:gravity="center|fill"
@@ -84,12 +84,12 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
-                    android:autoSizeMinTextSize="16sp"
                     android:autoSizeTextType="uniform"
                     android:contentDescription="@{orderingGroup.orderingGroupDescription}"
                     android:fontFamily="@font/elis_sharpsans"
                     android:maxLines="2"
                     android:singleLine="false"
+                    android:text="@{orderingGroup.orderingGroupDescription}"
                     android:textAlignment="viewStart"
                     android:textSize="26sp"
                     app:layout_constraintBottom_toBottomOf="parent"

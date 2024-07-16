@@ -91,6 +91,9 @@ class ArticleEntryCardFragment : Fragment() {
             currentOrderData = currentOrder.firstOrNull()
             numberOfArticles = currentOrderData?.totalArticles
             sharedViewModel.setArticleTotal(numberOfArticles ?: 0)
+            val orderStatusCallback = sharedViewModel.getOrderStatusCallback()
+            orderStatusCallback?.onOrderStatusDataReceived(currentOrderData)
+
         }
     }
 
@@ -111,6 +114,7 @@ class ArticleEntryCardFragment : Fragment() {
         val lastArticleCallback = sharedViewModel.getLastArticleCallback()
 
         lastArticleCallback?.onLastArticleChanged(isLastArticle)
+
 
         binding.ofArticlePosition.text = numberOfArticles?.toString() ?: ""
         binding.articlePosition.text = currentArticlePosition?.toString() ?: ""
@@ -155,11 +159,6 @@ class ArticleEntryCardFragment : Fragment() {
             }
         }
     }
-
-    //override fun onDestroyView() {
-    //    super.onDestroyView()
-    //    _binding = null
-    // }
 // Starts a check to see if there's a physical connection to the internet.
     fun startInternetCheckJob() {
         lifecycleScope.launch {
@@ -196,26 +195,6 @@ class ArticleEntryCardFragment : Fragment() {
         val hexString = byteArray.joinToString("") { "%02x".format(it) }
         return hexString.take(length)
     }
-
-    /*private fun sendOrderToSOL(order: Order, externalOrderId: String = externalOrderId()) {
-        val sendOrder = articleEntryViewModel.sendOrderToSOL(order, externalOrderId)
-        val sendOrderEvent = OrderEvent(sharedViewModel.getSessionKey(), sendOrder)
-        articleEntryViewModel.orderEvent(sendOrderEvent)
-        articleEntryViewModel.orderEventResponse.observe(viewLifecycleOwner) { response ->
-            if (response != null) {
-                when (response) {
-                    is ApiResponse.Success -> handleSuccessResponse(response.data?.success)
-                    is ApiResponse.Loading -> handleLoadingState()
-                    is ApiResponse.Error -> handleErrorResponse(response.message)// .data?.messages)
-                    is ApiResponse.ErrorSendOrderDate -> handleErrorResponse(response.message)
-                    is ApiResponse.NoDataError -> handleNoDataError()
-                    is ApiResponse.ErrorLogin -> handleUnknownError()
-                    is ApiResponse.UnknownError -> handleUnknownError()
-                    else -> handleUnknownError()
-                }
-            }
-        }
-    }*/
 
     private fun sendOrderToSOL(order: Order, externalOrderId: String = externalOrderId()) {
         val sendOrder = articleEntryViewModel.sendOrderToSOL(order, externalOrderId)
@@ -345,6 +324,10 @@ class ArticleEntryCardFragment : Fragment() {
 
     interface LastArticleCallback {
         fun onLastArticleChanged(isLastArticle: Boolean)
+    }
+
+    interface OrderStatusCallback {
+        fun onOrderStatusDataReceived(orderData: Order?)
     }
 }
 

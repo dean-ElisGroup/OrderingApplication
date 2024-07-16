@@ -25,7 +25,5 @@ class MainActivity : AppCompatActivity(), MenuHost {
         navController = findNavController(R.id.myNavHostFragment)
         // Setup Toolbar
         supportActionBar?.hide()
-
     }
-
 }

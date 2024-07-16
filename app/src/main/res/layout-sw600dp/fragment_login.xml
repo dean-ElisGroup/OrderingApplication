@@ -36,7 +36,7 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/overflow_menu"
             style="@style/Widget.Material3.Button.Icon"
-            android:layout_width="50dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             android:backgroundTint="#00FFFFFF"
@@ -44,7 +44,7 @@
             android:paddingStart="1dp"
             android:paddingTop="1dp"
             android:paddingEnd="1dp"
-            app:icon="@drawable/ic_more_vert"
+            app:icon="@drawable/device_info"
             app:iconGravity="start|end"
             app:iconSize="60dp"
             app:iconTint="@color/white"
