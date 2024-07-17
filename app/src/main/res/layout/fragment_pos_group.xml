@@ -39,7 +39,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:navigationContentDescription="@string/go_back_to_options"
-            app:titleTextAppearance="@style/titleTextStyle" />
+            app:titleTextAppearance="@style/titleTextStyle"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/button_layout"
