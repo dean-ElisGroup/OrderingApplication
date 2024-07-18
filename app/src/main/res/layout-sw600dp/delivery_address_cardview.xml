@@ -15,7 +15,7 @@
         android:layout_height="match_parent">
 
         <com.google.android.material.card.MaterialCardView
-            android:layout_width="460dp"
+            android:layout_width="0dp"
             android:layout_height="200dp"
             android:layout_margin="10dp"
             android:background="@drawable/instruction_background_v3"
@@ -23,7 +23,6 @@
             android:minHeight="100dp"
             app:cardBackgroundColor="@color/white"
             app:cardCornerRadius="10dp"
-            app:cardElevation="5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

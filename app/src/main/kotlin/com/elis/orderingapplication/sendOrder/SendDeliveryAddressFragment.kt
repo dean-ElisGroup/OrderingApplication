@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.core.content.ContextCompat
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.elis.orderingapplication.CardViewDecoration
 import com.elis.orderingapplication.R
 import com.elis.orderingapplication.adapters.listAdapters.DeliveryAdapter
+import com.elis.orderingapplication.constants.Constants.Companion.SHOW_BANNER
 import com.elis.orderingapplication.databinding.FragmentDeliveryAddressBinding
 import com.elis.orderingapplication.databinding.FragmentSendOrderDeliveryAddressBinding
 import com.elis.orderingapplication.pojo2.DeliveryAddress
@@ -71,7 +73,10 @@ class SendDeliveryAddressFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setFlavorBanner()
+        if(SHOW_BANNER) {
+            setFlavorBanner()
+            binding.debugBanner.visibility = VISIBLE
+        }
         val recyclerView: RecyclerView = binding.deliveryAddressSelection
         val spacingInPixels = resources.getDimensionPixelSize(R.dimen.spacing)
         val itemSpacingDecoration = CardViewDecoration(spacingInPixels)

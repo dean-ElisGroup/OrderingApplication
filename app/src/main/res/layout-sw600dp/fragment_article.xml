@@ -2,23 +2,22 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".PosGroupFragment"
+    tools:context=".ArticleFragment"
     android:orientation="vertical">
     <data>
         <variable
-            name="sharedViewModel"
-            type="com.elis.orderingapplication.viewModels.ParamsViewModel" />
+            name="orderData"
+            type="com.elis.orderingapplication.pojo2.OrderParcelable" />
         <variable
-            name="orderingGroupViewModel"
-            type="com.elis.orderingapplication.viewModels.OrderingGroupViewModel" />
-        <variable
-            name="deliveryAddressName"
+            name="orderDateVal"
             type="String" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:focusable="false">
 
         <ImageView
             android:id="@+id/imageView"
@@ -29,41 +28,27 @@
             android:src="@drawable/new_applogin_design_background_no_logo_01" />
 
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar"
-            style="@style/CustomToolbarStyle"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/elis_blue"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:navigationContentDescription="@string/go_back_to_options"
-            app:titleTextAppearance="@style/titleTextStyle"/>
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/button_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center_horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:gravity="center_horizontal">
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.09" />
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                style="@style/CustomToolbarStyle"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/elis_blue"
+                app:navigationContentDescription="@string/go_back_to_options"
+                app:titleTextAppearance="@style/titleTextStyle" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.94" />
+                app:layout_constraintGuide_percent="0.96" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout"
@@ -72,11 +57,11 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
-                android:background="@drawable/instruction_background_v3"
-                android:elevation="2dp"
+                android:background="@drawable/instruction_background_tablet_v4"
+                android:focusable="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/guideline2">
+                app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
                 <TextView
                     android:id="@+id/orderDateText"
@@ -85,11 +70,12 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="4dp"
                     android:layout_marginEnd="8dp"
+                    android:focusable="false"
                     android:fontFamily="@font/gothic_a1_medium"
                     android:text="@string/order_date_text"
                     android:textAlignment="center"
                     android:textColor="@color/elis_blue"
-                    android:textSize="14sp"
+                    android:textSize="@dimen/select_an_option_tablet"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -97,16 +83,17 @@
                 <TextView
                     android:id="@+id/orderDate"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
-                    android:fontFamily="@font/gothic_a1_medium"
-                    android:text="@{sharedViewModel.orderDate}"
+                    android:focusable="false"
+                    android:fontFamily="@font/gothic_a1_bold"
+                    android:text="@{orderDateVal}"
                     android:textFontWeight="800"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/select_an_option_tablet"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/orderDateText" />
+                    app:layout_constraintTop_toBottomOf="@id/orderDateText" />
 
                 <TextView
                     android:id="@+id/deliveryAddress"
@@ -114,14 +101,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
-                    android:autoSizeMaxTextSize="16sp"
-                    android:autoSizeMinTextSize="14sp"
-                    android:autoSizeTextType="uniform"
-                    android:fontFamily="@font/gothic_a1_medium"
-                    android:maxLines="1"
-                    android:textAlignment="center"
+                    android:focusable="false"
+                    android:fontFamily="@font/gothic_a1_bold"
+                    android:text="@{orderData.deliveryAddressName}"
                     android:textFontWeight="800"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/select_an_option_tablet"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/deliveryAddressText" />
@@ -133,91 +117,114 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="2dp"
                     android:layout_marginEnd="8dp"
+                    android:focusable="false"
                     android:fontFamily="@font/gothic_a1_medium"
                     android:text="@string/delivery_address_text"
                     android:textAlignment="center"
                     android:textColor="@color/elis_blue"
-                    android:textSize="14sp"
+                    android:textSize="@dimen/select_an_option_tablet"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/orderDate" />
 
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <TextView
-                android:id="@+id/selectAnOption"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="8dp"
-                android:autoSizeTextType="uniform"
-                android:background="@drawable/instruction_background_v3"
-                android:fontFamily="@font/gothic_a1_medium"
-                android:letterSpacing=".1"
-                android:maxLines="1"
-                android:text="@string/please_select_a_point_of_service_group"
-                android:textAlignment="center"
-                android:textColor="@color/elis_blue"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/article_entry_card"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="5dp"
-                app:layout_constraintBottom_toTopOf="@+id/guideline6"
-                app:layout_constraintEnd_toStartOf="@+id/guideline4"
-                app:layout_constraintStart_toStartOf="@+id/guideline3"
-                app:layout_constraintTop_toBottomOf="@id/selectAnOption">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/ordering_group_selection"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                <TextView
+                    android:id="@+id/orderingGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:focusable="false"
+                    android:fontFamily="@font/gothic_a1_bold"
+                    android:text="@{orderData.posName}"
+                    android:textFontWeight="800"
+                    android:textSize="@dimen/select_an_option_tablet"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:spanCount="1"
-                    tools:listitem="@layout/group_pos_cardview" />
+                    app:layout_constraintTop_toBottomOf="@+id/orderingGroupText" />
+
+                <TextView
+                    android:id="@+id/orderingGroupText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginEnd="8dp"
+                    android:focusable="false"
+                    android:fontFamily="@font/gothic_a1_medium"
+                    android:text="@string/pos_text"
+                    android:textAlignment="center"
+                    android:textColor="@color/elis_blue"
+                    android:textSize="@dimen/select_an_option_tablet"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/deliveryAddress" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/article_entry_viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:focusable="false"
+                app:layout_constraintBottom_toTopOf="@+id/guideline6"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+
+            </androidx.viewpager2.widget.ViewPager2>
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/send_order_fab"
+                android:layout_width="400dp"
+                android:layout_height="150dp"
+                android:clickable="true"
+                android:text="@string/submit_order_text"
+                android:textColor="@color/black"
+                android:textSize="38sp"
+                android:visibility="gone"
+                app:backgroundTint="#33b973"
+                app:icon="@drawable/baseline_send_24"
+                app:iconSize="68dp"
+                app:iconTint="@color/black"
+                app:layout_constraintBottom_toTopOf="@+id/guideline6"
+                app:layout_constraintEnd_toStartOf="@+id/guideline4"
+                app:layout_constraintStart_toStartOf="@+id/guideline3" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.03" />
+                app:layout_constraintGuide_percent="0.02" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.97" />
+                app:layout_constraintGuide_percent="0.975" />
 
             <ImageView
                 android:id="@+id/small_elis_logo"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_centerHorizontal="true"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="32dp"
                 android:layout_marginBottom="8dp"
                 android:contentDescription="@string/elis_logo_bottom"
+                android:focusable="false"
                 android:src="@drawable/elis_logo_white_circular_services_01"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/guideline4"
                 app:layout_constraintStart_toStartOf="@+id/guideline3"
                 app:layout_constraintTop_toTopOf="@+id/guideline6" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -232,7 +239,6 @@
             android:orientation="vertical"
             android:padding="8dp"
             android:rotation="-45"
-            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -246,6 +252,23 @@
                 android:textStyle="bold" />
 
         </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            style="@style/Widget.AppCompat.ProgressBar"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="250dp"
+            android:layout_marginTop="300dp"
+            android:layout_marginEnd="250dp"
+            android:layout_marginBottom="232dp"
+            android:contentDescription="@string/data_loading_icon"
+            android:indeterminateDrawable="@drawable/elis_loading_icon_white"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/button_layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.core.content.ContextCompat
@@ -19,6 +20,7 @@ import com.elis.orderingapplication.databinding.FragmentPosGroupBinding
 import com.elis.orderingapplication.viewModels.OrderingGroupViewModel
 import com.elis.orderingapplication.viewModels.ParamsViewModel
 import com.elis.orderingapplication.adapters.listAdapters.OrderingGroupAdapter
+import com.elis.orderingapplication.constants.Constants.Companion.SHOW_BANNER
 import com.elis.orderingapplication.pojo2.JoinOrderingGroup
 import com.elis.orderingapplication.utils.DeviceInfo
 import com.elis.orderingapplication.utils.DeviceInfoDialog
@@ -86,7 +88,10 @@ class PosGroupFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setFlavorBanner()
+        if(SHOW_BANNER) {
+            setFlavorBanner()
+            binding.debugBanner.visibility = VISIBLE
+        }
         val recyclerView: RecyclerView = binding.orderingGroupSelection
         val spacingInPixels = resources.getDimensionPixelSize(R.dimen.spacing)
         val itemSpacingDecoration = CardViewDecoration(spacingInPixels)

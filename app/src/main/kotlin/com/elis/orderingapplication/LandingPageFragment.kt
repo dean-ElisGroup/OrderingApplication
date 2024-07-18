@@ -7,6 +7,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.PopupMenu
@@ -21,6 +22,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.room.Room
+import com.elis.orderingapplication.constants.Constants.Companion.SHOW_BANNER
 import com.elis.orderingapplication.database.OrderInfoDatabase
 import com.elis.orderingapplication.databinding.FragmentLandingPageBinding
 import com.elis.orderingapplication.model.LogoutRequest
@@ -28,6 +30,7 @@ import com.elis.orderingapplication.repositories.UserLoginRepository
 import com.elis.orderingapplication.utils.ApiResponse
 import com.elis.orderingapplication.utils.DeviceInfo
 import com.elis.orderingapplication.utils.DeviceInfoDialog
+import com.elis.orderingapplication.utils.InternetCheck
 import com.elis.orderingapplication.viewModels.ArticleEntryViewModelFactory
 import com.elis.orderingapplication.viewModels.LandingPageViewModel
 import com.elis.orderingapplication.viewModels.ParamsViewModel
@@ -112,6 +115,7 @@ class LandingPageFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        internetCheckMonitor()
         val menuHost: MenuHost = requireActivity()
         database = Room.databaseBuilder(
             requireContext(),
@@ -119,7 +123,10 @@ class LandingPageFragment : Fragment() {
             "order_info_database"
         ).build()
         binding.apply { viewModel = sharedViewModel }
-        setFlavorBanner()
+        if(SHOW_BANNER) {
+            setFlavorBanner()
+            binding.debugBanner.visibility = VISIBLE
+        }
         //apiCall2(sharedViewModel.session_key.value.toString())
         menuHost.addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -180,6 +187,20 @@ class LandingPageFragment : Fragment() {
                 )
             )
             binding.bannerText.text = resources.getString(R.string.testFlavorText)
+        }
+    }
+
+    private fun internetCheckMonitor() {
+        InternetCheck.startMonitoring(requireContext()) { isConnected ->
+            // Handle the internet connection status here
+            // For example, you can update a UI element or perform other actions
+            if (isConnected) {
+                binding.connectionStatus?.setImageResource(R.drawable.online)
+
+
+            } else {
+                binding.connectionStatus?.setImageResource(R.drawable.offline)
+            }
         }
     }
 

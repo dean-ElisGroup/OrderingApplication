@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.PopupMenu
@@ -24,6 +25,7 @@ import com.elis.orderingapplication.CardViewDecoration
 import com.elis.orderingapplication.R
 import com.elis.orderingapplication.viewModels.ParamsViewModel
 import com.elis.orderingapplication.adapters.listAdapters.SendOrdersAdapter
+import com.elis.orderingapplication.constants.Constants.Companion.SHOW_BANNER
 import com.elis.orderingapplication.databinding.FragmentSendOrderOrderBinding
 import com.elis.orderingapplication.pojo2.Order
 import com.elis.orderingapplication.pojo2.OrderEvent
@@ -106,7 +108,10 @@ class SendOrderFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setFlavorBanner()
+        if(SHOW_BANNER) {
+            setFlavorBanner()
+            binding.debugBanner.visibility = VISIBLE
+        }
         recyclerView = binding.orderSelection
 
         val spacingInPixels = resources.getDimensionPixelSize(R.dimen.spacing)

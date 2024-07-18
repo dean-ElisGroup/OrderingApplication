@@ -8,6 +8,7 @@ import android.os.Looper
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.PopupMenu
@@ -25,6 +26,7 @@ import com.elis.orderingapplication.viewModels.ParamsViewModel
 import com.elis.orderingapplication.viewModels.PosViewModel
 import androidx.fragment.app.viewModels
 import com.elis.orderingapplication.adapters.listAdapters.PointOfServiceAdapter
+import com.elis.orderingapplication.constants.Constants.Companion.SHOW_BANNER
 import com.elis.orderingapplication.utils.DeviceInfo
 import com.elis.orderingapplication.utils.DeviceInfoDialog
 import com.elis.orderingapplication.viewModels.SharedViewModelFactory
@@ -105,7 +107,10 @@ class PosFragment : Fragment(), PointOfServiceAdapter.TotalPOSCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setFlavorBanner()
+        if(SHOW_BANNER) {
+            setFlavorBanner()
+            binding.debugBanner.visibility = VISIBLE
+        }
         recyclerView = binding.posSelection
 
         binding.progressBar.visibility = View.VISIBLE

@@ -79,6 +79,7 @@
     <string name="device_info">Device info</string>
     <string name="total_articles">Total articles:</string>
     <string name="delivery_date_text">Delivery date:</string>
+    <string name="connection_status">Connection status</string>
 
 
 </resources>

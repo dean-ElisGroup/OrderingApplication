@@ -6,6 +6,7 @@ import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.PopupMenu
@@ -24,7 +25,9 @@ import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
 import com.elis.orderingapplication.adapters.ArticleEntryAdapter
 import com.elis.orderingapplication.constants.Constants
+import com.elis.orderingapplication.constants.Constants.Companion.SHOW_BANNER
 import com.elis.orderingapplication.databinding.FragmentArticleBinding
+import com.elis.orderingapplication.pojo2.Article
 import com.elis.orderingapplication.pojo2.Order
 import com.elis.orderingapplication.repositories.UserLoginRepository
 import com.elis.orderingapplication.utils.DeviceInfo
@@ -101,7 +104,10 @@ class ArticleFragment : Fragment(), ArticleEntryCardFragment.LastArticleCallback
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setFlavorBanner()
+        if(SHOW_BANNER) {
+            setFlavorBanner()
+            binding.debugBanner.visibility = VISIBLE
+        }
 
         binding.progressBar.visibility = View.VISIBLE
 

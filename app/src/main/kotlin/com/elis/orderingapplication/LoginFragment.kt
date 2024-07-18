@@ -32,6 +32,7 @@ import android.widget.ProgressBar
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation.findNavController
+import com.elis.orderingapplication.constants.Constants.Companion.SHOW_BANNER
 import com.elis.orderingapplication.databinding.FragmentLoginBinding
 import com.elis.orderingapplication.model.OrderingLoginResponseStruct
 import com.elis.orderingapplication.pojo2.OrderInfo
@@ -84,6 +85,7 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        internetCheckMonitor()
         fireBaseRemoteConfig()
         // sets Today's date for login activity
         binding.date.text = loginView.getDate()
@@ -94,7 +96,10 @@ class LoginFragment : Fragment() {
         FirebaseAnalytics.getInstance(requireContext()).setAnalyticsCollectionEnabled(true)
         FirebaseAnalytics.getInstance(requireContext()).setUserProperty("debug_mode", "true")
         // sets Flavor banner details for login activity
-        setFlavorBanner()
+        if(SHOW_BANNER) {
+            setFlavorBanner()
+            binding.debugBanner.visibility = VISIBLE
+        }
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
             val isInternetAvailable = checkInternetAvailability()
 
@@ -270,6 +275,13 @@ class LoginFragment : Fragment() {
     private suspend fun checkInternetAvailability(): Boolean {
         return withContext(Dispatchers.IO) {
             val isInternetAvailable = InternetCheck.isInternetAvailable()
+            withContext(Dispatchers.Main) {
+                if (isInternetAvailable) {
+                    binding.connectionStatus?.setImageResource(R.drawable.online)
+                } else {
+                    binding.connectionStatus?.setImageResource(R.drawable.offline)
+                }
+            }
             isInternetAvailable
         }
     }
@@ -398,6 +410,18 @@ class LoginFragment : Fragment() {
         dialog.show()
     }
 
+    private fun internetCheckMonitor() {
+        InternetCheck.startMonitoring(requireContext()) { isConnected ->
+            // Handle the internet connection status here
+            // For example, you can update a UI element or perform other actions
+            if (isConnected) {
+                binding.connectionStatus?.setImageResource(R.drawable.online)
 
+
+            } else {
+                binding.connectionStatus?.setImageResource(R.drawable.offline)
+            }
+        }
+    }
 }
 
