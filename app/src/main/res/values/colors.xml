@@ -13,4 +13,5 @@
     <color name="elis_light_blue">#A6A7D3</color>
     <color name="elis_red">#E3000B</color>
     <color name="elis_send_green">#55B42C</color>
+    <color name="elis_transparent">#00000000</color>
 </resources>

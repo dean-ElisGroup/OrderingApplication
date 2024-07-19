@@ -33,23 +33,20 @@
             android:src="@drawable/new_applogin_design_background_no_logo_01" />
 
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar"
-            style="@style/CustomToolbarStyle"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/elis_blue"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:navigationContentDescription="@string/go_back_to_options"
-            app:titleTextAppearance="@style/titleTextStyle" />
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/button_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_horizontal">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                style="@style/CustomToolbarStyle"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/elis_blue"
+                app:navigationContentDescription="@string/go_back_to_options"
+                app:titleTextAppearance="@style/titleTextStyle" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline2"

@@ -46,7 +46,7 @@ android {
             applicationId "com.elissolstockorder"
             manifestPlaceholders = [appLabel: "Stock Ordering - Test"]
             namespace 'com.solstockorder.test'
-            versionName '2.0.2'
+            versionName '2.0.3'
             buildConfigField "String", "API_BASE_URL", '"http://serviceonlinetest.elisonline.co.uk/SolMasterTraining5/Ordering.wso/"'
             sourceSets{
                     main{
