@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "427516638473",
+    "project_id": "sol-stock-ordering-test",
+    "storage_bucket": "sol-stock-ordering-test.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:427516638473:android:9873af226424d6625bcfd8",
+        "android_client_info": {
+          "package_name": "com.elissolstockorder.test"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA0zoFwD9OvpAE3ccWCLixfldLybcW5NLw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

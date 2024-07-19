@@ -9,4 +9,5 @@
     <dimen name="article_entry_button_text_size">25sp</dimen>
     <dimen name="margin1">20dp</dimen>
     <dimen name="margin2">3dp</dimen>
+    <dimen name="landing_page_tablet_button_textSize">50sp</dimen>
 </resources>

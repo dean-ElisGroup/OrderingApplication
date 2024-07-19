@@ -66,6 +66,9 @@
         <argument
             android:name="deliveryAddressNo"
             app:argType="string" />
+        <action
+            android:id="@+id/action_posGroupFragment_to_landingPageFragment"
+            app:destination="@id/landingPageFragment" />
     </fragment>
 
     <fragment
@@ -99,6 +102,9 @@
             app:argType="string"
             android:defaultValue="@null"
             app:nullable="true"/>
+        <action
+            android:id="@+id/action_posFragment_to_landingPageFragment"
+            app:destination="@id/landingPageFragment" />
     </fragment>
     <fragment
         android:id="@+id/articleEntryFragment"
@@ -139,6 +145,9 @@
             app:argType="string"
             android:defaultValue="@null"
             app:nullable="true"/>
+        <action
+            android:id="@+id/action_orderFragment_to_landingPageFragment"
+            app:destination="@id/landingPageFragment" />
     </fragment>
     <fragment
         android:id="@+id/articleFragment"
@@ -162,6 +171,9 @@
             app:argType="com.elis.orderingapplication.pojo2.OrderParcelable"
             app:nullable="true"
             android:defaultValue="@null" />
+        <action
+            android:id="@+id/action_articleFragment_to_landingPageFragment"
+            app:destination="@id/landingPageFragment" />
     </fragment>
     <fragment
         android:id="@+id/sendDeliveryAddressFragment"
@@ -179,6 +191,9 @@
         <argument
             android:name="deliveryAddressName"
             app:argType="string" />
+        <action
+            android:id="@+id/action_sendDeliveryAddressFragment_to_landingPageFragment2"
+            app:destination="@id/landingPageFragment" />
     </fragment>
     <fragment
         android:id="@+id/sendOrderOrderFragment"
@@ -190,6 +205,9 @@
         <argument
             android:name="deliveryAddressNo"
             app:argType="string" />
+        <action
+            android:id="@+id/action_sendOrderOrderFragment_to_landingPageFragment"
+            app:destination="@id/landingPageFragment" />
     </fragment>
 
 

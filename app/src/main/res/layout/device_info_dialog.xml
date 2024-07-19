@@ -17,6 +17,7 @@
             android:id="@+id/icon_image_view"
             android:layout_width="38dp"
             android:layout_height="38dp"
+            android:contentDescription="@string/device_info_error"
             android:src="@drawable/outline_error_24" />
 
         <TextView

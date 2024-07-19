@@ -1,10 +1,12 @@
 package com.elis.orderingapplication
 
 import android.app.AlertDialog
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -30,6 +32,7 @@ import android.widget.ProgressBar
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation.findNavController
+import com.elis.orderingapplication.constants.Constants.Companion.SHOW_BANNER
 import com.elis.orderingapplication.databinding.FragmentLoginBinding
 import com.elis.orderingapplication.model.OrderingLoginResponseStruct
 import com.elis.orderingapplication.pojo2.OrderInfo
@@ -71,28 +74,10 @@ class LoginFragment : Fragment() {
         binding.apply { paramViewModel = sharedViewModel }
         binding.lifecycleOwner = this
         orderInfoLoading = binding.orderInfoLoading
-        fireBaseRemoteConfig()
-        // Find the anchor view (e.g., a button or an overflow icon)
-        val anchorView = binding.overflowMenu
-        // Inflate the overflow menu
-        val overflowMenu = PopupMenu(requireContext(), anchorView)
-        overflowMenu.menuInflater.inflate(R.menu.login_menu, overflowMenu.menu)
-        // Set up the OnMenuItemClickListener
-        overflowMenu.setOnMenuItemClickListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.login_menu_overflow -> {
-                    val deviceInfo = DeviceInfo(requireContext())
-                    DeviceInfoDialog.showAlertDialog(requireContext(), deviceInfo.getDeviceInfo())
-                    true
-                }
-
-                else -> false
-            }
-        }
-        // Show the overflow menu when needed (e.g., on a button click)
-        val overflowButton = binding.overflowMenu //findViewById<Button>(R.id.overflow_menu)
-        overflowButton.setOnClickListener {
-            overflowMenu.show()
+        // Sets info button to slow device info dialog
+        binding.overflowMenu.setOnClickListener {
+            val deviceInfo = DeviceInfo(requireContext())
+            DeviceInfoDialog.showAlertDialog(requireContext(), deviceInfo.getDeviceInfo())
         }
 
         return view
@@ -100,6 +85,7 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        fireBaseRemoteConfig()
         // sets Today's date for login activity
         binding.date.text = loginView.getDate()
         sharedViewModel.setOrderDate(binding.date.text.toString())
@@ -109,7 +95,9 @@ class LoginFragment : Fragment() {
         FirebaseAnalytics.getInstance(requireContext()).setAnalyticsCollectionEnabled(true)
         FirebaseAnalytics.getInstance(requireContext()).setUserProperty("debug_mode", "true")
         // sets Flavor banner details for login activity
-        setFlavorBanner()
+        if(SHOW_BANNER) {
+            setFlavorBanner()
+        }
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
             val isInternetAvailable = checkInternetAvailability()
 
@@ -175,37 +163,39 @@ class LoginFragment : Fragment() {
     }
 
     private fun setFlavorBanner() {
-        val flavorBanner = binding.flavorBanner
-        // sets banner text
-        if (sharedViewModel.flavor.value == "development") {
-            binding.debugBanner.visibility = VISIBLE
-            binding.bannerText.visibility = VISIBLE
-            flavorBanner.text = resources.getString(R.string.devFlavorText)
-            binding.debugBanner.setBackgroundColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.purple_200
+        when (sharedViewModel.flavor.value) {
+            "development" -> {
+                binding.debugBanner.visibility = View.VISIBLE
+                binding.bannerText.visibility = View.VISIBLE
+                binding.debugBanner.setBackgroundColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.purple_200
+                    )
                 )
-            )
-            binding.bannerText.text = resources.getString(R.string.devFlavorText)
-        }
-        // hides banner if PROD application
-        if (sharedViewModel.flavor.value == "production") {
-            binding.debugBanner.visibility = View.GONE
-            binding.bannerText.visibility = View.GONE
-        }
-        // sets banner text and banner color
-        if (sharedViewModel.flavor.value == "staging") {
-            binding.debugBanner.visibility = VISIBLE
-            binding.bannerText.visibility = VISIBLE
-            flavorBanner.text = resources.getString(R.string.testFlavorText)
-            binding.debugBanner.setBackgroundColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.elis_orange
+                binding.bannerText.text = resources.getString(R.string.devFlavorText)
+            }
+            "production" -> {
+                binding.debugBanner.visibility = View.GONE
+                binding.bannerText.visibility = View.GONE
+                binding.debugBanner.setBackgroundColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.elis_transparent
+                    )
                 )
-            )
-            binding.bannerText.text = resources.getString(R.string.testFlavorText)
+            }
+            "staging" -> {
+                binding.debugBanner.visibility = View.VISIBLE
+                binding.bannerText.visibility = View.VISIBLE
+                binding.debugBanner.setBackgroundColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.elis_orange
+                    )
+                )
+                binding.bannerText.text = resources.getString(R.string.testFlavorText)
+            }
         }
     }
 
@@ -213,34 +203,55 @@ class LoginFragment : Fragment() {
         // sets the Firebase Remote Config settings
         val remoteConfig: FirebaseRemoteConfig = Firebase.remoteConfig
         val configSettings = remoteConfigSettings {
-            minimumFetchIntervalInSeconds = 3600
+            minimumFetchIntervalInSeconds = 10
         }
         remoteConfig.setConfigSettingsAsync(configSettings)
         remoteConfig.setDefaultsAsync(R.xml.remote_config_defaults_orig)
         // Fetches remote config parameters setup in the Firebase console.
         remoteConfig.fetchAndActivate().addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                FirebaseRemoteConfigValues.loginURL =
-                    remoteConfig.getString("SOLStock_LoginURL_test")
-                FirebaseRemoteConfigValues.logoutURL =
-                    remoteConfig.getString("SOLStock_LogoutURL_test")
-                FirebaseRemoteConfigValues.orderInfoURL =
-                    remoteConfig.getString("SOLStock_OrderInfoURL_test")
-                FirebaseRemoteConfigValues.orderEventURL =
-                    remoteConfig.getString("SOLStock_OrderEventURL_test")
-                FirebaseRemoteConfigValues.serviceCheckURL =
-                    remoteConfig.getString("SOLStock_ServiceCheckURL_test")
-                FirebaseRemoteConfigValues.mainURL = remoteConfig.getString("SOLStock_MainURL_test")
+                when (sharedViewModel.flavor.value) {
+                    "development" -> {
+                        remoteConfig.getString("SOLStock_LoginURL_test")
+                            .also { FirebaseRemoteConfigValues.loginURL = it }
+                        remoteConfig.getString("SOLStock_LogoutURL_test")
+                            .also { FirebaseRemoteConfigValues.logoutURL = it }
+                        remoteConfig.getString("SOLStock_OrderInfoURL_test")
+                            .also { FirebaseRemoteConfigValues.orderInfoURL = it }
+                        remoteConfig.getString("SOLStock_OrderEventURL_test")
+                            .also { FirebaseRemoteConfigValues.orderEventURL = it }
+                        remoteConfig.getString("SOLStock_ServiceCheckURL_test")
+                            .also { FirebaseRemoteConfigValues.serviceCheckURL = it }
+                        remoteConfig.getString("SOLStock_MainURL_test")
+                            .also { FirebaseRemoteConfigValues.mainURL = it }
+                    }
+                    "production" -> {
+                        remoteConfig.getString("SOL_Login_URL_LIVE")
+                            .also { FirebaseRemoteConfigValues.loginURL = it }
+                        remoteConfig.getString("SOL_Login_URL_LIVE")
+                            .also { FirebaseRemoteConfigValues.logoutURL = it }
+                        remoteConfig.getString("SOL_OrderInfo_URL_LIVE")
+                            .also { FirebaseRemoteConfigValues.orderInfoURL = it }
+                        remoteConfig.getString("SOL_OrderEvent_URL_LIVE")
+                            .also { FirebaseRemoteConfigValues.orderEventURL = it }
+                    }
+                    "staging" -> {
+                        remoteConfig.getString("SOLStock_LoginURL_test")
+                            .also { FirebaseRemoteConfigValues.loginURL = it }
+                        remoteConfig.getString("SOLStock_LogoutURL_test")
+                            .also { FirebaseRemoteConfigValues.logoutURL = it }
+                        remoteConfig.getString("SOLStock_OrderInfoURL_test")
+                            .also { FirebaseRemoteConfigValues.orderInfoURL = it }
+                        remoteConfig.getString("SOLStock_OrderEventURL_test")
+                            .also { FirebaseRemoteConfigValues.orderEventURL = it }
+                        remoteConfig.getString("SOLStock_ServiceCheckURL_test")
+                            .also { FirebaseRemoteConfigValues.serviceCheckURL = it }
+                        remoteConfig.getString("SOLStock_MainURL_test")
+                            .also { FirebaseRemoteConfigValues.mainURL = it }
+                    }
+                }
             } else {
-                FirebaseRemoteConfigValues.loginURL = remoteConfig.getString("SOL_Login_URL")
-                FirebaseRemoteConfigValues.logoutURL = remoteConfig.getString("SOL_Logout_URL")
-                FirebaseRemoteConfigValues.orderInfoURL =
-                    remoteConfig.getString("SOL_OrderInfo_URL")
-                FirebaseRemoteConfigValues.orderEventURL =
-                    remoteConfig.getString("SOL_OrderEvent_URL")
-                FirebaseRemoteConfigValues.serviceCheckURL =
-                    remoteConfig.getString("SOL_IsServiceOnline_URL")
-                FirebaseRemoteConfigValues.mainURL = remoteConfig.getString("SOLStock_MainURL_test")
+                Toast.makeText(requireContext(), "Failed to fetch Firebase Config", Toast.LENGTH_LONG).show()
             }
         }
     }

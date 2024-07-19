@@ -11,7 +11,7 @@ import io.reactivex.annotations.NonNull
     primaryKeys = ["point_of_service", "deliveryAddressNo"]
 )
 data class PointsOfService(
-    @NonNull
+    //@NonNull
     @ColumnInfo(name = "point_of_service")
     @Json(name = "pointOfServiceNo")
     var pointOfServiceNo: String = "",
@@ -29,7 +29,7 @@ data class PointsOfService(
     @ColumnInfo(name = "orderingGroupDescription")
     var orderingGroupDescription: String? = null,
 
-    @NonNull
+    //@NonNull
     @ColumnInfo(name = "deliveryAddressNo")
     var deliveryAddressNo: String = "",
 

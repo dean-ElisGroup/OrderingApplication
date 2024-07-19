@@ -1,13 +1,16 @@
 package com.elis.orderingapplication
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.PopupMenu
+import androidx.compose.ui.unit.Constraints
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
@@ -17,10 +20,15 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
 import com.elis.orderingapplication.adapters.ArticleEntryAdapter
+import com.elis.orderingapplication.constants.Constants
+import com.elis.orderingapplication.constants.Constants.Companion.SHOW_BANNER
 import com.elis.orderingapplication.databinding.FragmentArticleBinding
+import com.elis.orderingapplication.pojo2.Article
+import com.elis.orderingapplication.pojo2.Order
 import com.elis.orderingapplication.repositories.UserLoginRepository
 import com.elis.orderingapplication.utils.DeviceInfo
 import com.elis.orderingapplication.utils.DeviceInfoDialog
@@ -33,7 +41,7 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
-class ArticleFragment : Fragment(), ArticleEntryCardFragment.LastArticleCallback {
+class ArticleFragment : Fragment(), ArticleEntryCardFragment.LastArticleCallback, ArticleEntryCardFragment.OrderStatusCallback {
 
     private lateinit var binding: FragmentArticleBinding
     private val sharedViewModel: ParamsViewModel by activityViewModels()
@@ -43,6 +51,7 @@ class ArticleFragment : Fragment(), ArticleEntryCardFragment.LastArticleCallback
         SharedViewModelFactory(sharedViewModel, requireActivity().application)
     }
     private val args: ArticleFragmentArgs by navArgs()
+    private var orderStatus: Int? = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,42 +65,49 @@ class ArticleFragment : Fragment(), ArticleEntryCardFragment.LastArticleCallback
         binding.orderDateVal = args.order
         binding.toolbar.title = getString(R.string.article_title)
         binding.toolbar.setNavigationIcon(R.drawable.ic_back)
+        binding.toolbar.setTitleTextAppearance(requireContext(),R.style.titleTextStyle)
         binding.toolbar.setNavigationOnClickListener {
-            view?.let { it ->
+            if(orderStatus != Constants.APP_STATUS_SENT) {
+                orderNotSubmittedDialog(false)
+            } else {
+                findNavController().navigate(R.id.action_articleFragment_to_orderFragment)
+            }
+            /*view?.let { it ->
                 Navigation.findNavController(it)
                     .navigate(R.id.action_articleFragment_to_orderFragment)
-            }
+            }*/
         }
-
-        viewPager = binding.articleEntryViewpager
-        val anchorView = binding.overflowMenu2
-        // Inflate the overflow menu
-        val overflowMenu = PopupMenu(requireContext(), anchorView)
-        overflowMenu.menuInflater.inflate(R.menu.login_menu, overflowMenu.menu)
-        // Set up the OnMenuItemClickListener
-        overflowMenu.setOnMenuItemClickListener { menuItem ->
+        binding.toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.login_menu_overflow -> {
+                R.id.overflow -> {
                     val deviceInfo = DeviceInfo(requireContext())
                     DeviceInfoDialog.showAlertDialog(requireContext(), deviceInfo.getDeviceInfo())
                     true
                 }
 
+                R.id.home_button -> {
+                    if (orderStatus != Constants.APP_STATUS_SENT) {
+                        orderNotSubmittedDialog(true)
+                    } else
+                        findNavController().navigate(R.id.action_articleFragment_to_landingPageFragment)
+                    false
+                }
                 else -> false
             }
         }
-        // Show the overflow menu when needed (e.g., on a button click)
-        val overflowButton = binding.overflowMenu2 //findViewById<Button>(R.id.overflow_menu)
-        overflowButton.setOnClickListener {
-            overflowMenu.show()
-        }
+
+        viewPager = binding.articleEntryViewpager
+
         // Inflate the layout for this fragment
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setFlavorBanner()
+        if(SHOW_BANNER) {
+            setFlavorBanner()
+            binding.debugBanner.visibility = VISIBLE
+        }
 
         binding.progressBar.visibility = View.VISIBLE
 
@@ -106,12 +122,7 @@ class ArticleFragment : Fragment(), ArticleEntryCardFragment.LastArticleCallback
         }
 
         sharedViewModel.setLastArticleCallback(this)
-
-        // articleViewModel.articles.observe(viewLifecycleOwner) { articles ->
-        //     viewPagerAdapter.updateData(articles)
-        //     sharedViewModel.setArticleTotal(articles.size)
-        // }
-
+        sharedViewModel.setOrderStatusCallback(this)
 
         val userLoginRepository = UserLoginRepository()
         val articleEntryViewModel: ArticleEntryViewModel by viewModels {
@@ -138,42 +149,47 @@ class ArticleFragment : Fragment(), ArticleEntryCardFragment.LastArticleCallback
                 binding.progressBar.visibility = View.GONE
                 requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
                 sharedViewModel.setArticleTotal(articles.size)
-
             }
         }, 500)
     }
 
     private fun setFlavorBanner() {
-        // sets banner text
-        if (sharedViewModel.flavor.value == "development") {
-            binding.debugBanner.visibility = View.VISIBLE
-            binding.bannerText.visibility = View.VISIBLE
-            binding.debugBanner.setBackgroundColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.purple_200
+        when (sharedViewModel.flavor.value) {
+            "development" -> {
+                binding.debugBanner.visibility = View.VISIBLE
+                binding.bannerText.visibility = View.VISIBLE
+                binding.debugBanner.setBackgroundColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.purple_200
+                    )
                 )
-            )
-            binding.bannerText.text = resources.getString(R.string.devFlavorText)
-        }
-        // hides banner if PROD application
-        if (sharedViewModel.flavor.value == "production") {
-            binding.debugBanner.visibility = View.GONE
-            binding.bannerText.visibility = View.GONE
-        }
-        // sets banner text and banner color
-        if (sharedViewModel.flavor.value == "staging") {
-            binding.debugBanner.visibility = View.VISIBLE
-            binding.bannerText.visibility = View.VISIBLE
-            binding.debugBanner.setBackgroundColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.elis_orange
+                binding.bannerText.text = resources.getString(R.string.devFlavorText)
+            }
+            "production" -> {
+                binding.debugBanner.visibility = View.GONE
+                binding.bannerText.visibility = View.GONE
+                binding.debugBanner.setBackgroundColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.elis_transparent
+                    )
                 )
-            )
-            binding.bannerText.text = resources.getString(R.string.testFlavorText)
+            }
+            "staging" -> {
+                binding.debugBanner.visibility = View.VISIBLE
+                binding.bannerText.visibility = View.VISIBLE
+                binding.debugBanner.setBackgroundColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.elis_orange
+                    )
+                )
+                binding.bannerText.text = resources.getString(R.string.testFlavorText)
+            }
         }
     }
+
 
     private fun getCurrentFragment(): Fragment? {
         return childFragmentManager.findFragmentByTag("f${viewPager.currentItem}")
@@ -182,5 +198,26 @@ class ArticleFragment : Fragment(), ArticleEntryCardFragment.LastArticleCallback
     override fun onLastArticleChanged(isLastArticle: Boolean) {
         val fab = requireView().findViewById<ExtendedFloatingActionButton>(R.id.send_order_fab)
         fab.isVisible = isLastArticle
+    }
+
+    override fun onOrderStatusDataReceived(orderData: Order?) {
+        // Handle the received Order data here
+        orderStatus = orderData?.appOrderStatus?.toInt()
+    }
+
+    private fun orderNotSubmittedDialog(homeClicked: Boolean) {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setIcon(R.drawable.dialog_warning)
+        builder.setTitle("Order entry")
+        builder.setMessage("Order has not been submitted, Do you wish to continue?")
+        builder.setPositiveButton("Yes") { _, _ ->
+            // Handle positive button click, navigate back to OrderFragment
+            if(homeClicked){
+                findNavController().navigate(R.id.action_articleFragment_to_landingPageFragment)
+            }else
+            findNavController().navigate(R.id.action_articleFragment_to_orderFragment)
+        }
+        builder.setNegativeButton("No", null)
+        builder.show()
     }
 }

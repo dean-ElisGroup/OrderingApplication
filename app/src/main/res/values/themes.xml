@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources xmlns:tools="http://schemas.android.com/tools" xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Base application theme. -->
     <style name="Theme.SOLStockOrder" parent="Theme.Material3.Light.NoActionBar">
         <!-- Primary brand color. -->
@@ -14,19 +14,15 @@
         <!-- Customize your theme here. -->
     </style>
     <!-- Controls the Toolbar title text. -->
-    <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
-        <item name="android:textSize">16sp</item>
-        <item name="fontFamily">@font/sharpsans_medium</item>
-        <item name="android:textColor">@color/white</item>
-    </style>
-
     <style name="overflowMenuColour" parent="ThemeOverlay.MaterialComponents.Toolbar.Primary">
         <item name="colorControlNormal">@color/white</item>
-
-
     </style>
-
-
+    <style name="splashScreen" parent="Theme.SplashScreen.IconBackground">
+        <item name="windowSplashScreenBackground">#00005a</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/splash_screen_icon</item>
+        <item name="windowSplashScreenAnimationDuration">500</item>
+        <item name="postSplashScreenTheme">@style/Theme.SOLStockOrder</item>
+    </style>
 
 
 </resources>

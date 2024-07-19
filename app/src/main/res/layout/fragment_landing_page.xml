@@ -12,15 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/baseline_menu_24"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="match_parent"
@@ -46,7 +37,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="32dp"
-                android:text="TextView"
                 app:layout_constraintEnd_toStartOf="@+id/headerBlock"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -56,14 +46,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:background="@color/elis_blue"
+                android:contentDescription="@string/app_header_name"
                 app:layout_constraintHeight_percent="0.14"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription" />
 
             <ImageView
                 android:id="@+id/header_box"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginTop="8dp"
+                android:contentDescription="@string/app_header_name"
                 android:scaleType="fitCenter"
                 android:src="@drawable/elis_logo_white_circular_services_01"
                 app:layout_constraintEnd_toStartOf="@+id/guideline4"
@@ -90,7 +83,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:background="@drawable/instruction_background_v2"
+                android:background="@drawable/instruction_background_v3"
                 android:fontFamily="@font/gothic_a1_medium"
                 android:letterSpacing=".1"
                 android:text="@string/please_select_an_option"
@@ -120,6 +113,7 @@
                 android:text="@string/button_orders"
                 android:textColor="@color/elis_black"
                 android:textSize="20sp"
+                app:backgroundTint="@color/white"
                 app:cornerRadius="10dp"
                 app:layout_constraintBottom_toTopOf="@+id/button_view_orders"
                 app:layout_constraintEnd_toStartOf="@+id/guideline4"
@@ -146,6 +140,7 @@
                 android:text="@string/button_send_orders"
                 android:textColor="@color/elis_black"
                 android:textSize="20sp"
+                app:backgroundTint="@color/white"
                 app:cornerRadius="@dimen/button_corner_radius"
                 app:layout_constraintBottom_toTopOf="@+id/button_settings"
                 app:layout_constraintEnd_toStartOf="@+id/guideline4"
@@ -221,8 +216,9 @@
                 android:text="@string/button_logout"
                 android:textColor="@color/elis_black"
                 android:textSize="20sp"
-                app:cornerRadius="@dimen/button_corner_radius"
+                app:backgroundTint="@color/white"
 
+                app:cornerRadius="@dimen/button_corner_radius"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/guideline4"
                 app:layout_constraintStart_toStartOf="@+id/guideline3"
@@ -247,18 +243,22 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/overflow_menu2"
                 style="@style/Widget.Material3.Button.Icon"
-                android:layout_width="50dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:background="@android:color/transparent"
                 android:backgroundTint="#00FFFFFF"
                 android:contentDescription="@string/overflow_menu_text"
+                android:gravity="center_horizontal|center_vertical"
+                android:paddingStart="1dp"
                 android:paddingTop="1dp"
                 android:paddingEnd="1dp"
                 android:translationZ="90dp"
-                app:icon="@drawable/ic_more_vert"
+                app:icon="@drawable/device_info"
                 app:iconGravity="start|end"
-                app:iconSize="30dp"
+                app:iconSize="25dp"
                 app:iconTint="@color/white"
-                app:layout_constraintEnd_toStartOf="@+id/guideline4"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -270,10 +270,11 @@
             android:layout_gravity="end"
             android:layout_marginStart="-40dp"
             android:layout_marginTop="30dp"
-            android:background="#AA000000"
+            android:background="@android:color/transparent"
             android:orientation="vertical"
             android:padding="8dp"
             android:rotation="-45"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -282,7 +283,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 

@@ -36,6 +36,7 @@
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
+            style="@style/CustomToolbarStyle"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/elis_blue"
@@ -43,9 +44,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:navigationContentDescription="@string/go_back_to_options"
-            app:titleTextAppearance="@style/Toolbar.TitleText"
-            style="@style/overflowMenuColour"
-            />
+            app:titleTextAppearance="@style/titleTextStyle" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/button_layout"
@@ -74,7 +73,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
-                android:background="@drawable/instruction_background_v2"
+                android:background="@drawable/instruction_background_v3"
                 android:elevation="2dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -183,7 +182,7 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="8dp"
                 android:autoSizeTextType="uniform"
-                android:background="@drawable/instruction_background_v2"
+                android:background="@drawable/instruction_background_v3"
                 android:fontFamily="@font/gothic_a1_medium"
                 android:letterSpacing=".1"
                 android:maxLines="1"
@@ -283,26 +282,6 @@
                 app:layout_constraintStart_toStartOf="@+id/guideline3"
                 app:layout_constraintTop_toTopOf="@+id/guideline6" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/overflow_menu2"
-                style="@style/Widget.Material3.Button.Icon"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#00FFFFFF"
-                android:contentDescription="@string/overflow_menu_text"
-                android:paddingTop="1dp"
-                android:paddingEnd="1dp"
-                android:layout_marginTop="8dp"
-                android:translationZ="90dp"
-                app:icon="@drawable/ic_more_vert"
-                app:iconGravity="start|end"
-                app:iconSize="30dp"
-                app:iconTint="@color/white"
-                app:layout_constraintEnd_toStartOf="@+id/guideline4"
-                app:layout_constraintTop_toTopOf="parent"
-                android:gravity="center_vertical"/>
-
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -317,6 +296,7 @@
             android:orientation="vertical"
             android:padding="8dp"
             android:rotation="-45"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -325,7 +305,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
