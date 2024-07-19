@@ -20,6 +20,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.room.Room
 import com.elis.orderingapplication.constants.Constants.Companion.SHOW_BANNER
@@ -34,6 +35,9 @@ import com.elis.orderingapplication.utils.InternetCheck
 import com.elis.orderingapplication.viewModels.ArticleEntryViewModelFactory
 import com.elis.orderingapplication.viewModels.LandingPageViewModel
 import com.elis.orderingapplication.viewModels.ParamsViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class LandingPageFragment : Fragment() {
 
@@ -78,35 +82,53 @@ class LandingPageFragment : Fragment() {
             }
 
             buttonLogout.setOnClickListener {
-                val logoutSessionKey = LogoutRequest(sharedViewModel.getSessionKey())
-                val response = landingPageView.getUserLogout(logoutSessionKey)
-                landingPageView.userLoginResponse.observe(viewLifecycleOwner) { observeResponse ->
-                    when (observeResponse) {
-                        is ApiResponse.Success -> {
-                            view?.let {
-                                Navigation.findNavController(it)
-                                    .navigate(R.id.action_landingPageFragment_to_loginFragment)
-                                Toast.makeText(
-                                    requireContext(),
-                                    "You have been logged out",
-                                    Toast.LENGTH_LONG
-                                ).show()
+                viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
+                    if(checkInternetAvailability()) {
+                        val logoutSessionKey = LogoutRequest(sharedViewModel.getSessionKey())
+                        val response = landingPageView.getUserLogout(logoutSessionKey)
+                        landingPageView.userLoginResponse.observe(viewLifecycleOwner) { observeResponse ->
+                            when (observeResponse) {
+                                is ApiResponse.Success -> {
+                                    view?.let {
+                                        Navigation.findNavController(it)
+                                            .navigate(R.id.action_landingPageFragment_to_loginFragment)
+                                        Toast.makeText(
+                                            requireContext(),
+                                            "You have been logged out",
+                                            Toast.LENGTH_LONG
+                                        ).show()
+                                    }
+
+                                }
+
+                                is ApiResponse.Error -> {
+                                    Toast.makeText(
+                                        requireContext(),
+                                        observeResponse.message,
+                                        Toast.LENGTH_LONG
+                                    )
+                                        .show()
+
+                                }
+
+                                else ->
+                                    Toast.makeText(
+                                        requireContext(),
+                                        "Unknown logout issue",
+                                        Toast.LENGTH_LONG
+                                    ).show()
                             }
-
                         }
-
-                        is ApiResponse.Error -> {
-                            Toast.makeText(requireContext(), observeResponse.message, Toast.LENGTH_LONG)
-                                .show()
-
-                        }
-
-                        else ->
+                    } else {
+                        view?.let {
+                            Navigation.findNavController(it)
+                                .navigate(R.id.action_landingPageFragment_to_loginFragment)
                             Toast.makeText(
                                 requireContext(),
-                                "Unknown logout issue",
+                                "You have been logged out",
                                 Toast.LENGTH_LONG
                             ).show()
+                        }
                     }
                 }
             }
@@ -115,8 +137,6 @@ class LandingPageFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        internetCheckMonitor()
-        val menuHost: MenuHost = requireActivity()
         database = Room.databaseBuilder(
             requireContext(),
             OrderInfoDatabase::class.java,
@@ -127,23 +147,6 @@ class LandingPageFragment : Fragment() {
             setFlavorBanner()
             binding.debugBanner.visibility = VISIBLE
         }
-        //apiCall2(sharedViewModel.session_key.value.toString())
-        menuHost.addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.login_menu, menu)
-            }
-
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                // Handle the menu selection
-                return when (menuItem.itemId) {
-                    R.id.login_menu_overflow -> {
-                        true
-                    }
-
-                    else -> false
-                }
-            }
-        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -190,19 +193,10 @@ class LandingPageFragment : Fragment() {
         }
     }
 
-    private fun internetCheckMonitor() {
-        InternetCheck.startMonitoring(requireContext()) { isConnected ->
-            // Handle the internet connection status here
-            // For example, you can update a UI element or perform other actions
-            if (isConnected) {
-                binding.connectionStatus?.setImageResource(R.drawable.online)
-
-
-            } else {
-                binding.connectionStatus?.setImageResource(R.drawable.offline)
-            }
+    private suspend fun checkInternetAvailability(): Boolean {
+        return withContext(Dispatchers.IO) {
+            val isInternetAvailable = InternetCheck.isInternetAvailable()
+            isInternetAvailable
         }
     }
-
-
 }

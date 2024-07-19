@@ -85,7 +85,6 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        internetCheckMonitor()
         fireBaseRemoteConfig()
         // sets Today's date for login activity
         binding.date.text = loginView.getDate()
@@ -98,7 +97,6 @@ class LoginFragment : Fragment() {
         // sets Flavor banner details for login activity
         if(SHOW_BANNER) {
             setFlavorBanner()
-            binding.debugBanner.visibility = VISIBLE
         }
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
             val isInternetAvailable = checkInternetAvailability()
@@ -275,13 +273,6 @@ class LoginFragment : Fragment() {
     private suspend fun checkInternetAvailability(): Boolean {
         return withContext(Dispatchers.IO) {
             val isInternetAvailable = InternetCheck.isInternetAvailable()
-            withContext(Dispatchers.Main) {
-                if (isInternetAvailable) {
-                    binding.connectionStatus?.setImageResource(R.drawable.online)
-                } else {
-                    binding.connectionStatus?.setImageResource(R.drawable.offline)
-                }
-            }
             isInternetAvailable
         }
     }
@@ -410,18 +401,6 @@ class LoginFragment : Fragment() {
         dialog.show()
     }
 
-    private fun internetCheckMonitor() {
-        InternetCheck.startMonitoring(requireContext()) { isConnected ->
-            // Handle the internet connection status here
-            // For example, you can update a UI element or perform other actions
-            if (isConnected) {
-                binding.connectionStatus?.setImageResource(R.drawable.online)
 
-
-            } else {
-                binding.connectionStatus?.setImageResource(R.drawable.offline)
-            }
-        }
-    }
 }
 
