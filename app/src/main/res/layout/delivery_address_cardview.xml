@@ -14,12 +14,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
+        android:background="@drawable/instruction_background_v3"
         android:clickable="true"
         android:minHeight="100dp"
         app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="10dp"
-        app:strokeColor="@color/elis_blue"
-        app:cardElevation="5dp">
+        app:cardElevation="5dp"
+        app:strokeColor="@color/elis_light_blue"
+        app:strokeWidth="2dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -44,8 +46,8 @@
                 app:layout_constraintEnd_toStartOf="@+id/deliveryAddressName"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:tint="@color/elis_black"
-                app:srcCompat="@drawable/baseline_business_24" />
+                app:srcCompat="@drawable/baseline_business_24"
+                app:tint="@color/elis_black" />
 
             <ImageView
                 android:id="@+id/proceed_button_icon"
@@ -90,7 +92,6 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:fontFamily="@font/gothic_a1_medium"
-                android:gravity="top"
                 android:textAlignment="viewStart"
                 android:textColor="@color/elis_blue"
                 android:textSize="14sp"

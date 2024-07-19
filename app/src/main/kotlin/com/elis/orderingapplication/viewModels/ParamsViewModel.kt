@@ -9,8 +9,6 @@ import com.elis.orderingapplication.pojo2.DeliveryAddress
 import com.elis.orderingapplication.pojo2.Order
 import com.elis.orderingapplication.pojo2.OrderInfo
 import com.elis.orderingapplication.pojo2.OrderRowsItem
-import com.elis.orderingapplication.pojo2.OrderingGroup
-import com.elis.orderingapplication.pojo2.PointsOfService
 import com.elis.orderingapplication.utils.ApiResponse
 
 class ParamsViewModel : ViewModel() {
@@ -18,9 +16,6 @@ class ParamsViewModel : ViewModel() {
     val orderDate: LiveData<String> = _orderDate
 
     private lateinit var _sessionKey: String
-
-    private var _deliveryAddressNo: String = ""
-    //private var _pointOfServiceNo: String = ""
 
     private val _posTotal = MutableLiveData<Int>()
     val posTotal: LiveData<Int> = _posTotal
@@ -39,13 +34,6 @@ class ParamsViewModel : ViewModel() {
 
     private var _deliveryAddress: List<DeliveryAddress>? = null
 
-    private var _orderingGroups: List<OrderingGroup>? = null
-
-    private var _pointsOfService: List<PointsOfService>? = null
-
-    private var _filteredPointsOfService: List<PointsOfService>? = null
-
-    private var _filteredOrders: List<Order>? = null
 
     private var _orders: Order? = null
     val orders: Order? = _orders
@@ -77,6 +65,7 @@ class ParamsViewModel : ViewModel() {
     val argsBundleFromTest = MutableLiveData<Bundle>()
 
     private var lastArticleCallback: ArticleEntryCardFragment.LastArticleCallback? = null
+    private var orderStatusCallback: ArticleEntryCardFragment.OrderStatusCallback? = null
 
     fun setOrderDate(orderDate: String) {
         _orderDate.value = orderDate
@@ -89,9 +78,11 @@ class ParamsViewModel : ViewModel() {
     fun getSessionKey(): String {
         return _sessionKey
     }
+
     fun setDeliveryAddressNum(data: String) {
         _deliveryAddressNum.value = data
     }
+
     fun getDeliveryAddressNumber(): LiveData<String> {
         return deliveryAddressNum
     }
@@ -99,6 +90,7 @@ class ParamsViewModel : ViewModel() {
     fun setArticleAppOrderId(data: String) {
         _appOrderId.value = data
     }
+
     fun getArticleAppOrderId(): LiveData<String> {
         return appOrderId
     }
@@ -106,25 +98,17 @@ class ParamsViewModel : ViewModel() {
     fun setArticleDeliveryDate(data: String) {
         _articleDeliveryDate.value = data
     }
+
     fun getArticleDeliveryDate(): LiveData<String> {
         return articleDeliveryDate
     }
 
-
-
     fun setPosNum(data: String) {
         _pointOfServiceNo.value = data
     }
+
     fun getPosNum(): LiveData<String> {
         return posNo
-    }
-
-    fun getDeliveryAddressNo(): String {
-        return _deliveryAddressNo
-    }
-
-    fun setPOSTotal(posTotal: Int) {
-        _posTotal.value = posTotal
     }
 
     fun setArticleTotal(articleTotal: Int?) {
@@ -143,10 +127,6 @@ class ParamsViewModel : ViewModel() {
         _deliveryAddress = deliveryAddress?.data?.deliveryAddresses
     }
 
-    fun getDeliveryAddresses(): List<DeliveryAddress>? {
-        return _deliveryAddress
-    }
-
     fun setDeliveryAddressName(deliveryAddressName: String) {
         _deliveryAddressName.value = deliveryAddressName
     }
@@ -154,43 +134,13 @@ class ParamsViewModel : ViewModel() {
     fun setOrderingGroupName(orderingGroupName: String?) {
         _orderingGroupName.value = orderingGroupName
     }
+
     fun setOrderingGroupNo(data: String) {
         _orderingGroupNo.value = data
     }
 
     fun getOrderingGroupNum(): LiveData<String> {
         return orderingGroupNo
-    }
-
-
-
-    fun setOrderingGroups(orderingGroups: ApiResponse<OrderInfo>?) {
-        _orderingGroups = orderingGroups?.data?.orderingGroups
-    }
-
-    fun getOrderingGroups(): List<OrderingGroup>? {
-        return _orderingGroups
-    }
-
-    fun setOrderRowsItem(orderRow: OrderRowsItem) {
-        _orderRowsItem.value = _orderRowsItem.value ?: ArrayList()
-        // performs find to check if the current OrderRow already exists in the list.
-        val articleExits = _orderRowsItem.value?.find { it?.articleNo == orderRow.articleNo }
-        // applies change to already existing record
-        articleExits?.apply {
-            qty = orderRow.qty
-            _orderRowsItem.value = _orderRowsItem.value
-        }
-        // inserts OrderRow if it does not already exist.
-        if (articleExits?.articleNo == null) {
-            val currentList = _orderRowsItem.value?.toMutableList()
-            currentList?.add(orderRow)
-            _orderRowsItem.value = currentList
-        }
-    }
-
-    fun getOrderRowsItem(): List<OrderRowsItem?>? {
-        return _orderRowsItem.value
     }
 
     fun setAppVersion(appVersion: String) {
@@ -202,14 +152,6 @@ class ParamsViewModel : ViewModel() {
         _flavor.value = flavor
     }
 
-    fun hasNoOrderDate(): Boolean {
-        return _orderDate.value.isNullOrEmpty()
-    }
-
-    fun hasNoAppVersion(): Boolean {
-        return _appVersion.value.isNullOrEmpty()
-    }
-
     fun setLastArticleCallback(callback: ArticleEntryCardFragment.LastArticleCallback) {
         lastArticleCallback = callback
     }
@@ -218,5 +160,11 @@ class ParamsViewModel : ViewModel() {
         return lastArticleCallback
     }
 
+    fun setOrderStatusCallback(callback: ArticleEntryCardFragment.OrderStatusCallback) {
+        orderStatusCallback = callback
+    }
 
+    fun getOrderStatusCallback(): ArticleEntryCardFragment.OrderStatusCallback? {
+        return orderStatusCallback
+    }
 }

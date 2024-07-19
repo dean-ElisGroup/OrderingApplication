@@ -5,6 +5,7 @@ import com.elis.orderingapplication.interfaces.OrderEvent
 import com.elis.orderingapplication.interfaces.OrderInfo
 import com.elis.orderingapplication.interfaces.UserLogOut
 import com.elis.orderingapplication.interfaces.UserLogin
+import com.elis.orderingapplication.utils.FirebaseRemoteConfigValues
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -27,6 +28,7 @@ class RetroFitInstance
 
             Retrofit.Builder()
                 .baseUrl(BuildConfig.API_BASE_URL)
+                //.baseUrl(FirebaseRemoteConfigValues.loginURL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client).build()
         }

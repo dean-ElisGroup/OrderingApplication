@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/home_button"
+        android:icon="@drawable/sharp_home_24"
+        android:title="@string/home_button"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/overflow"
+        android:icon="@drawable/device_info"
+        android:title="@string/overflow_menu_button"
+        app:showAsAction="always" />
+
+</menu>

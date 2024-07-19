@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.PopupMenu
@@ -24,6 +25,7 @@ import com.elis.orderingapplication.CardViewDecoration
 import com.elis.orderingapplication.R
 import com.elis.orderingapplication.viewModels.ParamsViewModel
 import com.elis.orderingapplication.adapters.listAdapters.SendOrdersAdapter
+import com.elis.orderingapplication.constants.Constants.Companion.SHOW_BANNER
 import com.elis.orderingapplication.databinding.FragmentSendOrderOrderBinding
 import com.elis.orderingapplication.pojo2.Order
 import com.elis.orderingapplication.pojo2.OrderEvent
@@ -64,10 +66,27 @@ class SendOrderFragment : Fragment() {
         binding.sharedViewModel = sharedViewModel
         binding.toolbar.title = getString(R.string.send_order_order_screen)
         binding.toolbar.setNavigationIcon(R.drawable.ic_back)
+        binding.toolbar.setTitleTextAppearance(requireContext(), R.style.titleTextStyle)
         binding.toolbar.setNavigationOnClickListener {
             view?.let { it ->
                 Navigation.findNavController(it)
                     .navigate(R.id.action_sendOrderOrderFragment_to_sendDeliveryAddressFragment)
+            }
+        }
+        binding.toolbar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.overflow -> {
+                    val deviceInfo = DeviceInfo(requireContext())
+                    DeviceInfoDialog.showAlertDialog(requireContext(), deviceInfo.getDeviceInfo())
+                    true
+                }
+
+                R.id.home_button -> {
+                    findNavController().navigate(R.id.action_sendOrderOrderFragment_to_landingPageFragment)
+                    true
+                }
+
+                else -> false
             }
         }
 
@@ -81,27 +100,7 @@ class SendOrderFragment : Fragment() {
                 binding.deliveryAddressName = deliveryAddressForArgs
             })
         }
-        val anchorView = binding.overflowMenu2
-        // Inflate the overflow menu
-        val overflowMenu = PopupMenu(requireContext(), anchorView)
-        overflowMenu.menuInflater.inflate(R.menu.login_menu, overflowMenu.menu)
-        // Set up the OnMenuItemClickListener
-        overflowMenu.setOnMenuItemClickListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.login_menu_overflow -> {
-                    val deviceInfo = DeviceInfo(requireContext())
-                    DeviceInfoDialog.showAlertDialog(requireContext(), deviceInfo.getDeviceInfo())
-                    true
-                }
 
-                else -> false
-            }
-        }
-        // Show the overflow menu when needed (e.g., on a button click)
-        val overflowButton = binding.overflowMenu2 //findViewById<Button>(R.id.overflow_menu)
-        overflowButton.setOnClickListener {
-            overflowMenu.show()
-        }
 
         // Inflate the layout for this fragment
         return binding.root
@@ -109,7 +108,10 @@ class SendOrderFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setFlavorBanner()
+        if(SHOW_BANNER) {
+            setFlavorBanner()
+            binding.debugBanner.visibility = VISIBLE
+        }
         recyclerView = binding.orderSelection
 
         val spacingInPixels = resources.getDimensionPixelSize(R.dimen.spacing)
@@ -339,34 +341,39 @@ class SendOrderFragment : Fragment() {
     }
 
     private fun setFlavorBanner() {
-        // sets banner text
-        if (sharedViewModel.flavor.value == "development") {
-            binding.debugBanner.visibility = View.VISIBLE
-            binding.bannerText.visibility = View.VISIBLE
-            binding.debugBanner.setBackgroundColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.purple_200
+        when (sharedViewModel.flavor.value) {
+            "development" -> {
+                binding.debugBanner.visibility = View.VISIBLE
+                binding.bannerText.visibility = View.VISIBLE
+                binding.debugBanner.setBackgroundColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.purple_200
+                    )
                 )
-            )
-            binding.bannerText.text = resources.getString(R.string.devFlavorText)
-        }
-        // hides banner if PROD application
-        if (sharedViewModel.flavor.value == "production") {
-            binding.debugBanner.visibility = View.GONE
-            binding.bannerText.visibility = View.GONE
-        }
-        // sets banner text and banner color
-        if (sharedViewModel.flavor.value == "staging") {
-            binding.debugBanner.visibility = View.VISIBLE
-            binding.bannerText.visibility = View.VISIBLE
-            binding.debugBanner.setBackgroundColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.elis_orange
+                binding.bannerText.text = resources.getString(R.string.devFlavorText)
+            }
+            "production" -> {
+                binding.debugBanner.visibility = View.GONE
+                binding.bannerText.visibility = View.GONE
+                binding.debugBanner.setBackgroundColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.elis_transparent
+                    )
                 )
-            )
-            binding.bannerText.text = resources.getString(R.string.testFlavorText)
+            }
+            "staging" -> {
+                binding.debugBanner.visibility = View.VISIBLE
+                binding.bannerText.visibility = View.VISIBLE
+                binding.debugBanner.setBackgroundColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.elis_orange
+                    )
+                )
+                binding.bannerText.text = resources.getString(R.string.testFlavorText)
+            }
         }
     }
 

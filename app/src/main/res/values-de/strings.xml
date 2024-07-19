@@ -1,0 +1,75 @@
+<resources>
+    <string name="app_name">Lagerbestellung</string>
+    <string name="password">Passwort</string>
+    <string name="username">Nutzername</string>
+    <string name="loginButton">Anmeldung</string>
+    <string name="default_notification_channel_id">default_channel_id</string>
+    <string name="notification_message">FCM-Nachricht</string>
+    <string name="default_notification_channel_name">Kanalname %s</string>
+    <string name="background_image">Hintergrundbild</string>
+    <string name="devFlavorText">ENTWICKLUNG</string>
+    <string name="testFlavorText">PRÜFEN</string>
+    <string name="appVersion">App Version:</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hallo leeres Fragment</string>
+    <string name="button_orders">Aufträge</string>
+    <string name="button_view_orders">Bestellungen anzeigen</string>
+    <string name="button_send_orders">Bestellungen senden</string>
+    <string name="button_settings">Einstellungen</string>
+    <string name="button_logout">Ausloggen</string>
+    <string name="please_select_an_option">Wähle eine Option</string>
+    <string name="select_a_delivery_address">Wählen Sie eine Lieferadresse</string>
+    // Fragment titles
+    <string name="delivery_address_title">Lieferadresse</string>
+    <string name="go_back_to_options">Gehen Sie zurück zur Optionsauswahl</string>
+    <string name="order_date_text">Auftragsdatum</string>
+    <string name="showSettings">gespeicherte_pref_show_settings</string>
+    <string name="welcome_text">Willkommen</string>
+    <string name="overflow_menu_text">Überlaufmenü</string>
+    <string name="elis_logo_bottom">Unten auf der Seite: Elis-Logo</string>
+    <string name="elis_page_background">Seitenhintergrund</string>
+    <string name="pos_group_title">Point-of-Service-Gruppe</string>
+    <string name="pos_title">Servicepunkt</string>
+    <string name="article_entry_title">Auftragserfassung</string>
+    <string name="order_selection_title">Aufträge</string>
+    <string name="article_title">Artikeleintrag</string>
+    <string name="send_order_delivery_address">Bestellung absenden</string>
+    <string name="send_order_order_screen">Bestellung absenden</string>
+
+
+    // Shared prefs
+    <string name="session_shared_prefs">Gemeinsame Sitzungseinstellungen</string>
+    <string name="session_key">Sitzungsschlüssel</string>
+    <string name="message">Nachricht</string>
+    <string name="name">Name</string>
+    <string name="email">Email</string>
+    <string name="data_loading_icon">data_loading_icon</string>
+    <string name="please_select_a_point_of_service_group">Wählen Sie eine Point-of-Service-Gruppe aus</string>
+    <string name="please_select_a_point_of_service">Wählen Sie einen Servicepunkt aus</string>
+    <string name="delivery_address_text">Lieferadresse</string>
+    <string name="point_of_service_text">Servicepunkt</string>
+    <string name="enter_counted_qty">Geben Sie die gezählte Menge ein</string>
+    <string name="ordering_group_text">Bestellgruppe</string>
+    <string name="pos_text">Servicepunkt</string>
+    <string name="proceed_button_icon">Symbol für die Schaltfläche „Weiter“.</string>
+    <string name="delivery_address_icon">Symbol für den Aufbau der Lieferadresse</string>
+    <string name="please_select_an_order">Wählen Sie eine Bestellung aus</string>
+    <string name="pos_order_text">Servicepunkt</string>
+    <string name="date_selection_button">Datum auswählen</string>
+    <string name="Enter_Counted_Qty">Geben Sie die gezählte Menge ein</string>
+    <string name="this_is_the_counted_qty_field">Dies ist das Feld für die gezählte Menge.</string>
+    <string name="target_qty_text">Zielmenge\n</string>
+    <string name="order_qty_text">Bestellmenge</string>
+    <string name="enter_county_qty_hint">Menge</string>
+    <string name="article_entry_of">von</string>
+    <string name="article_entry_last_article_text">Sie betreten den letzten Artikel</string>
+    <string name="article_entry_article_position_text">Artikel eingeben</string>
+    <string name="article_entry_counted_qty_speakable">Feld „Gezählte Menge“.</string>
+    <string name="article_entry_send_order_button">Bestellung absenden</string>
+    <string name="please_select_an_order_to_send">Wählen Sie eine Bestellung zum Senden aus</string>
+    <string name="submit_order_text">Bestellung abschicken</string>
+    <string name="proceed_arrow">Fortfahren</string>
+    <string name="article_entry_total_articles_divider">/</string>
+
+
+</resources>

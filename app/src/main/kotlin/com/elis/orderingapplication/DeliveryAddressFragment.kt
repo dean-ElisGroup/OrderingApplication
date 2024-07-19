@@ -1,24 +1,35 @@
 package com.elis.orderingapplication
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.elis.orderingapplication.adapters.listAdapters.DeliveryAdapter
+import com.elis.orderingapplication.constants.Constants.Companion.SHOW_BANNER
 import com.elis.orderingapplication.databinding.FragmentDeliveryAddressBinding
 import com.elis.orderingapplication.pojo2.DeliveryAddress
 import com.elis.orderingapplication.utils.DeviceInfo
 import com.elis.orderingapplication.utils.DeviceInfoDialog
+import com.elis.orderingapplication.utils.InternetCheck
 import com.elis.orderingapplication.viewModels.DeliveryAddressViewModel
 import com.elis.orderingapplication.viewModels.ParamsViewModel
 
@@ -30,6 +41,7 @@ class DeliveryAddressFragment : Fragment() {
     private val deliveryAddressViewModel: DeliveryAddressViewModel by lazy {
         ViewModelProvider(this)[DeliveryAddressViewModel::class.java]
     }
+    private lateinit var menuItem: MenuItem
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,44 +51,41 @@ class DeliveryAddressFragment : Fragment() {
         binding = FragmentDeliveryAddressBinding.inflate(inflater)
         binding.lifecycleOwner = this
         binding.viewModel = sharedViewModel
-
         binding.toolbar.title = getString(R.string.delivery_address_title)
         binding.toolbar.setNavigationIcon(R.drawable.ic_back)
+        binding.toolbar.setTitleTextAppearance(requireContext(),R.style.titleTextStyle)
         binding.toolbar.setNavigationOnClickListener {
             view?.let { it ->
                 Navigation.findNavController(it)
                     .navigate(R.id.action_deliveryAddressFragment_to_landingPageFragment)
             }
         }
-        val anchorView = binding.overflowMenu2
-        // Inflate the overflow menu
-        val overflowMenu = PopupMenu(requireContext(), anchorView)
-        overflowMenu.menuInflater.inflate(R.menu.login_menu, overflowMenu.menu)
-        // Set up the OnMenuItemClickListener
-        overflowMenu.setOnMenuItemClickListener { menuItem ->
+        binding.toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.login_menu_overflow -> {
+                R.id.overflow -> {
                     val deviceInfo = DeviceInfo(requireContext())
                     DeviceInfoDialog.showAlertDialog(requireContext(), deviceInfo.getDeviceInfo())
+                    true
+                }
+                R.id.home_button -> {
+                    findNavController().navigate(R.id.action_deliveryAddressFragment_to_landingPageFragment)
                     true
                 }
 
                 else -> false
             }
         }
-        // Show the overflow menu when needed (e.g., on a button click)
-        val overflowButton = binding.overflowMenu2 //findViewById<Button>(R.id.overflow_menu)
-        overflowButton.setOnClickListener {
-            overflowMenu.show()
-        }
-
 
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setFlavorBanner()
+        // Calls function to set the environment banner
+        if(SHOW_BANNER) {
+            setFlavorBanner()
+            binding.debugBanner.visibility = VISIBLE
+        }
         val recyclerView: RecyclerView = binding.deliveryAddressSelection
         val spacingInPixels = resources.getDimensionPixelSize(R.dimen.spacing)
         val itemSpacingDecoration = CardViewDecoration(spacingInPixels)
@@ -118,34 +127,39 @@ class DeliveryAddressFragment : Fragment() {
     }
 
     private fun setFlavorBanner() {
-        // sets banner text
-        if (sharedViewModel.flavor.value == "development") {
-            binding.debugBanner.visibility = View.VISIBLE
-            binding.bannerText.visibility = View.VISIBLE
-            binding.debugBanner.setBackgroundColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.purple_200
+        when (sharedViewModel.flavor.value) {
+            "development" -> {
+                binding.debugBanner.visibility = View.VISIBLE
+                binding.bannerText.visibility = View.VISIBLE
+                binding.debugBanner.setBackgroundColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.purple_200
+                    )
                 )
-            )
-            binding.bannerText.text = resources.getString(R.string.devFlavorText)
-        }
-        // hides banner if PROD application
-        if (sharedViewModel.flavor.value == "production") {
-            binding.debugBanner.visibility = View.GONE
-            binding.bannerText.visibility = View.GONE
-        }
-        // sets banner text and banner color
-        if (sharedViewModel.flavor.value == "staging") {
-            binding.debugBanner.visibility = View.VISIBLE
-            binding.bannerText.visibility = View.VISIBLE
-            binding.debugBanner.setBackgroundColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.elis_orange
+                binding.bannerText.text = resources.getString(R.string.devFlavorText)
+            }
+            "production" -> {
+                binding.debugBanner.visibility = View.GONE
+                binding.bannerText.visibility = View.GONE
+                binding.debugBanner.setBackgroundColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.elis_transparent
+                    )
                 )
-            )
-            binding.bannerText.text = resources.getString(R.string.testFlavorText)
+            }
+            "staging" -> {
+                binding.debugBanner.visibility = View.VISIBLE
+                binding.bannerText.visibility = View.VISIBLE
+                binding.debugBanner.setBackgroundColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.elis_orange
+                    )
+                )
+                binding.bannerText.text = resources.getString(R.string.testFlavorText)
+            }
         }
     }
 }

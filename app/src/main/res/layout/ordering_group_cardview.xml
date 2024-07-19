@@ -79,6 +79,7 @@
                 android:maxLines="2"
                 android:singleLine="false"
                 android:text="@{orderingGroup.orderingGroupDescription}"
+                android:contentDescription="@{orderingGroup.orderingGroupDescription}"
                 android:textAlignment="viewStart"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/proceed_button_icon"

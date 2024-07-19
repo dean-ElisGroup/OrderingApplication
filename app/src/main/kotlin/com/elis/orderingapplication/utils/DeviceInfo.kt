@@ -1,5 +1,6 @@
 package com.elis.orderingapplication.utils
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
 import android.provider.Settings
@@ -17,6 +18,7 @@ class DeviceInfo(private val context: Context) {
         }
     }
 
+    @SuppressLint("HardwareIds")
     private fun getDeviceId(): String {
         return Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
     }

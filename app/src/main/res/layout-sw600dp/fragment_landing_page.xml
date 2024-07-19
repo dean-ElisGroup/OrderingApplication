@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".LandingPageFragment">
+<data>
+    <variable
+        name="viewModel"
+        type="com.elis.orderingapplication.viewModels.ParamsViewModel" />
+</data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_menu_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/elis_page_background"
+            android:scaleType="centerCrop"
+            android:src="@drawable/new_applogin_design_background_no_logo_01"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/button_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:id="@+id/sessionKey"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="32dp"
+                app:layout_constraintEnd_toStartOf="@+id/headerBlock"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/headerBlock"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:background="@color/elis_blue"
+                android:contentDescription="@string/app_header_name"
+                app:layout_constraintHeight_percent="0.14"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription" />
+
+            <ImageView
+                android:id="@+id/header_box"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="24dp"
+                android:contentDescription="@string/app_header_name"
+                android:scaleType="fitCenter"
+                android:src="@drawable/elis_logo_white_circular_services_01"
+                app:layout_constraintEnd_toStartOf="@+id/guideline4"
+                app:layout_constraintHeight_percent="0.08"
+                app:layout_constraintStart_toStartOf="@+id/guideline3"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_percent="0.50" />
+
+            <TextView
+                android:id="@+id/date_now_landing"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/gothic_a1_medium"
+                android:text="@{viewModel.orderDate}"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="26sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/header_box" />
+
+            <TextView
+                android:id="@+id/selectAnOption"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/instruction_background_tablet_v4"
+                android:fontFamily="@font/gothic_a1_medium"
+                android:letterSpacing=".1"
+                android:text="@string/please_select_an_option"
+                android:textAlignment="center"
+                android:textColor="@color/elis_black"
+                android:textSize="@dimen/select_an_option_tablet"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/headerBlock" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/orders_button"
+                style="@style/Widget.Material3.Button.ElevatedButton"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginBottom="32dp"
+                android:drawableLeft="@drawable/landing_page_button_orders"
+                android:drawableRight="@drawable/landing_page_arrow"
+                android:drawablePadding="20dp"
+                android:drawableTint="@color/elis_black"
+                android:fontFamily="@font/gothic_a1_medium"
+                android:gravity="center"
+                android:includeFontPadding="true"
+                android:paddingStart="20dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="3dp"
+                android:text="@string/button_orders"
+                android:textColor="@color/elis_black"
+                android:textSize="@dimen/landing_page_tablet_button_textSize"
+                app:backgroundTint="@color/white"
+                app:cornerRadius="10dp"
+                app:layout_constraintBottom_toTopOf="@+id/button_view_orders"
+                app:layout_constraintEnd_toStartOf="@+id/guideline4"
+                app:layout_constraintStart_toStartOf="@+id/guideline3"
+                app:layout_constraintTop_toBottomOf="@+id/selectAnOption"
+                app:strokeColor="@color/elis_light_blue"
+                app:strokeWidth="4dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_send_orders"
+                style="@style/Widget.Material3.Button.ElevatedButton"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginBottom="32dp"
+                android:drawableLeft="@drawable/landing_page_button_send"
+                android:drawableRight="@drawable/landing_page_arrow"
+                android:drawableTint="@color/elis_black"
+                android:fontFamily="@font/gothic_a1_medium"
+                android:gravity="center"
+                android:includeFontPadding="true"
+                android:paddingStart="20dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="3dp"
+                android:text="@string/button_send_orders"
+                android:textColor="@color/elis_black"
+                android:textSize="@dimen/landing_page_tablet_button_textSize"
+                app:backgroundTint="@color/white"
+                app:cornerRadius="@dimen/button_corner_radius"
+                app:layout_constraintBottom_toTopOf="@+id/button_settings"
+                app:layout_constraintEnd_toStartOf="@+id/guideline4"
+                app:layout_constraintStart_toStartOf="@+id/guideline3"
+                app:layout_constraintTop_toBottomOf="@+id/button_view_orders"
+                app:strokeColor="@color/elis_light_blue"
+                app:strokeWidth="4dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_view_orders"
+                style="@style/Widget.Material3.Button.ElevatedButton"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginBottom="10dp"
+                android:drawableLeft="@drawable/baseline_list_24"
+                android:drawableRight="@drawable/landing_page_arrow"
+                android:drawableTint="@color/elis_black"
+                android:fontFamily="@font/gothic_a1_medium"
+                android:gravity="center"
+                android:includeFontPadding="true"
+                android:paddingStart="20dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="3dp"
+                android:text="@string/button_view_orders"
+                android:textColor="@color/elis_black"
+                android:textSize="20sp"
+                android:visibility="gone"
+                app:cornerRadius="@dimen/button_corner_radius"
+                app:layout_constraintBottom_toTopOf="@+id/button_send_orders"
+                app:layout_constraintEnd_toStartOf="@+id/guideline4"
+                app:layout_constraintStart_toStartOf="@+id/guideline3"
+                app:layout_constraintTop_toBottomOf="@+id/orders_button" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_settings"
+                style="@style/Widget.Material3.Button.ElevatedButton"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginBottom="10dp"
+                android:drawableLeft="@drawable/baseline_settings_24"
+                android:drawableRight="@drawable/landing_page_arrow"
+                android:drawableTint="@color/elis_black"
+                android:fontFamily="@font/gothic_a1_medium"
+                android:gravity="center"
+                android:includeFontPadding="true"
+                android:paddingStart="20dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="3dp"
+                android:text="@string/button_settings"
+                android:textColor="@color/elis_black"
+                android:textSize="20sp"
+                android:visibility="gone"
+                app:cornerRadius="@dimen/button_corner_radius"
+                app:layout_constraintBottom_toTopOf="@+id/button_logout"
+                app:layout_constraintEnd_toStartOf="@+id/guideline4"
+                app:layout_constraintStart_toStartOf="@+id/guideline3"
+                app:layout_constraintTop_toBottomOf="@+id/button_send_orders" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_logout"
+                style="@style/Widget.Material3.Button.ElevatedButton"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginBottom="32dp"
+                android:drawableLeft="@drawable/landing_page_button_logout"
+                android:drawableRight="@drawable/landing_page_arrow"
+                android:drawableTint="@color/elis_black"
+                android:fontFamily="@font/gothic_a1_medium"
+                android:gravity="center"
+                android:paddingStart="20dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="3dp"
+                android:text="@string/button_logout"
+
+                android:textColor="@color/elis_black"
+                android:textSize="@dimen/landing_page_tablet_button_textSize"
+                app:backgroundTint="@color/white"
+                app:cornerRadius="@dimen/button_corner_radius"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/guideline4"
+                app:layout_constraintStart_toStartOf="@+id/guideline3"
+                app:layout_constraintTop_toBottomOf="@+id/button_settings"
+                app:strokeColor="@color/elis_light_blue"
+                app:strokeWidth="4dp" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.03" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.97" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/overflow_menu2"
+                style="@style/Widget.Material3.Button.Icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:background="@android:color/transparent"
+                android:backgroundTint="#00FFFFFF"
+                android:contentDescription="@string/overflow_menu_text"
+                android:gravity="center_horizontal|center_vertical"
+                android:paddingStart="1dp"
+                android:paddingTop="1dp"
+                android:paddingEnd="1dp"
+                android:translationZ="90dp"
+                app:icon="@drawable/device_info"
+                app:iconGravity="start|end"
+                app:iconSize="46dp"
+                app:iconTint="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:id="@+id/debug_banner"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginStart="-40dp"
+            android:layout_marginTop="30dp"
+            android:background="#AA000000"
+            android:orientation="vertical"
+            android:padding="8dp"
+            android:rotation="-45"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/banner_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
