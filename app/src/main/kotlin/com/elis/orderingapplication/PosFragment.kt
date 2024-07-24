@@ -2,6 +2,7 @@ package com.elis.orderingapplication
 
 
 import android.app.AlertDialog
+import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -11,7 +12,8 @@ import android.view.View
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.widget.PopupMenu
+import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
@@ -30,6 +32,9 @@ import com.elis.orderingapplication.constants.Constants.Companion.SHOW_BANNER
 import com.elis.orderingapplication.utils.DeviceInfo
 import com.elis.orderingapplication.utils.DeviceInfoDialog
 import com.elis.orderingapplication.viewModels.SharedViewModelFactory
+import org.junit.runner.manipulation.Ordering
+
+import java.util.Locale
 
 class PosFragment : Fragment(), PointOfServiceAdapter.TotalPOSCallback {
 
@@ -43,6 +48,7 @@ class PosFragment : Fragment(), PointOfServiceAdapter.TotalPOSCallback {
     private lateinit var recyclerView: RecyclerView
     private var deliveryAddressForArgs: String = ""
     private var orderingGroupForArgs: String? = null
+    private lateinit var searchView: SearchView
 
 
     override fun onCreateView(
@@ -101,6 +107,27 @@ class PosFragment : Fragment(), PointOfServiceAdapter.TotalPOSCallback {
         // Sets ordering group and ordering name to shared ViewModel
         args.orderingGroupNo?.let { sharedViewModel.setOrderingGroupNo(it) }
         sharedViewModel.setOrderingGroupName(args.orderingGroupName)
+
+        // Set up the SearchView
+        /*searchView = binding.searchView!!
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                filterPOSList(query)
+                searchView.clearFocus()
+                hideSearchKeyboard()
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                // Handle search query text changes
+                filterPOSList(newText)
+                return true
+            }
+        })*/
+
+
+
+
         // Inflate the layout for this fragment
         return binding.root
     }
@@ -219,4 +246,27 @@ class PosFragment : Fragment(), PointOfServiceAdapter.TotalPOSCallback {
         // Update the totalPOS value in your PosFragment
         binding.totalPos1 = totalPOS.toString()
     }
+
+    /*private fun filterPOSList(query: String?) {
+        val filteredList = if (query.isNullOrEmpty()) {
+            // If the search query is empty, show the entire list
+            posViewModel.pointsOfService.value
+        } else {
+            // Filter the list based on the search query
+            val filterPattern = query.toString().trim().lowercase(Locale.ROOT)
+            posViewModel.pointsOfService.value?.filter {
+                it.pointsOfService.pointOfServiceName?.lowercase(Locale.ROOT)?.contains(filterPattern) == true
+            }
+        }
+
+        // Update the adapter with the filtered list
+        if (filteredList != null) {
+            pointOfServiceAdapter.setData(filteredList)
+        }
+    }
+
+    private fun hideSearchKeyboard() {
+        val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(requireView().windowToken, 0)
+    }*/
 }

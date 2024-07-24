@@ -29,6 +29,8 @@ import com.elis.orderingapplication.viewModels.SharedViewModelFactory
 import com.elis.orderingapplication.pojo2.Order
 import com.elis.orderingapplication.pojo2.OrderEventResponse
 import com.elis.orderingapplication.utils.NetworkUtils
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
@@ -230,10 +232,26 @@ class ArticleEntryCardFragment : Fragment() {
                 it, Constants.APP_STATUS_SENT.toString(),
                 Constants.ORDER_STATUS_FINISHED
             )
+
         }
+
         if (success == true) {
             Toast.makeText(requireContext(), "Order sent to Sol", Toast.LENGTH_SHORT).show()
-            //findNavController().navigate(R.id.action_articleFragment_to_orderFragment)
+            // Creates a document in the Firestore database using the data in the Order object
+            /*
+            val db = Firebase.firestore
+            val orderData = hashMapOf(
+                "delvDate" to currentOrderData?.deliveryDate.toString(),
+                "orderDate" to currentOrderData?.orderDate.toString(),
+                "orderId" to currentOrderData?.appOrderId)
+
+            db.collection("elis_orders").add(orderData).addOnSuccessListener { documentReference ->
+                Log.d("TAG", "DocumentSnapshot added with ID: ${documentReference.id}")
+            }.addOnFailureListener { e ->
+                Log.w("TAG", "Error adding document", e)
+            }
+
+             */
         }
     }
 

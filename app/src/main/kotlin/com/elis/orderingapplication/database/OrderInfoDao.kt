@@ -154,8 +154,16 @@ interface OrderInfoDao {
     //@Query("SELECT articleSize AS size, solOrderQty AS qty, articleNo FROM article WHERE delivery_date_article = :deliveryDate AND app_order_id = :appOrderId")
     //fun getSendOrderArticles(deliveryDate: String?, appOrderId: String?): List<OrderRowsItem>
 
-    @Transaction
+    // Removed as found an issue where the query was sending the wrong qty to SOL, replace with query below
+    /*@Transaction
     @Query("SELECT articleSize AS size, COALESCE(solOrderQty, 0) AS qty,articleNo FROM article WHERE delivery_date_article = :deliveryDate AND app_order_id = :appOrderId")
+    fun getSendOrderArticles(deliveryDate: String?, appOrderId: String?): List<OrderRowsItem>*/
+
+    // New query below now uses the solCountedQty column, which is the qty that is sent to SOL.  Sol then works out the difference between the assessment level and this qty.
+    // Giving the correct order qty in SOL.
+    // 24/07/2024
+    @Transaction
+    @Query("SELECT articleSize AS size, COALESCE(solCountedQty, 0) AS qty,articleNo FROM article WHERE delivery_date_article = :deliveryDate AND app_order_id = :appOrderId")
     fun getSendOrderArticles(deliveryDate: String?, appOrderId: String?): List<OrderRowsItem>
 
     // Query used for the Send Orders functionality
