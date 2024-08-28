@@ -32,6 +32,7 @@ import com.elis.orderingapplication.utils.NetworkUtils
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.time.delay
@@ -55,8 +56,10 @@ class ArticleEntryCardFragment : Fragment() {
     private var totalArticles: Int? = null
     private var currentArticlePosition: Int? = null
     private var currentArticleOrder: Int? = null
+    private var internetCheckJob: Job? = null
 
     private var bindingEntry: FragmentArticleEntryViewpagerBinding? = null
+    private var isNavigationInProgress = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -65,8 +68,7 @@ class ArticleEntryCardFragment : Fragment() {
         _binding = FragmentArticleEntryViewpagerBinding.inflate(inflater, container, false)
         binding.sharedViewModel = sharedViewModel
 
-
-        return _binding!!.root // binding.root
+        return _binding!!.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -86,7 +88,6 @@ class ArticleEntryCardFragment : Fragment() {
         observeArticleData()
         setupCountedQtyTextChangeListener()
     }
-
 
     private fun observeOrderData() {
         articleEntryViewModel.order.observe(viewLifecycleOwner) { currentOrder ->
@@ -161,16 +162,19 @@ class ArticleEntryCardFragment : Fragment() {
             }
         }
     }
-// Starts a check to see if there's a physical connection to the internet.
-    fun startInternetCheckJob() {
-        lifecycleScope.launch {
+
+    // Starts a check to see if there's a physical connection to the internet.
+    /*fun startInternetCheckJob(): Job {
+        return lifecycleScope.launch {
             while (isActive) {
                 val isInternetAvailable = NetworkUtils.isInternetAvailable(requireContext())
                 if (isInternetAvailable) {
                     // Internet is available, perform your desired actions
-                    currentOrderData?.let { it1 -> sendOrderToSOL(it1) }
+                    requireActivity().runOnUiThread {
+                        currentOrderData?.let { it1 -> sendOrderToSOL(it1) }
+                    }
                     // navigate back to the orders screen
-                    findNavController().navigate(R.id.action_articleFragment_to_orderFragment)
+                    //findNavController().navigate(R.id.action_articleFragment_to_orderFragment)
                 } else {
                     // Internet is not available
                     currentOrderData?.let {
@@ -182,10 +186,34 @@ class ArticleEntryCardFragment : Fragment() {
                     }
                     orderNotSubmittedDialog()
                 }
-                delay(Duration.ofSeconds(5000)) // Delay for 5 seconds before checking again
+                delay(Duration.ofSeconds(5)) // Delay for 5 seconds before checking again
+            }
+        }
+    }*/
+
+    fun startInternetCheckJob(): Job {
+        return viewLifecycleOwner.lifecycleScope.launch {
+            while (isActive) {
+                val isInternetAvailable = NetworkUtils.isInternetAvailable(requireContext())
+                if (isInternetAvailable && currentOrderData != null) {
+                    // Internet is available, perform your desired actions
+                    sendOrderToSOL(currentOrderData!!)
+                } else {
+                    // Internet is not available
+                    currentOrderData?.let {
+                        articleEntryViewModel.updateOrderStatus(
+                            it,
+                            Constants.APP_STATUS_FINISHED.toString(),
+                            Constants.ORDER_STATUS_FINISHED
+                        )
+                    }
+                    orderNotSubmittedDialog()
+                }
+                delay(Duration.ofSeconds(5)) // Delay for 5 seconds before checking again
             }
         }
     }
+
 
     private fun externalOrderId(length: Int = 12): String {
         val uuid = UUID.randomUUID()
@@ -198,30 +226,63 @@ class ArticleEntryCardFragment : Fragment() {
         return hexString.take(length)
     }
 
+    /*private fun sendOrderToSOL(order: Order, externalOrderId: String = externalOrderId()) {
+        val sendOrder = articleEntryViewModel.sendOrderToSOL(order, externalOrderId)
+        val sendOrderEvent = OrderEvent(sharedViewModel.getSessionKey(), sendOrder)
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            val response = articleEntryViewModel.orderEvent(sendOrderEvent)
+            if (isAdded && view != null) { // Check view availability before handling response
+                handleResponse(response)
+            }
+        }
+    }*/
+
     private fun sendOrderToSOL(order: Order, externalOrderId: String = externalOrderId()) {
         val sendOrder = articleEntryViewModel.sendOrderToSOL(order, externalOrderId)
         val sendOrderEvent = OrderEvent(sharedViewModel.getSessionKey(), sendOrder)
 
         viewLifecycleOwner.lifecycleScope.launch {
             val response = articleEntryViewModel.orderEvent(sendOrderEvent)
-            handleResponse(response)
+            handleResponse(response) // No need for view check here
         }
     }
 
-    private suspend fun handleResponse(response: ApiResponse<OrderEventResponse>?) {
+    /*private suspend fun handleResponse(response: ApiResponse<OrderEventResponse>?) {
         response?.let { apiResponse ->
             when (apiResponse) {
                 is ApiResponse.Success<*> -> {
-                    val successResponse = apiResponse as ApiResponse.Success<OrderEventResponse>
-                    handleSuccessResponse(successResponse.data?.success)
+                        val successResponse = apiResponse as ApiResponse.Success<OrderEventResponse>
+                        handleSuccessResponse(successResponse.data?.success)
                 }
-                is ApiResponse.Loading<*> -> handleLoadingState()
-                is ApiResponse.Error<*> -> handleErrorResponse(apiResponse.message)
-                is ApiResponse.ErrorSendOrderDate<*> -> handleErrorResponse(apiResponse.message)
-                is ApiResponse.NoDataError<*> -> handleNoDataError()
-                is ApiResponse.ErrorLogin<*> -> handleUnknownError()
-                is ApiResponse.UnknownError<*> -> handleUnknownError()
-                else -> handleUnknownError()
+                    is ApiResponse.Loading<*> -> handleLoadingState()
+                    is ApiResponse.Error<*> -> handleErrorResponse(apiResponse.message)
+                    is ApiResponse.ErrorSendOrderDate<*> -> handleErrorResponse(apiResponse.message)
+                    is ApiResponse.NoDataError<*> -> handleNoDataError()
+                    is ApiResponse.ErrorLogin<*> -> handleUnknownError()
+                    is ApiResponse.UnknownError<*> -> handleUnknownError()
+                    else -> handleUnknownError()
+                }
+        }
+    }*/
+
+    private suspend fun handleResponse(response: ApiResponse<OrderEventResponse>?) {
+        if (isAdded && view != null) { // Check view availability before handling response
+            response?.let { apiResponse ->
+                when (apiResponse) {
+                    is ApiResponse.Success<*> -> {
+                        val successResponse = apiResponse as ApiResponse.Success<OrderEventResponse>
+                        handleSuccessResponse(successResponse.data?.success)
+                    }
+
+                    is ApiResponse.Loading<*> -> handleLoadingState()
+                    is ApiResponse.Error<*> -> handleErrorResponse(apiResponse.message)
+                    is ApiResponse.ErrorSendOrderDate<*> -> handleErrorResponse(apiResponse.message)
+                    is ApiResponse.NoDataError<*> -> handleNoDataError()
+                    is ApiResponse.ErrorLogin<*> -> handleUnknownError()
+                    is ApiResponse.UnknownError<*> -> handleUnknownError()
+                    else -> handleUnknownError()
+                }
             }
         }
     }
@@ -232,26 +293,11 @@ class ArticleEntryCardFragment : Fragment() {
                 it, Constants.APP_STATUS_SENT.toString(),
                 Constants.ORDER_STATUS_FINISHED
             )
-
         }
-
-        if (success == true) {
+        if (success == true && isResumed) { // isVisible) {
             Toast.makeText(requireContext(), "Order sent to Sol", Toast.LENGTH_SHORT).show()
-            // Creates a document in the Firestore database using the data in the Order object
-            /*
-            val db = Firebase.firestore
-            val orderData = hashMapOf(
-                "delvDate" to currentOrderData?.deliveryDate.toString(),
-                "orderDate" to currentOrderData?.orderDate.toString(),
-                "orderId" to currentOrderData?.appOrderId)
-
-            db.collection("elis_orders").add(orderData).addOnSuccessListener { documentReference ->
-                Log.d("TAG", "DocumentSnapshot added with ID: ${documentReference.id}")
-            }.addOnFailureListener { e ->
-                Log.w("TAG", "Error adding document", e)
-            }
-
-             */
+            // Navigate back to the OrderFragment after successful order submission
+            findNavController().navigate(R.id.action_articleFragment_to_orderFragment)
         }
     }
 
@@ -325,19 +371,31 @@ class ArticleEntryCardFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-            updateUI(currentArticle)
+        updateUI(currentArticle)
     }
 
     private fun orderNotSubmittedDialog() {
-        val builder = AlertDialog.Builder(requireContext())
-        builder.setTitle("Order Not Submitted")
-            .setMessage("There is currently no connection to the internet.\nThe order has not been sent to SOL.")
-            .setPositiveButton("OK") { _, _ ->
-                // Handle OK button click if needed
-                findNavController().navigate(R.id.action_articleFragment_to_orderFragment)
-                clearNotTouchableFlag()
-            }
-            .setCancelable(false).show() // Prevent dismissing the
+        if (!isNavigationInProgress) {
+            isNavigationInProgress =
+                true // Set the flag to true to indicate that a navigation is in progress
+            val builder = AlertDialog.Builder(requireContext())
+            builder.setTitle("Order Not Submitted")
+                .setMessage("There is currently no connection to the internet.\nThe order has not been sent to SOL.")
+                .setPositiveButton("OK") { _, _ ->
+                    // No need to navigate since you're already on the orderFragment
+                    clearNotTouchableFlag()
+                    isNavigationInProgress =
+                        false // Reset the flag after the navigation is processed
+                }
+                .setCancelable(false).show() // Prevent dismissing the dialog by tapping outside
+        } else {
+            // Navigation is already in progress, so a toast is shown to the user
+            Toast.makeText(
+                requireContext(),
+                "Navigation already in progress",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 
     interface LastArticleCallback {

@@ -2,16 +2,11 @@ package com.elis.orderingapplication.viewModels
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.elis.orderingapplication.database.OrderInfoDatabase
 import com.elis.orderingapplication.pojo2.PointsOfService
 import com.elis.orderingapplication.pojo2.PointsOfServiceWithTotalOrders
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -22,27 +17,25 @@ class PosViewModel(application: Application, private val sharedViewModel: Params
         get() = _navigateToPos
 
     val database = OrderInfoDatabase.getInstance(application)
-    //val pointOfService: LiveData<List<PointsOfService>> = database.orderInfoDao.getPointsOfService(getDeliveryAddressNum().value.toString(), getOrderingGroupNum().value.toString())
-    val pointsOfService = getPointsOfServiceWithTotalOrders(getDeliveryAddressNum().value.toString(), getOrderingGroupNum().value.toString(), getOrderDate() )
+    val pointsOfService: LiveData<List<PointsOfServiceWithTotalOrders>> = getPointsOfServiceWithTotalOrders(getDeliveryAddressNum().value.toString(), getOrderingGroupNum().value.toString(), getOrderDate()) // Added to this line LiveData<List<PointsOfServiceWithTotalOrders>>
 
     private fun getPointsOfServiceWithTotalOrders(
         deliveryAddressNo: String,
         orderingGroup: String,
         orderDate: String
+        //orderStatus: List<Int>
     ): LiveData<List<PointsOfServiceWithTotalOrders>> {
         return database.orderInfoDao.getPointsOfServiceWithTotalOrders(
             deliveryAddressNo,
             orderingGroup,
             orderDate
+            //orderStatus
         )
     }
-    // Delivery address number, for testing purposes
-    // 3390196
     private fun getOrderDate(): String {
         val orderDateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         val orderDate = LocalDateTime.now().format(orderDateFormatter)
         return orderDate
-
     }
 
     // returns the stored delivery address no.

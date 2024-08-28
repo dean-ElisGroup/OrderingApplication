@@ -44,6 +44,7 @@ class LandingPageFragment : Fragment() {
     private lateinit var binding: FragmentLandingPageBinding
     private val sharedViewModel: ParamsViewModel by activityViewModels()
     lateinit var database: OrderInfoDatabase
+    private var isLogoutInProgress = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -82,57 +83,63 @@ class LandingPageFragment : Fragment() {
             }
 
             buttonLogout.setOnClickListener {
-                viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
-                    if(checkInternetAvailability()) {
-                        val logoutSessionKey = LogoutRequest(sharedViewModel.getSessionKey())
-                        val response = landingPageView.getUserLogout(logoutSessionKey)
-                        landingPageView.userLoginResponse.observe(viewLifecycleOwner) { observeResponse ->
-                            when (observeResponse) {
-                                is ApiResponse.Success -> {
-                                    view?.let {
-                                        Navigation.findNavController(it)
-                                            .navigate(R.id.action_landingPageFragment_to_loginFragment)
-                                        Toast.makeText(
-                                            requireContext(),
-                                            "You have been logged out",
-                                            Toast.LENGTH_LONG
-                                        ).show()
+                if (!isLogoutInProgress) {
+                    isLogoutInProgress = true
+                    viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
+                        if (checkInternetAvailability()) {
+                            val logoutSessionKey = LogoutRequest(sharedViewModel.getSessionKey())
+                            val response = landingPageView.getUserLogout(logoutSessionKey)
+                            landingPageView.userLoginResponse.observe(viewLifecycleOwner) { observeResponse ->
+                                when (observeResponse) {
+                                    is ApiResponse.Success -> {
+                                        view?.let {
+                                            Navigation.findNavController(it)
+                                                .navigate(R.id.action_landingPageFragment_to_loginFragment)
+                                            Toast.makeText(
+                                                requireContext(),
+                                                "You have been logged out",
+                                                Toast.LENGTH_LONG
+                                            ).show()
+                                            isLogoutInProgress = false
+
+                                        }
                                     }
 
+                                    is ApiResponse.Error -> {
+                                        Toast.makeText(
+                                            requireContext(),
+                                            observeResponse.message,
+                                            Toast.LENGTH_LONG
+                                        )
+                                            .show()
+                                        isLogoutInProgress = false
+
+                                    }
+
+                                    else -> {
+                                        Toast.makeText(
+                                            requireContext(),
+                                            "Unknown logout issue",
+                                            Toast.LENGTH_LONG
+                                        ).show()
+                                        isLogoutInProgress = false
+                                    }
                                 }
-
-                                is ApiResponse.Error -> {
-                                    Toast.makeText(
-                                        requireContext(),
-                                        observeResponse.message,
-                                        Toast.LENGTH_LONG
-                                    )
-                                        .show()
-
-                                }
-
-                                else ->
-                                    Toast.makeText(
-                                        requireContext(),
-                                        "Unknown logout issue",
-                                        Toast.LENGTH_LONG
-                                    ).show()
                             }
-                        }
-                    } else {
-                        view?.let {
-                            Navigation.findNavController(it)
-                                .navigate(R.id.action_landingPageFragment_to_loginFragment)
-                            Toast.makeText(
-                                requireContext(),
-                                "You have been logged out",
-                                Toast.LENGTH_LONG
-                            ).show()
+                        } else {
+                            isLogoutInProgress = false
                         }
                     }
+                } else {
+                    // Logout request is already in progress, show a message or handle it as per your requirements
+                    Toast.makeText(
+                        requireContext(),
+                        "Logout request already in progress",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
-            return binding.root
+                return binding.root
         }
     }
 

@@ -13,7 +13,6 @@ class PointOfServiceAdapter(
 ) :
     RecyclerView.Adapter<PointOfServiceAdapter.PointsOfServiceViewHolder>() {
 
-    //private var data: List<PointsOfService> = emptyList()
     private var data: List<PointsOfServiceWithTotalOrders> = emptyList()
 
     override fun onCreateViewHolder(
@@ -30,7 +29,6 @@ class PointOfServiceAdapter(
     }
 
     override fun onBindViewHolder(holder: PointsOfServiceViewHolder, position: Int) {
-        //val pointsOfService = data[position]
         val pointsOfServiceWithTotalOrders = data[position]
         holder.bind(clickListener, pointsOfServiceWithTotalOrders)
         totalPOSCallback.onTotalPOSUpdated(pointsOfServiceWithTotalOrders.totalPOS)

@@ -36,8 +36,13 @@ android {
             applicationIdSuffix ".dev"
             manifestPlaceholders = [appLabel: "Stock Ordering - Dev"]
             namespace 'com.solstockorder.dev'
-            versionName '2.0.4'
+            versionName '2.0.5'
             buildConfigField "String", "API_BASE_URL", '"http://serviceonlinetest.elisonline.co.uk/SolMasterTraining5/Ordering.wso/"'
+            sourceSets{
+                development{
+                    kotlin.srcDir 'src/development/kotlin'
+                }
+            }
 
         }
         staging {
@@ -186,5 +191,7 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-scalars:$retrofitVersion"
     implementation "com.squareup.okhttp3:okhttp:$okhttp3Version"
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttpLoggingInterceptorVersion"
+
+    implementation 'com.gu.android:toolargetool:0.3.0'
 
 }

@@ -9,6 +9,7 @@ import android.view.View
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.compose.ui.unit.Constraints
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
@@ -48,6 +49,7 @@ class OrderFragment : Fragment() {
     private val orderViewModel: OrderViewModel by viewModels {
         SharedViewModelFactory(sharedViewModel, requireActivity().application)
     }
+    private var isNavigationInProgress = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -62,9 +64,20 @@ class OrderFragment : Fragment() {
         binding.toolbar.setNavigationIcon(R.drawable.ic_back)
         binding.toolbar.setTitleTextAppearance(requireContext(),R.style.titleTextStyle)
         binding.toolbar.setNavigationOnClickListener {
-            view?.let { it ->
-                Navigation.findNavController(it)
-                    .navigate(R.id.action_orderFragment_to_posFragment)
+            if (!isNavigationInProgress) {
+                isNavigationInProgress = true // Set the flag to true to indicate that a navigation is in progress
+                view?.let {
+                    Navigation.findNavController(it)
+                        .navigate(R.id.action_orderFragment_to_posFragment)
+                }
+                isNavigationInProgress = false // Reset the flag after the navigation is processed
+            } else {
+                // Navigation is already in progress, show a message or handle it as per your requirements
+                Toast.makeText(
+                    requireContext(),
+                    "Navigation already in progress",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
         binding.toolbar.setOnMenuItemClickListener { menuItem ->

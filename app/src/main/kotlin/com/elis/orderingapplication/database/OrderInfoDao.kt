@@ -1,7 +1,6 @@
 package com.elis.orderingapplication.database
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -16,9 +15,6 @@ import com.elis.orderingapplication.pojo2.OrderRowsItem
 import com.elis.orderingapplication.pojo2.OrderingGroup
 import com.elis.orderingapplication.pojo2.PointsOfService
 import com.elis.orderingapplication.pojo2.PointsOfServiceWithTotalOrders
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.withContext
 
 @Dao
 interface OrderInfoDao {

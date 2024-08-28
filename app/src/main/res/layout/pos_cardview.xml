@@ -15,6 +15,18 @@
         <variable
             name="totalOrders"
             type="String" />
+        <variable
+            name="ordersNew"
+            type="String" />
+        <variable
+            name="ordersEdit"
+            type="String" />
+        <variable
+            name="ordersFinished"
+            type="String" />
+        <variable
+            name="ordersSent"
+            type="String" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -41,27 +53,23 @@
 
             <TextView
                 android:id="@+id/orderingGroupName"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
                 android:autoSizeMaxTextSize="18sp"
-                android:autoSizeMinTextSize="13sp"
                 android:autoSizeTextType="uniform"
                 android:contentDescription="@{pos.pointOfServiceName}"
                 android:fontFamily="@font/gothic_a1_medium"
-                android:gravity="start"
+                android:gravity="center_horizontal"
                 android:maxLines="1"
                 android:nestedScrollingEnabled="false"
                 android:singleLine="false"
                 android:text="@{pos.pointOfServiceName}"
-                android:textAlignment="textStart"
                 android:textColor="@color/elis_black"
-
-                android:textSize="18sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@+id/proceed_arrow"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -71,14 +79,16 @@
                 android:layout_height="38dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
+                android:contentDescription="@string/proceed_arrow"
                 android:scaleType="fitCenter"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.5"
                 app:srcCompat="@drawable/baseline_arrow_right_24_black"
-                android:contentDescription="@string/proceed_arrow"
                 app:tint="@color/elis_black" />
+
 
             <TextView
                 android:id="@+id/totalOrdersAvailable"
@@ -91,11 +101,146 @@
                 android:autoSizeTextType="uniform"
                 android:maxLines="1"
                 android:text='@{"Total orders: " + totalOrders}'
-                android:textAlignment="textStart"
+                android:textAlignment="center"
+                android:textSize="13sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/proceed_arrow"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/orderingGroupName" />
+
+            <ImageView
+                android:id="@+id/total_new"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/total_edit"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/orderingGroupName"
+                app:layout_constraintVertical_bias="0.0"
+                app:srcCompat="@drawable/order_new_badge" />
+
+            <TextView
+                android:id="@+id/total_orders_new"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginBottom="2dp"
+                android:autoSizeTextType="uniform"
+                android:text='@{ordersNew}'
+                android:textAlignment="center"
+                android:textColor="@color/elis_black"
+                android:textSize="11sp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/total_new"
+                app:layout_constraintEnd_toEndOf="@+id/total_new"
+                app:layout_constraintStart_toStartOf="@+id/total_new"
+                app:layout_constraintTop_toTopOf="@+id/total_new" />
+
+            <ImageView
+                android:id="@+id/total_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/total_finished"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/total_new"
+                app:layout_constraintTop_toBottomOf="@+id/orderingGroupName"
+                app:srcCompat="@drawable/order_edit_badge" />
+
+            <TextView
+                android:id="@+id/total_orders_edit"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginBottom="2dp"
+                android:autoSizeTextType="uniform"
+                android:text='@{ordersEdit}'
+                android:textAlignment="center"
+                android:textColor="@color/elis_black"
+                android:textSize="11sp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/total_new"
+                app:layout_constraintEnd_toEndOf="@+id/total_edit"
+                app:layout_constraintStart_toStartOf="@+id/total_edit"
+                app:layout_constraintTop_toTopOf="@+id/total_new" />
+
+            <ImageView
+                android:id="@+id/total_finished"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/total_sent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/total_edit"
+                app:layout_constraintTop_toBottomOf="@+id/orderingGroupName"
+                app:srcCompat="@drawable/order_finished_badge" />
+
+            <TextView
+                android:id="@+id/total_orders_finished"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginBottom="2dp"
+                android:autoSizeTextType="uniform"
+                android:text='@{ordersFinished}'
+                android:textAlignment="center"
+                android:textColor="@color/elis_black"
+                android:textSize="11sp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/total_new"
+                app:layout_constraintEnd_toEndOf="@+id/total_finished"
+                app:layout_constraintStart_toStartOf="@+id/total_finished"
+                app:layout_constraintTop_toTopOf="@+id/total_new" />
+
+            <ImageView
+                android:id="@+id/total_sent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/total_finished"
+                app:layout_constraintTop_toBottomOf="@+id/orderingGroupName"
+                app:srcCompat="@drawable/order_sent_badge" />
+
+            <TextView
+                android:id="@+id/total_orders_sent"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginBottom="2dp"
+                android:autoSizeTextType="uniform"
+                android:text='@{ordersSent}'
+                android:textAlignment="center"
+                android:textColor="@color/elis_black"
+                android:textSize="11sp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/total_new"
+                app:layout_constraintEnd_toEndOf="@+id/total_sent"
+                app:layout_constraintStart_toStartOf="@+id/total_sent"
+                app:layout_constraintTop_toTopOf="@+id/total_new" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>

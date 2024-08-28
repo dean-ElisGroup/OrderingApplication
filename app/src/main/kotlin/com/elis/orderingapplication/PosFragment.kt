@@ -27,11 +27,14 @@ import com.elis.orderingapplication.pojo2.PointsOfService
 import com.elis.orderingapplication.viewModels.ParamsViewModel
 import com.elis.orderingapplication.viewModels.PosViewModel
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.elis.orderingapplication.adapters.listAdapters.PointOfServiceAdapter
 import com.elis.orderingapplication.constants.Constants.Companion.SHOW_BANNER
+import com.elis.orderingapplication.pojo2.PointsOfServiceWithTotalOrders
 import com.elis.orderingapplication.utils.DeviceInfo
 import com.elis.orderingapplication.utils.DeviceInfoDialog
 import com.elis.orderingapplication.viewModels.SharedViewModelFactory
+import kotlinx.coroutines.launch
 import org.junit.runner.manipulation.Ordering
 
 import java.util.Locale
@@ -49,6 +52,8 @@ class PosFragment : Fragment(), PointOfServiceAdapter.TotalPOSCallback {
     private var deliveryAddressForArgs: String = ""
     private var orderingGroupForArgs: String? = null
     private lateinit var searchView: SearchView
+
+    private var posObserver: Observer<List<PointsOfServiceWithTotalOrders>>? = null
 
 
     override fun onCreateView(
@@ -124,10 +129,6 @@ class PosFragment : Fragment(), PointOfServiceAdapter.TotalPOSCallback {
                 return true
             }
         })*/
-
-
-
-
         // Inflate the layout for this fragment
         return binding.root
     }
@@ -142,7 +143,7 @@ class PosFragment : Fragment(), PointOfServiceAdapter.TotalPOSCallback {
 
         binding.progressBar.visibility = View.VISIBLE
 
-        val spacingInPixels = resources.getDimensionPixelSize(R.dimen.spacing)
+        val spacingInPixels = resources.getDimensionPixelSize(R.dimen.pos_card_spacing)
         val itemSpacingDecoration = CardViewDecoration(spacingInPixels)
         recyclerView.addItemDecoration(itemSpacingDecoration)
 
@@ -172,27 +173,33 @@ class PosFragment : Fragment(), PointOfServiceAdapter.TotalPOSCallback {
                 }
             }, this)
         binding.posSelection.adapter = pointOfServiceAdapter
-        // Observe the LiveData from the ViewModel
-        // Delay loading data for 1 seconds
-        Handler(Looper.getMainLooper()).postDelayed({
-            // Observe the LiveData from the ViewModel
-            posViewModel.pointsOfService.observe(viewLifecycleOwner) { pointsOfService ->
-                requireActivity().window.setFlags(
-                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-                )
-                binding.progressBar.visibility = View.GONE
-                binding.totalPOS.visibility = View.VISIBLE
-                requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
-                pointOfServiceAdapter.setData(pointsOfService)
-
-                if(pointsOfService.isEmpty()) {
-                    noOrderDialog()
-                }
-            }
-        }, 500)
     }
 
+    /*Added the onStart override function to allow the better observing of live data when the fragment starts. The previous code could have caused an issue with trying to get data after the fragment
+    * had loaded. This is linked to an ongoing issue that's being flagged by the Firebase crashlytics tool*/
+    override fun onStart() {
+        super.onStart()
+        // Observe the LiveData from the ViewModel
+        posViewModel.pointsOfService.observe(
+            viewLifecycleOwner,
+            Observer { pointsOfServiceWithTotalOrders ->
+                viewLifecycleOwner.lifecycleScope.launch {
+                    requireActivity().window.setFlags(
+                        WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                        WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+                    )
+                    binding.progressBar.visibility = View.GONE
+                    binding.totalPOS.visibility = View.VISIBLE
+                    requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+
+                    pointOfServiceAdapter.setData(pointsOfServiceWithTotalOrders)
+
+                    if (pointsOfServiceWithTotalOrders.isEmpty()) {
+                        noOrderDialog()
+                    }
+                }
+            })
+    }
     private fun noOrderDialog(){
         val builder = AlertDialog.Builder(context)
         builder.setTitle("No orders")
