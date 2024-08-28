@@ -45,7 +45,18 @@ interface OrderInfoDao {
     fun updateArticle(article: Article)
 
     // QUERIES
-    @Query("SELECT * FROM delivery_address")
+    //@Query("SELECT * FROM delivery_address")
+    //fun getAll(): LiveData<List<DeliveryAddress>>
+
+    // QUERIES
+    @Transaction
+    @Query("""
+        SELECT da.*
+        FROM delivery_address da
+        INNER JOIN points_of_service pos ON da.deliveryAddressNo = pos.deliveryAddressNo
+        GROUP BY da.deliveryAddressNo
+        """
+    )
     fun getAll(): LiveData<List<DeliveryAddress>>
 
     //@Query("SELECT * FROM delivery_address")
