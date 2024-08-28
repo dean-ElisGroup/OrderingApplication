@@ -383,6 +383,7 @@ class ArticleEntryCardFragment : Fragment() {
                 .setMessage("There is currently no connection to the internet.\nThe order has not been sent to SOL.")
                 .setPositiveButton("OK") { _, _ ->
                     // No need to navigate since you're already on the orderFragment
+                    findNavController().navigate((R.id.action_articleFragment_to_orderFragment))
                     clearNotTouchableFlag()
                     isNavigationInProgress =
                         false // Reset the flag after the navigation is processed
