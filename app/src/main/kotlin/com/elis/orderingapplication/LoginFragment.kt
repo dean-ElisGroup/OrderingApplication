@@ -29,6 +29,7 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import android.widget.ProgressBar
+import androidx.activity.addCallback
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation.findNavController
@@ -137,6 +138,18 @@ class LoginFragment : Fragment() {
                     }
                 }
             }
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
+            Toast.makeText(
+                activity,
+                "Login is required.",
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 
