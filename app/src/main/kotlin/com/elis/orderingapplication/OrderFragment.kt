@@ -143,7 +143,7 @@ class OrderFragment : Fragment() {
                         orderViewModel.onOrderClicked(myData)
                         sharedViewModel.setArticleDeliveryDate(myData.orderDate.toString())
                         sharedViewModel.setArticleAppOrderId(myData.appOrderId)
-                        val orderData = orderToParcelable(myData)
+                        val orderData = orderToParcelable(myData) 
                         orderViewModel.navigateToOrder.observe(
                             viewLifecycleOwner,
                             Observer { order ->

@@ -163,34 +163,6 @@ class ArticleEntryCardFragment : Fragment() {
         }
     }
 
-    // Starts a check to see if there's a physical connection to the internet.
-    /*fun startInternetCheckJob(): Job {
-        return lifecycleScope.launch {
-            while (isActive) {
-                val isInternetAvailable = NetworkUtils.isInternetAvailable(requireContext())
-                if (isInternetAvailable) {
-                    // Internet is available, perform your desired actions
-                    requireActivity().runOnUiThread {
-                        currentOrderData?.let { it1 -> sendOrderToSOL(it1) }
-                    }
-                    // navigate back to the orders screen
-                    //findNavController().navigate(R.id.action_articleFragment_to_orderFragment)
-                } else {
-                    // Internet is not available
-                    currentOrderData?.let {
-                        articleEntryViewModel.updateOrderStatus(
-                            it,
-                            Constants.APP_STATUS_FINISHED.toString(),
-                            Constants.ORDER_STATUS_FINISHED
-                        )
-                    }
-                    orderNotSubmittedDialog()
-                }
-                delay(Duration.ofSeconds(5)) // Delay for 5 seconds before checking again
-            }
-        }
-    }*/
-
     fun startInternetCheckJob(): Job {
         return viewLifecycleOwner.lifecycleScope.launch {
             while (isActive) {
@@ -214,29 +186,9 @@ class ArticleEntryCardFragment : Fragment() {
         }
     }
 
-
     private fun externalOrderId(length: Int = 12): String {
-        val uuid = UUID.randomUUID()
-        val byteArray = ByteArray(16)
-        val bytes = uuid.mostSignificantBits.toBigInteger().toByteArray()
-        System.arraycopy(bytes, 0, byteArray, 0, 8)
-        val bytes2 = uuid.leastSignificantBits.toBigInteger().toByteArray()
-        System.arraycopy(bytes2, 0, byteArray, 8, 8)
-        val hexString = byteArray.joinToString("") { "%02x".format(it) }
-        return hexString.take(length)
+        return UUID.randomUUID().toString().replace("-", "").take(length)
     }
-
-    /*private fun sendOrderToSOL(order: Order, externalOrderId: String = externalOrderId()) {
-        val sendOrder = articleEntryViewModel.sendOrderToSOL(order, externalOrderId)
-        val sendOrderEvent = OrderEvent(sharedViewModel.getSessionKey(), sendOrder)
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            val response = articleEntryViewModel.orderEvent(sendOrderEvent)
-            if (isAdded && view != null) { // Check view availability before handling response
-                handleResponse(response)
-            }
-        }
-    }*/
 
     private fun sendOrderToSOL(order: Order, externalOrderId: String = externalOrderId()) {
         val sendOrder = articleEntryViewModel.sendOrderToSOL(order, externalOrderId)
@@ -247,24 +199,6 @@ class ArticleEntryCardFragment : Fragment() {
             handleResponse(response) // No need for view check here
         }
     }
-
-    /*private suspend fun handleResponse(response: ApiResponse<OrderEventResponse>?) {
-        response?.let { apiResponse ->
-            when (apiResponse) {
-                is ApiResponse.Success<*> -> {
-                        val successResponse = apiResponse as ApiResponse.Success<OrderEventResponse>
-                        handleSuccessResponse(successResponse.data?.success)
-                }
-                    is ApiResponse.Loading<*> -> handleLoadingState()
-                    is ApiResponse.Error<*> -> handleErrorResponse(apiResponse.message)
-                    is ApiResponse.ErrorSendOrderDate<*> -> handleErrorResponse(apiResponse.message)
-                    is ApiResponse.NoDataError<*> -> handleNoDataError()
-                    is ApiResponse.ErrorLogin<*> -> handleUnknownError()
-                    is ApiResponse.UnknownError<*> -> handleUnknownError()
-                    else -> handleUnknownError()
-                }
-        }
-    }*/
 
     private suspend fun handleResponse(response: ApiResponse<OrderEventResponse>?) {
         if (isAdded && view != null) { // Check view availability before handling response

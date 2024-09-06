@@ -1,12 +1,10 @@
 package com.elis.orderingapplication
 
 import android.app.AlertDialog
-import android.content.ContentValues.TAG
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +13,6 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
-import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -86,7 +83,8 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        fireBaseRemoteConfig()
+        // Removed as not needed currently.
+        //fireBaseRemoteConfig()
         // sets Today's date for login activity
         binding.date.text = loginView.getDate()
         sharedViewModel.setOrderDate(binding.date.text.toString())
@@ -178,8 +176,8 @@ class LoginFragment : Fragment() {
     private fun setFlavorBanner() {
         when (sharedViewModel.flavor.value) {
             "development" -> {
-                binding.debugBanner.visibility = View.VISIBLE
-                binding.bannerText.visibility = View.VISIBLE
+                binding.debugBanner.visibility = VISIBLE
+                binding.bannerText.visibility = VISIBLE
                 binding.debugBanner.setBackgroundColor(
                     ContextCompat.getColor(
                         requireContext(),
@@ -199,8 +197,8 @@ class LoginFragment : Fragment() {
                 )
             }
             "staging" -> {
-                binding.debugBanner.visibility = View.VISIBLE
-                binding.bannerText.visibility = View.VISIBLE
+                binding.debugBanner.visibility = VISIBLE
+                binding.bannerText.visibility = VISIBLE
                 binding.debugBanner.setBackgroundColor(
                     ContextCompat.getColor(
                         requireContext(),
@@ -404,18 +402,5 @@ class LoginFragment : Fragment() {
     private fun clearNotTouchableFlag() {
         requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
     }
-
-    private fun showDeviceInfoDialog() {
-        // Create and show the dialog
-        val dialog = AlertDialog.Builder(requireContext())
-            .setTitle("Device info")
-            .setIcon(R.drawable.outline_error_24)
-            .setMessage("This is a dialog shown from the overflow menu.")
-            .setPositiveButton("OK") { _, _ -> }
-            .create()
-        dialog.show()
-    }
-
-
 }
 

@@ -2,6 +2,7 @@ package com.elis.orderingapplication
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.StrictMode
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -25,5 +26,15 @@ class MainActivity : AppCompatActivity(), MenuHost {
         navController = findNavController(R.id.myNavHostFragment)
         // Setup Toolbar
         supportActionBar?.hide()
+
+        if (BuildConfig.DEBUG) {
+            StrictMode.setVmPolicy(
+                StrictMode.VmPolicy.Builder()
+                    .detectLeakedSqlLiteObjects()
+                    .penaltyLog()
+                    .penaltyDeath()
+                    .build()
+            )
+        }
     }
 }
