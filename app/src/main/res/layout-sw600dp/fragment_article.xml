@@ -41,7 +41,8 @@
                 android:layout_height="?attr/actionBarSize"
                 android:background="@color/elis_blue"
                 app:navigationContentDescription="@string/go_back_to_options"
-                app:titleTextAppearance="@style/titleTextStyle" />
+                app:titleTextAppearance="@style/titleTextStyle"
+                tools:ignore="MissingConstraints" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline6"

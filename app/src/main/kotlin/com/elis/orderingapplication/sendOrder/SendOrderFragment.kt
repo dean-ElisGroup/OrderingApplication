@@ -9,7 +9,6 @@ import android.view.View
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -19,7 +18,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import com.elis.orderingapplication.CardViewDecoration
 import com.elis.orderingapplication.R
@@ -46,11 +44,13 @@ class SendOrderFragment : Fragment() {
 
     private lateinit var binding: FragmentSendOrderOrderBinding
     private val sharedViewModel: ParamsViewModel by activityViewModels()
-    private val args: SendOrderFragmentArgs by navArgs()
+    //private val args: SendOrderFragmentArgs by navArgs()
     private lateinit var recyclerView: RecyclerView
     private lateinit var ordersAdapter: SendOrdersAdapter
     private var deliveryAddressForArgs: String = ""
     lateinit var orderData: OrderParcelable
+    private var isSendOrderInProgress = false
+    private var isSendOrderDialogShown = false
 
     private val orderViewModel: SendOrderViewModel by viewModels {
         SharedViewModelFactory(sharedViewModel, requireActivity().application)
@@ -68,7 +68,7 @@ class SendOrderFragment : Fragment() {
         binding.toolbar.setNavigationIcon(R.drawable.ic_back)
         binding.toolbar.setTitleTextAppearance(requireContext(), R.style.titleTextStyle)
         binding.toolbar.setNavigationOnClickListener {
-            view?.let { it ->
+            view?.let {
                 Navigation.findNavController(it)
                     .navigate(R.id.action_sendOrderOrderFragment_to_sendDeliveryAddressFragment)
             }
@@ -113,6 +113,7 @@ class SendOrderFragment : Fragment() {
             binding.debugBanner.visibility = VISIBLE
         }
         recyclerView = binding.orderSelection
+        binding.orderSelection.isEnabled = !isSendOrderDialogShown
 
         val spacingInPixels = resources.getDimensionPixelSize(R.dimen.spacing)
         val itemSpacingDecoration = CardViewDecoration(spacingInPixels)
@@ -146,10 +147,12 @@ class SendOrderFragment : Fragment() {
         ordersAdapter =
             SendOrdersAdapter(object : SendOrdersAdapter.MyClickListener {
                 override fun onItemClick(myData: Order) {
-                    orderViewModel.onOrderClicked(myData)
-                    sharedViewModel.setArticleDeliveryDate(myData.orderDate.toString())
-                    sharedViewModel.setArticleAppOrderId(myData.appOrderId)
-                    orderData = orderToParcelable(myData)
+                    if (!isSendOrderDialogShown) {
+                        orderViewModel.onOrderClicked(myData)
+                        sharedViewModel.setArticleDeliveryDate(myData.orderDate.toString())
+                        sharedViewModel.setArticleAppOrderId(myData.appOrderId)
+                        orderData = orderToParcelable(myData)
+                    }
                 }
             })
 
@@ -195,6 +198,7 @@ class SendOrderFragment : Fragment() {
     private fun sendOrderDialog(order: Order?) {
         val isInternetAvailable = NetworkUtils.isInternetAvailable(requireContext())
         if (isInternetAvailable) {
+            isSendOrderDialogShown = true
             val builder = AlertDialog.Builder(requireContext())
             builder.setTitle("Send order")
             builder.setMessage("${order?.posName}\n\nAre you sure you wish to send this order to SOL?")
@@ -204,11 +208,25 @@ class SendOrderFragment : Fragment() {
                 if (order != null) {
                     sendOrderToSOL(order, externalOrderId())
                 }
+                clearNotTouchableFlag()
             }
             builder.setNegativeButton("Cancel") { dialog, _ ->
                 dialog.dismiss()
+                isSendOrderInProgress = false
+                binding.orderSelection.isEnabled = true
+                clearNotTouchableFlag()
             }
             val dialog = builder.create()
+            dialog.setOnDismissListener {
+                isSendOrderDialogShown = false // Re-enable the RecyclerView
+                binding.orderSelection.isEnabled = true
+                clearNotTouchableFlag()
+            }
+            isSendOrderDialogShown = true // Disable the RecyclerView
+            binding.orderSelection.isEnabled = false
+            requireActivity().window.addFlags((WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE))
+            dialog.setCancelable(false)
+
             dialog.show()
         } else {
             showNoConnectionDialog()
@@ -228,10 +246,11 @@ class SendOrderFragment : Fragment() {
         builder.setCancelable(true)
 
         val dialog = builder.create()
+        dialog.setCancelable(false)
         dialog.show()
     }
 
-    private fun externalOrderId(length: Int = 12): String {
+    /*private fun externalOrderId(length: Int = 12): String {
         val uuid = UUID.randomUUID()
         val byteArray = ByteArray(16)
         val bytes = uuid.mostSignificantBits.toBigInteger().toByteArray()
@@ -240,6 +259,10 @@ class SendOrderFragment : Fragment() {
         System.arraycopy(bytes2, 0, byteArray, 8, 8)
         val hexString = byteArray.joinToString("") { "%02x".format(it) }
         return hexString.take(length)
+    }*/
+
+    private fun externalOrderId(length: Int = 12): String {
+        return UUID.randomUUID().toString().replace("-", "").take(length)
     }
 
     private fun sendOrderToSOL(order: Order, externalOrderId: String) {
@@ -279,7 +302,7 @@ class SendOrderFragment : Fragment() {
 
     private fun handleErrorResponse(errorMessages: String?) {
         errorMessages?.let { messages ->
-            Log.e("ERROR_MESSAGE", messages.toString())
+            Log.e("ERROR_MESSAGE", messages)
 
             // Create an AlertDialog.Builder
             val builder = AlertDialog.Builder(requireContext())
@@ -332,10 +355,6 @@ class SendOrderFragment : Fragment() {
         clearNotTouchableFlag()
     }
 
-    private fun showToast(message: String) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-    }
-
     private fun clearNotTouchableFlag() {
         requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
     }
@@ -343,8 +362,8 @@ class SendOrderFragment : Fragment() {
     private fun setFlavorBanner() {
         when (sharedViewModel.flavor.value) {
             "development" -> {
-                binding.debugBanner.visibility = View.VISIBLE
-                binding.bannerText.visibility = View.VISIBLE
+                binding.debugBanner.visibility = VISIBLE
+                binding.bannerText.visibility = VISIBLE
                 binding.debugBanner.setBackgroundColor(
                     ContextCompat.getColor(
                         requireContext(),
@@ -364,8 +383,8 @@ class SendOrderFragment : Fragment() {
                 )
             }
             "staging" -> {
-                binding.debugBanner.visibility = View.VISIBLE
-                binding.bannerText.visibility = View.VISIBLE
+                binding.debugBanner.visibility = VISIBLE
+                binding.bannerText.visibility = VISIBLE
                 binding.debugBanner.setBackgroundColor(
                     ContextCompat.getColor(
                         requireContext(),

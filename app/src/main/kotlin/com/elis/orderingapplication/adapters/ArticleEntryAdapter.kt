@@ -1,13 +1,11 @@
 package com.elis.orderingapplication.adapters
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.elis.orderingapplication.ArticleEntryCardFragment
-import com.elis.orderingapplication.databinding.FragmentArticleEntryViewpagerBinding
 import com.elis.orderingapplication.pojo2.Article
 import com.elis.orderingapplication.pojo2.ArticleParcelable
 
@@ -25,10 +23,11 @@ class ArticleEntryAdapter(
         val entryFragment = ArticleEntryCardFragment()
         val articlePosition = position + 1
 
-        val updatedArticleList = parcelizeArticle(articles)
+        //val updatedArticleList = parcelizeArticle(articles)
+
 
         val fragmentBundle = Bundle().apply {
-            putParcelable("article", updatedArticleList)
+            //putParcelable("article", updatedArticleList)
             putString("numberOfArticles", itemCount.toString())
             putInt("currentArticlePosition", articlePosition)
             putInt("currentArticle", position)

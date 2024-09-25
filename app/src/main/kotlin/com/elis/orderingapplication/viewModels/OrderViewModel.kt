@@ -22,6 +22,9 @@ class OrderViewModel(application: Application, private val sharedViewModel: Para
     private val _navigateToOrder = MutableLiveData<Order?>()
     val navigateToOrder: LiveData<Order?> get() = _navigateToOrder
 
+    private val _orderData = MutableLiveData<OrderData>()
+    val orderData: LiveData<OrderData> = _orderData
+
     var deliveryAddressName: String? = null
     var pointOfServiceName: String? = null
 
@@ -39,6 +42,24 @@ class OrderViewModel(application: Application, private val sharedViewModel: Para
         return orderDate
 
     }
+
+    fun setOrderData(orderData: OrderData){
+        _orderData.value = orderData
+    }
+
+    data class OrderData(
+        val orderType: String?,
+        val orderDate: String?,
+        val deliveryDate: String?,
+        val orderStatus: Int?,
+        val appOrderStatus: String?,
+        val appPosNo: String,
+        val posName: String?,
+        val totalArticles: Int?,
+        val deliveryAddressNo: String,
+        val deliveryAddressName: String?,
+        val appOrderId: String
+    )
 
     fun updateOrderStatus(order: Order) {
         viewModelScope.launch(Dispatchers.IO) {

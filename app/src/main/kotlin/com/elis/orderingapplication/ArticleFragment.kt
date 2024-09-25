@@ -9,17 +9,12 @@ import android.view.View
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.widget.PopupMenu
-import androidx.compose.ui.unit.Constraints
 import androidx.core.content.ContextCompat
-import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
@@ -27,18 +22,17 @@ import com.elis.orderingapplication.adapters.ArticleEntryAdapter
 import com.elis.orderingapplication.constants.Constants
 import com.elis.orderingapplication.constants.Constants.Companion.SHOW_BANNER
 import com.elis.orderingapplication.databinding.FragmentArticleBinding
-import com.elis.orderingapplication.pojo2.Article
 import com.elis.orderingapplication.pojo2.Order
 import com.elis.orderingapplication.repositories.UserLoginRepository
 import com.elis.orderingapplication.utils.DeviceInfo
 import com.elis.orderingapplication.utils.DeviceInfoDialog
+import com.elis.orderingapplication.viewModels.ArticleDataViewModel
 import com.elis.orderingapplication.viewModels.ArticleEntryViewModel
 import com.elis.orderingapplication.viewModels.ArticleEntryViewModelFactory
 import com.elis.orderingapplication.viewModels.ArticleViewModel
 import com.elis.orderingapplication.viewModels.ParamsViewModel
 import com.elis.orderingapplication.viewModels.SharedViewModelFactory
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
 class ArticleFragment : Fragment(), ArticleEntryCardFragment.LastArticleCallback, ArticleEntryCardFragment.OrderStatusCallback {
@@ -50,8 +44,11 @@ class ArticleFragment : Fragment(), ArticleEntryCardFragment.LastArticleCallback
     private val articleViewModel: ArticleViewModel by viewModels {
         SharedViewModelFactory(sharedViewModel, requireActivity().application)
     }
+    private val articleDataViewModel: ArticleDataViewModel by viewModels()
     private val args: ArticleFragmentArgs by navArgs()
     private var orderStatus: Int? = 0
+
+    private var isDialogShown = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,7 +57,6 @@ class ArticleFragment : Fragment(), ArticleEntryCardFragment.LastArticleCallback
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_article, container, false)
 
-        //binding.sharedViewModel = sharedViewModel
         binding.orderData = args.orderData
         binding.orderDateVal = args.order
         binding.toolbar.title = getString(R.string.article_title)
@@ -68,14 +64,11 @@ class ArticleFragment : Fragment(), ArticleEntryCardFragment.LastArticleCallback
         binding.toolbar.setTitleTextAppearance(requireContext(),R.style.titleTextStyle)
         binding.toolbar.setNavigationOnClickListener {
             if(orderStatus != Constants.APP_STATUS_SENT) {
+                requireActivity().window.addFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
                 orderNotSubmittedDialog(false)
             } else {
                 findNavController().navigate(R.id.action_articleFragment_to_orderFragment)
             }
-            /*view?.let { it ->
-                Navigation.findNavController(it)
-                    .navigate(R.id.action_articleFragment_to_orderFragment)
-            }*/
         }
         binding.toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
@@ -113,11 +106,13 @@ class ArticleFragment : Fragment(), ArticleEntryCardFragment.LastArticleCallback
 
         val fab = view.findViewById<ExtendedFloatingActionButton>(R.id.send_order_fab)
         fab.setOnClickListener {
+            fab.isEnabled = false
             // Handle FAB click
             val currentFragment = getCurrentFragment()
             if (currentFragment is ArticleEntryCardFragment) {
                 // Call a method in the ArticleEntryCardFragment to handle the FAB click
                 currentFragment.startInternetCheckJob()
+                fab.isEnabled = true
             }
         }
 
@@ -136,9 +131,10 @@ class ArticleFragment : Fragment(), ArticleEntryCardFragment.LastArticleCallback
         viewPagerAdapter = ArticleEntryAdapter(
             childFragmentManager,
             lifecycle,
-            emptyList()
+            emptyList(),
         )
         viewPager.adapter = viewPagerAdapter
+
         Handler(Looper.getMainLooper()).postDelayed({
             articleViewModel.articles.observe(viewLifecycleOwner) { articles ->
                 requireActivity().window.setFlags(
@@ -149,6 +145,9 @@ class ArticleFragment : Fragment(), ArticleEntryCardFragment.LastArticleCallback
                 binding.progressBar.visibility = View.GONE
                 requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
                 sharedViewModel.setArticleTotal(articles.size)
+                for (article in articles) {
+                    articleDataViewModel.setArticleData(article)
+                }
             }
         }, 500)
     }
@@ -156,8 +155,8 @@ class ArticleFragment : Fragment(), ArticleEntryCardFragment.LastArticleCallback
     private fun setFlavorBanner() {
         when (sharedViewModel.flavor.value) {
             "development" -> {
-                binding.debugBanner.visibility = View.VISIBLE
-                binding.bannerText.visibility = View.VISIBLE
+                binding.debugBanner.visibility = VISIBLE
+                binding.bannerText.visibility = VISIBLE
                 binding.debugBanner.setBackgroundColor(
                     ContextCompat.getColor(
                         requireContext(),
@@ -206,18 +205,33 @@ class ArticleFragment : Fragment(), ArticleEntryCardFragment.LastArticleCallback
     }
 
     private fun orderNotSubmittedDialog(homeClicked: Boolean) {
-        val builder = AlertDialog.Builder(requireContext())
-        builder.setIcon(R.drawable.dialog_warning)
-        builder.setTitle("Order entry")
-        builder.setMessage("Order has not been submitted, Do you wish to continue?")
-        builder.setPositiveButton("Yes") { _, _ ->
-            // Handle positive button click, navigate back to OrderFragment
-            if(homeClicked){
-                findNavController().navigate(R.id.action_articleFragment_to_landingPageFragment)
-            }else
-            findNavController().navigate(R.id.action_articleFragment_to_orderFragment)
+        if (!isDialogShown) {
+            isDialogShown = true // Set the flag to true to indicate that the dialog is being shown
+            requireActivity().window.addFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+
+            val builder = AlertDialog.Builder(requireContext())
+            builder.setIcon(R.drawable.dialog_warning)
+            builder.setTitle("Order entry")
+            builder.setMessage("Order has not been submitted, Do you wish to continue?")
+            builder.setPositiveButton("Yes") { _, _ ->
+                // Handle positive button click, navigate back to OrderFragment
+                if (homeClicked) {
+                    findNavController().navigate(R.id.action_articleFragment_to_landingPageFragment)
+                } else {
+                    findNavController().navigate(R.id.action_articleFragment_to_orderFragment)
+                }
+                isDialogShown = false // Reset the flag when the dialog is dismissed
+            }
+            builder.setNegativeButton("No", null)
+
+            val dialog = builder.create()
+            dialog.setCancelable(false) // Prevent dismissing the dialog by tapping outside or pressing the back button
+
+            dialog.setOnDismissListener {
+                requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+                isDialogShown = false // Reset the flag when the dialog is dismissed
+            }
+            dialog.show()
         }
-        builder.setNegativeButton("No", null)
-        builder.show()
     }
 }

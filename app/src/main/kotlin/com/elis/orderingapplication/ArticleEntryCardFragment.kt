@@ -29,8 +29,6 @@ import com.elis.orderingapplication.viewModels.SharedViewModelFactory
 import com.elis.orderingapplication.pojo2.Order
 import com.elis.orderingapplication.pojo2.OrderEventResponse
 import com.elis.orderingapplication.utils.NetworkUtils
-import com.google.firebase.Firebase
-import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.isActive
@@ -47,7 +45,7 @@ class ArticleEntryCardFragment : Fragment() {
     private val articleEntryViewModel: ArticleEntryViewModel by viewModels {
         SharedViewModelFactory(sharedViewModel, requireActivity().application)
     }
-    private lateinit var article: Article
+    //private lateinit var article: Article
     private var countedQty: Int = 0
 
     private var currentOrderData: Order? = null
@@ -56,9 +54,9 @@ class ArticleEntryCardFragment : Fragment() {
     private var totalArticles: Int? = null
     private var currentArticlePosition: Int? = null
     private var currentArticleOrder: Int? = null
-    private var internetCheckJob: Job? = null
+    //private var internetCheckJob: Job? = null
 
-    private var bindingEntry: FragmentArticleEntryViewpagerBinding? = null
+    //private var bindingEntry: FragmentArticleEntryViewpagerBinding? = null
     private var isNavigationInProgress = false
 
     override fun onCreateView(
@@ -78,6 +76,7 @@ class ArticleEntryCardFragment : Fragment() {
         val viewModelFactory = ArticleEntryViewModelFactory(
             sharedViewModel, requireActivity().application, userLoginRepository
         )
+
 
         ViewModelProvider(this, viewModelFactory)[ArticleEntryViewModel::class.java]
 
@@ -170,6 +169,7 @@ class ArticleEntryCardFragment : Fragment() {
                 if (isInternetAvailable && currentOrderData != null) {
                     // Internet is available, perform your desired actions
                     sendOrderToSOL(currentOrderData!!)
+                    break
                 } else {
                     // Internet is not available
                     currentOrderData?.let {
@@ -229,9 +229,18 @@ class ArticleEntryCardFragment : Fragment() {
             )
         }
         if (success == true && isResumed) { // isVisible) {
-            Toast.makeText(requireContext(), "Order sent to Sol", Toast.LENGTH_SHORT).show()
-            // Navigate back to the OrderFragment after successful order submission
-            findNavController().navigate(R.id.action_articleFragment_to_orderFragment)
+            //Toast.makeText(requireContext(), "Order sent to Sol", Toast.LENGTH_SHORT).show()
+
+            if (findNavController().currentDestination?.id != R.id.orderFragment) {
+                findNavController().navigate(R.id.action_articleFragment_to_orderFragment)
+                Toast.makeText(requireContext(), "Order sent to Sol", Toast.LENGTH_SHORT).show()
+
+            } else {
+                Toast.makeText(requireContext(), "Order sent to Sol", Toast.LENGTH_SHORT).show()
+
+                // Navigate back to the OrderFragment after successful order submission
+                //findNavController().navigate(R.id.action_articleFragment_to_orderFragment)
+            }
         }
     }
 
@@ -278,12 +287,12 @@ class ArticleEntryCardFragment : Fragment() {
     }
 
     private fun handleUnknownError() {
-        val noDataMessage = "There was an unknown error. Please try again."
+        val noDataMessage = "There was an error. Please try again."
         Log.e("TAG", noDataMessage)
 
         // Create an AlertDialog.Builder
         val builder = AlertDialog.Builder(requireContext())
-        builder.setTitle("Unknown Error")
+        builder.setTitle("Error")
             .setMessage(noDataMessage)
             .setPositiveButton("OK") { _, _ ->
                 // Handle OK button click if needed
@@ -293,10 +302,6 @@ class ArticleEntryCardFragment : Fragment() {
             .show()
 
         clearNotTouchableFlag()
-    }
-
-    private fun showToast(message: String) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
     private fun clearNotTouchableFlag() {

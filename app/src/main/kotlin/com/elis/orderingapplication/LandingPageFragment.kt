@@ -1,24 +1,18 @@
 package com.elis.orderingapplication
 
+import android.app.AlertDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
-import androidx.core.view.MenuHost
-import androidx.core.view.MenuProvider
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
@@ -127,6 +121,7 @@ class LandingPageFragment : Fragment() {
                                 }
                             }
                         } else {
+                            showNoInternetConnectionError()
                             isLogoutInProgress = false
                         }
                     }
@@ -171,8 +166,8 @@ class LandingPageFragment : Fragment() {
     private fun setFlavorBanner() {
         when (sharedViewModel.flavor.value) {
             "development" -> {
-                binding.debugBanner.visibility = View.VISIBLE
-                binding.bannerText.visibility = View.VISIBLE
+                binding.debugBanner.visibility = VISIBLE
+                binding.bannerText.visibility = VISIBLE
                 binding.debugBanner.setBackgroundColor(
                     ContextCompat.getColor(
                         requireContext(),
@@ -192,8 +187,8 @@ class LandingPageFragment : Fragment() {
                 )
             }
             "staging" -> {
-                binding.debugBanner.visibility = View.VISIBLE
-                binding.bannerText.visibility = View.VISIBLE
+                binding.debugBanner.visibility = VISIBLE
+                binding.bannerText.visibility = VISIBLE
                 binding.debugBanner.setBackgroundColor(
                     ContextCompat.getColor(
                         requireContext(),
@@ -210,5 +205,15 @@ class LandingPageFragment : Fragment() {
             val isInternetAvailable = InternetCheck.isInternetAvailable()
             isInternetAvailable
         }
+    }
+    private fun showNoInternetConnectionError() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("No Internet Connection")
+        builder.setMessage("You need an active internet connection to log out. Please check your internet connection and try again.")
+        builder.setPositiveButton("OK") { dialog, _ ->
+            dialog.dismiss()
+        }
+        val dialog = builder.create()
+        dialog.show()
     }
 }

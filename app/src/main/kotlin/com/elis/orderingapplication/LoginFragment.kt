@@ -105,6 +105,8 @@ class LoginFragment : Fragment() {
 
             }
         }
+        loginView.rootView = view
+        loginView.orderInfoLoading = view.findViewById(R.id.order_info_loading)
 
         with(binding) {
             loginButton.setOnClickListener {

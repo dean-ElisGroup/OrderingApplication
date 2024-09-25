@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.elis.orderingapplication.database.OrderInfoDatabase
 import com.elis.orderingapplication.pojo2.Article
+import com.elis.orderingapplication.pojo2.Order
 
 //class ArticleViewModel: ViewModel(){
 class ArticleViewModel(application: Application, private val sharedViewModel: ParamsViewModel) : AndroidViewModel(application) {
@@ -16,6 +17,7 @@ class ArticleViewModel(application: Application, private val sharedViewModel: Pa
 
     val database = OrderInfoDatabase.getInstance(application)
     val articles: LiveData<List<Article>> = database.orderInfoDao.getArticles(getDeliveryDate().value.toString(),getOrderId().value.toString())
+    val order: LiveData<List<Order>> = database.orderInfoDao.getOrderByOrderId(getOrderId().value.toString())
 
     private fun getDeliveryDate(): LiveData<String> {
         return sharedViewModel.getArticleDeliveryDate()

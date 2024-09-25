@@ -1,42 +1,38 @@
 package com.elis.orderingapplication
 
 import android.app.AlertDialog
-import android.os.Build
+import android.content.ContentValues.TAG
 import android.os.Bundle
+import android.os.Parcel
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import android.widget.PopupMenu
 import android.widget.Toast
-import androidx.compose.ui.unit.Constraints
 import androidx.core.content.ContextCompat
-import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import com.elis.orderingapplication.viewModels.ParamsViewModel
 import com.elis.orderingapplication.adapters.listAdapters.OrdersAdapter
 import com.elis.orderingapplication.constants.Constants
 import com.elis.orderingapplication.constants.Constants.Companion.SHOW_BANNER
 import com.elis.orderingapplication.databinding.FragmentOrderBinding
-import com.elis.orderingapplication.pojo2.Article
-import com.elis.orderingapplication.pojo2.ArticleParcelable
 import com.elis.orderingapplication.pojo2.Order
 import com.elis.orderingapplication.pojo2.OrderParcelable
 import com.elis.orderingapplication.utils.DeviceInfo
 import com.elis.orderingapplication.utils.DeviceInfoDialog
 import com.elis.orderingapplication.viewModels.OrderViewModel
 import com.elis.orderingapplication.viewModels.SharedViewModelFactory
-import java.text.SimpleDateFormat
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
@@ -130,6 +126,25 @@ class OrderFragment : Fragment() {
             return orderParcelable
         }
 
+        /*fun setOrderData(orderData: Order): OrderViewModel.OrderData{
+            val order = OrderViewModel.OrderData(
+                orderType = orderData.orderType,
+                orderDate = orderData.orderDate,
+                deliveryDate = orderData.deliveryDate,
+                orderStatus = orderData.orderStatus,
+                appOrderStatus = orderData.appOrderStatus,
+                appPosNo = orderData.appPosNo,
+                posName = orderData.posName,
+                totalArticles = orderData.totalArticles,
+                deliveryAddressNo = orderData.deliveryAddressNo,
+                deliveryAddressName = orderData.deliveryAddressName,
+                appOrderId = orderData.appOrderId
+            )
+            orderViewModel.setOrderData(order)
+            return order
+        }*/
+
+
         ordersAdapter =
             OrdersAdapter(object : OrdersAdapter.MyClickListener {
                 override fun onItemClick(
@@ -143,7 +158,8 @@ class OrderFragment : Fragment() {
                         orderViewModel.onOrderClicked(myData)
                         sharedViewModel.setArticleDeliveryDate(myData.orderDate.toString())
                         sharedViewModel.setArticleAppOrderId(myData.appOrderId)
-                        val orderData = orderToParcelable(myData) 
+                        val orderData = orderToParcelable(myData)
+                        //val orderData = setOrderData(myData)
                         orderViewModel.navigateToOrder.observe(
                             viewLifecycleOwner,
                             Observer { order ->
@@ -152,7 +168,7 @@ class OrderFragment : Fragment() {
                                         OrderFragmentDirections.actionOrderFragmentToArticleFragment(
                                             getOrderDate(order.orderDate),
                                             order.appOrderId,
-                                            orderData
+                                           orderData
                                         )
                                     )
                                     orderViewModel.onOrderNavigated()
@@ -219,8 +235,8 @@ class OrderFragment : Fragment() {
                 )
             }
             "staging" -> {
-                binding.debugBanner.visibility = View.VISIBLE
-                binding.bannerText.visibility = View.VISIBLE
+                binding.debugBanner.visibility = VISIBLE
+                binding.bannerText.visibility = VISIBLE
                 binding.debugBanner.setBackgroundColor(
                     ContextCompat.getColor(
                         requireContext(),
@@ -252,12 +268,12 @@ class OrderFragment : Fragment() {
                 "Order has already been submitted."
         }
 
-
         val dialog = AlertDialog.Builder(requireContext())
             .setIcon(R.drawable.outline_error_24)
             .setTitle("Order")
             .setMessage(message)
             .setPositiveButton("OK", null)
+            .setCancelable(false)
             .create()
         dialog.show()
     }

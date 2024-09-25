@@ -9,7 +9,6 @@ import com.elis.orderingapplication.databinding.ArticleCardviewBinding
 import com.elis.orderingapplication.pojo2.Article
 
 class ArticleAdapter(private val clickListener: ArticleAdapter.MyClickListener) :
-//    RecyclerView.Adapter<ArticleAdapter.ArticlesViewHolder>() {
     ListAdapter<Article, ArticleAdapter.ArticlesViewHolder>(DiffCallback) {
 
     private var data: List<Article> = emptyList()
@@ -66,9 +65,7 @@ class ArticleAdapter(private val clickListener: ArticleAdapter.MyClickListener) 
             binding.article = articles
             binding.clickListener = clickListener
             val articlePosition = layoutPosition + 1
-            //val articleSize = articles.totalArticles
             binding.articlePosition.text = articlePosition.toString()
-            //binding.ofArticlePosition.text = articleSize.toString()
             binding.executePendingBindings()
         }
     }
