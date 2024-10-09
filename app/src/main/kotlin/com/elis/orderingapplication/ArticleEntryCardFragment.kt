@@ -66,6 +66,8 @@ class ArticleEntryCardFragment : Fragment() {
         _binding = FragmentArticleEntryViewpagerBinding.inflate(inflater, container, false)
         binding.sharedViewModel = sharedViewModel
 
+
+
         return _binding!!.root
     }
 
@@ -237,9 +239,6 @@ class ArticleEntryCardFragment : Fragment() {
 
             } else {
                 Toast.makeText(requireContext(), "Order sent to Sol", Toast.LENGTH_SHORT).show()
-
-                // Navigate back to the OrderFragment after successful order submission
-                //findNavController().navigate(R.id.action_articleFragment_to_orderFragment)
             }
         }
     }
@@ -344,6 +343,10 @@ class ArticleEntryCardFragment : Fragment() {
 
     interface OrderStatusCallback {
         fun onOrderStatusDataReceived(orderData: Order?)
+    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null // Clear the binding reference
     }
 }
 

@@ -157,20 +157,10 @@
             android:id="@+id/action_articleFragment_to_orderFragment"
             app:destination="@id/orderFragment" />
         <argument
-            android:name="order"
-            app:argType="string"
-            android:defaultValue="@null"
-            app:nullable="true"/>
-        <argument
             android:name="app_order_id"
             app:argType="string"
             android:defaultValue="@null"
             app:nullable="true"/>
-        <argument
-            android:name="orderData"
-            app:argType="com.elis.orderingapplication.pojo2.OrderParcelable"
-            app:nullable="true"
-            android:defaultValue="@null" />
         <action
             android:id="@+id/action_articleFragment_to_landingPageFragment"
             app:destination="@id/landingPageFragment" />

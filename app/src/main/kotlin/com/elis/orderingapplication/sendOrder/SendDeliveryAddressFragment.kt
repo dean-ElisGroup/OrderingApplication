@@ -23,6 +23,7 @@ import com.elis.orderingapplication.databinding.FragmentSendOrderDeliveryAddress
 import com.elis.orderingapplication.pojo2.DeliveryAddress
 import com.elis.orderingapplication.utils.DeviceInfo
 import com.elis.orderingapplication.utils.DeviceInfoDialog
+import com.elis.orderingapplication.utils.FlavorBannerUtils
 import com.elis.orderingapplication.viewModels.DeliveryAddressViewModel
 import com.elis.orderingapplication.viewModels.ParamsViewModel
 
@@ -74,14 +75,19 @@ class SendDeliveryAddressFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if(SHOW_BANNER) {
-            setFlavorBanner()
+            FlavorBannerUtils.setupFlavorBanner(
+                resources,
+                requireContext(),
+                binding,
+                sharedViewModel
+            )
             binding.debugBanner.visibility = VISIBLE
         }
         val recyclerView: RecyclerView = binding.deliveryAddressSelection
         val spacingInPixels = resources.getDimensionPixelSize(R.dimen.spacing)
         val itemSpacingDecoration = CardViewDecoration(spacingInPixels)
         recyclerView.addItemDecoration(itemSpacingDecoration)
-        sharedViewModel.setDeliveryAddress(sharedViewModel.getOrder())
+        //sharedViewModel.setDeliveryAddress(sharedViewModel.getOrder())
 
         deliveryAdapter = DeliveryAdapter(object : DeliveryAdapter.MyClickListener {
             override fun onItemClick(myData: DeliveryAddress) {
@@ -114,43 +120,6 @@ class SendDeliveryAddressFragment : Fragment() {
         // Observe the LiveData from the ViewModel
         deliveryAddressViewModel.entities.observe(viewLifecycleOwner) { deliveryAddresses ->
             deliveryAdapter.setData(deliveryAddresses)
-        }
-    }
-
-    private fun setFlavorBanner() {
-        when (sharedViewModel.flavor.value) {
-            "development" -> {
-                binding.debugBanner.visibility = View.VISIBLE
-                binding.bannerText.visibility = View.VISIBLE
-                binding.debugBanner.setBackgroundColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.purple_200
-                    )
-                )
-                binding.bannerText.text = resources.getString(R.string.devFlavorText)
-            }
-            "production" -> {
-                binding.debugBanner.visibility = View.GONE
-                binding.bannerText.visibility = View.GONE
-                binding.debugBanner.setBackgroundColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.elis_transparent
-                    )
-                )
-            }
-            "staging" -> {
-                binding.debugBanner.visibility = View.VISIBLE
-                binding.bannerText.visibility = View.VISIBLE
-                binding.debugBanner.setBackgroundColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.elis_orange
-                    )
-                )
-                binding.bannerText.text = resources.getString(R.string.testFlavorText)
-            }
         }
     }
 }

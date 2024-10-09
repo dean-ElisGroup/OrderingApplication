@@ -12,8 +12,11 @@ import com.elis.orderingapplication.pojo2.OrderRowsItem
 import com.elis.orderingapplication.utils.ApiResponse
 
 class ParamsViewModel : ViewModel() {
-    private val _orderDate = MutableLiveData<String>("")
+    val _orderDate = MutableLiveData<String>("")
     val orderDate: LiveData<String> = _orderDate
+
+    val _orderId = MutableLiveData<String>("")
+    val orderId: LiveData<String> = _orderId
 
     private lateinit var _sessionKey: String
 
@@ -29,8 +32,8 @@ class ParamsViewModel : ViewModel() {
     private val _flavor = MutableLiveData<String>("")
     val flavor: LiveData<String> = _flavor
 
-    private var _orderInfo: ApiResponse<OrderInfo>? = null
-    val orderInfo: ApiResponse<OrderInfo>? = _orderInfo
+    //private var _orderInfo: ApiResponse<OrderInfo>? = null
+    //val orderInfo: ApiResponse<OrderInfo>? = _orderInfo
 
     private var _deliveryAddress: List<DeliveryAddress>? = null
 
@@ -115,13 +118,13 @@ class ParamsViewModel : ViewModel() {
         _articleTotal.value = articleTotal
     }
 
-    fun setOrderInfo(orderInfo: ApiResponse<OrderInfo>?) {
-        _orderInfo = orderInfo
-    }
+    //fun setOrderInfo(orderInfo: ApiResponse<OrderInfo>?) {
+    //    _orderInfo = orderInfo
+    //}
 
-    fun getOrder(): ApiResponse<OrderInfo>? {
-        return _orderInfo
-    }
+    //fun getOrder(): ApiResponse<OrderInfo>? {
+    //    return _orderInfo
+    //}
 
     fun setDeliveryAddress(deliveryAddress: ApiResponse<OrderInfo>?) {
         _deliveryAddress = deliveryAddress?.data?.deliveryAddresses
@@ -166,5 +169,23 @@ class ParamsViewModel : ViewModel() {
 
     fun getOrderStatusCallback(): ArticleEntryCardFragment.OrderStatusCallback? {
         return orderStatusCallback
+    }
+
+    fun clearData(){
+        _orderDate.value = ""
+        _orderId.value = ""
+        _posTotal.value = 0
+        _articleTotal.value = 0
+        _deliveryAddress = emptyList()
+        _orders = null
+        _orderRowsItem.value = null
+        _deliveryAddressName.value = ""
+        _deliveryAddressNum.value = ""
+        _orderingGroupName.value = null
+        _orderingGroupNo.value = ""
+        _pointOfServiceNo.value = ""
+        _appOrderId.value = ""
+        _articleDeliveryDate.value = ""
+        argsBundleFromTest.value = Bundle.EMPTY
     }
 }

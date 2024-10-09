@@ -25,6 +25,7 @@ import com.elis.orderingapplication.repositories.UserLoginRepository
 import com.elis.orderingapplication.utils.ApiResponse
 import com.elis.orderingapplication.utils.DeviceInfo
 import com.elis.orderingapplication.utils.DeviceInfoDialog
+import com.elis.orderingapplication.utils.FlavorBannerUtils
 import com.elis.orderingapplication.utils.InternetCheck
 import com.elis.orderingapplication.viewModels.ArticleEntryViewModelFactory
 import com.elis.orderingapplication.viewModels.LandingPageViewModel
@@ -95,6 +96,9 @@ class LandingPageFragment : Fragment() {
                                                 Toast.LENGTH_LONG
                                             ).show()
                                             isLogoutInProgress = false
+                                            sharedViewModel.clearData()
+                                            (activity as MainActivity).restartActivity()
+
 
                                         }
                                     }
@@ -134,7 +138,7 @@ class LandingPageFragment : Fragment() {
                     ).show()
                 }
             }
-                return binding.root
+            return binding.root
         }
     }
 
@@ -145,8 +149,13 @@ class LandingPageFragment : Fragment() {
             "order_info_database"
         ).build()
         binding.apply { viewModel = sharedViewModel }
-        if(SHOW_BANNER) {
-            setFlavorBanner()
+        if (SHOW_BANNER) {
+            FlavorBannerUtils.setupFlavorBanner(
+                resources,
+                requireContext(),
+                binding,
+                sharedViewModel
+            )
             binding.debugBanner.visibility = VISIBLE
         }
     }
@@ -163,49 +172,13 @@ class LandingPageFragment : Fragment() {
         }
     }
 
-    private fun setFlavorBanner() {
-        when (sharedViewModel.flavor.value) {
-            "development" -> {
-                binding.debugBanner.visibility = VISIBLE
-                binding.bannerText.visibility = VISIBLE
-                binding.debugBanner.setBackgroundColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.purple_200
-                    )
-                )
-                binding.bannerText.text = resources.getString(R.string.devFlavorText)
-            }
-            "production" -> {
-                binding.debugBanner.visibility = View.GONE
-                binding.bannerText.visibility = View.GONE
-                binding.debugBanner.setBackgroundColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.elis_transparent
-                    )
-                )
-            }
-            "staging" -> {
-                binding.debugBanner.visibility = VISIBLE
-                binding.bannerText.visibility = VISIBLE
-                binding.debugBanner.setBackgroundColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.elis_orange
-                    )
-                )
-                binding.bannerText.text = resources.getString(R.string.testFlavorText)
-            }
-        }
-    }
-
     private suspend fun checkInternetAvailability(): Boolean {
         return withContext(Dispatchers.IO) {
             val isInternetAvailable = InternetCheck.isInternetAvailable()
             isInternetAvailable
         }
     }
+
     private fun showNoInternetConnectionError() {
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("No Internet Connection")

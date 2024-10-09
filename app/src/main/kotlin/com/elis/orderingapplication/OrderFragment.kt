@@ -28,17 +28,21 @@ import com.elis.orderingapplication.pojo2.Order
 import com.elis.orderingapplication.pojo2.OrderParcelable
 import com.elis.orderingapplication.utils.DeviceInfo
 import com.elis.orderingapplication.utils.DeviceInfoDialog
+import com.elis.orderingapplication.utils.FlavorBannerUtils
 import com.elis.orderingapplication.viewModels.OrderViewModel
 import com.elis.orderingapplication.viewModels.SharedViewModelFactory
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
+import com.gu.toolargetool.TooLargeTool
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 class OrderFragment : Fragment() {
 
-    private lateinit var binding: FragmentOrderBinding
+    private var _binding: FragmentOrderBinding? = null
+    //private lateinit var binding: FragmentOrderBinding
+    private val binding: FragmentOrderBinding get() = _binding!!
     private val sharedViewModel: ParamsViewModel by activityViewModels()
     private lateinit var recyclerView: RecyclerView
     private lateinit var ordersAdapter: OrdersAdapter
@@ -51,7 +55,7 @@ class OrderFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding =
+        _binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_order, container, false)
 
         binding.sharedViewModel = sharedViewModel
@@ -92,6 +96,7 @@ class OrderFragment : Fragment() {
             }
         }
         observeArgsBundleFromTest()
+
         // Inflate the layout for this fragment
         return binding.root
     }
@@ -99,7 +104,12 @@ class OrderFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if(SHOW_BANNER) {
-            setFlavorBanner()
+            FlavorBannerUtils.setupFlavorBanner(
+                resources,
+                requireContext(),
+                binding,
+                sharedViewModel
+            )
             binding.debugBanner.visibility = VISIBLE
         }
         recyclerView = binding.orderSelection
@@ -124,6 +134,7 @@ class OrderFragment : Fragment() {
             )
 
             return orderParcelable
+
         }
 
         /*fun setOrderData(orderData: Order): OrderViewModel.OrderData{
@@ -158,7 +169,9 @@ class OrderFragment : Fragment() {
                         orderViewModel.onOrderClicked(myData)
                         sharedViewModel.setArticleDeliveryDate(myData.orderDate.toString())
                         sharedViewModel.setArticleAppOrderId(myData.appOrderId)
-                        val orderData = orderToParcelable(myData)
+                        sharedViewModel._orderId.value = myData.appOrderId
+                        sharedViewModel._orderDate.value = myData.orderDate.toString()
+                        //val orderData = orderToParcelable(myData)
                         //val orderData = setOrderData(myData)
                         orderViewModel.navigateToOrder.observe(
                             viewLifecycleOwner,
@@ -166,9 +179,9 @@ class OrderFragment : Fragment() {
                                 order?.let {
                                     findNavController().navigate(
                                         OrderFragmentDirections.actionOrderFragmentToArticleFragment(
-                                            getOrderDate(order.orderDate),
+                                            //getOrderDate(order.orderDate),
                                             order.appOrderId,
-                                           orderData
+                                           //orderData
                                         )
                                     )
                                     orderViewModel.onOrderNavigated()
@@ -211,43 +224,6 @@ class OrderFragment : Fragment() {
         dialog.show()
     }
 
-    private fun setFlavorBanner() {
-        when (sharedViewModel.flavor.value) {
-            "development" -> {
-                binding.debugBanner.visibility = View.VISIBLE
-                binding.bannerText.visibility = View.VISIBLE
-                binding.debugBanner.setBackgroundColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.purple_200
-                    )
-                )
-                binding.bannerText.text = resources.getString(R.string.devFlavorText)
-            }
-            "production" -> {
-                binding.debugBanner.visibility = View.GONE
-                binding.bannerText.visibility = View.GONE
-                binding.debugBanner.setBackgroundColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.elis_transparent
-                    )
-                )
-            }
-            "staging" -> {
-                binding.debugBanner.visibility = VISIBLE
-                binding.bannerText.visibility = VISIBLE
-                binding.debugBanner.setBackgroundColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.elis_orange
-                    )
-                )
-                binding.bannerText.text = resources.getString(R.string.testFlavorText)
-            }
-        }
-    }
-
     private fun observeArgsBundleFromTest() {
         sharedViewModel.argsBundleFromTest.observe(viewLifecycleOwner) { bundle ->
             val deliveryAddressName = bundle.getString("DELIVERY_ADDRESS_NAME", "")
@@ -276,6 +252,11 @@ class OrderFragment : Fragment() {
             .setCancelable(false)
             .create()
         dialog.show()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null // Clear the binding reference
     }
 
 

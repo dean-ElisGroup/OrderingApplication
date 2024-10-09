@@ -6,13 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import android.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
-import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
@@ -24,11 +22,14 @@ import com.elis.orderingapplication.constants.Constants.Companion.SHOW_BANNER
 import com.elis.orderingapplication.pojo2.JoinOrderingGroup
 import com.elis.orderingapplication.utils.DeviceInfo
 import com.elis.orderingapplication.utils.DeviceInfoDialog
+import com.elis.orderingapplication.utils.FlavorBannerUtils
 import com.elis.orderingapplication.viewModels.SharedViewModelFactory
 
 class PosGroupFragment : Fragment() {
 
-    private lateinit var binding: FragmentPosGroupBinding
+    private var _binding: FragmentPosGroupBinding? = null
+    //private lateinit var binding: FragmentPosGroupBinding
+    private val binding: FragmentPosGroupBinding get() = _binding!!
     private val sharedViewModel: ParamsViewModel by activityViewModels()
     private val args: PosGroupFragmentArgs by navArgs()
     private lateinit var orderingGroupAdapter: OrderingGroupAdapter
@@ -42,7 +43,7 @@ class PosGroupFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        binding = FragmentPosGroupBinding.inflate(inflater)
+        _binding = FragmentPosGroupBinding.inflate(inflater)
         binding.lifecycleOwner = this
         binding.orderingGroupViewModel = orderingGroupViewModel
         binding.sharedViewModel = sharedViewModel
@@ -89,7 +90,12 @@ class PosGroupFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if(SHOW_BANNER) {
-            setFlavorBanner()
+            FlavorBannerUtils.setupFlavorBanner(
+                resources,
+                requireContext(),
+                binding,
+                sharedViewModel
+            )
             binding.debugBanner.visibility = VISIBLE
         }
         val recyclerView: RecyclerView = binding.orderingGroupSelection
@@ -132,40 +138,8 @@ class PosGroupFragment : Fragment() {
         }
     }
 
-    private fun setFlavorBanner() {
-        when (sharedViewModel.flavor.value) {
-            "development" -> {
-                binding.debugBanner.visibility = View.VISIBLE
-                binding.bannerText.visibility = View.VISIBLE
-                binding.debugBanner.setBackgroundColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.purple_200
-                    )
-                )
-                binding.bannerText.text = resources.getString(R.string.devFlavorText)
-            }
-            "production" -> {
-                binding.debugBanner.visibility = View.GONE
-                binding.bannerText.visibility = View.GONE
-                binding.debugBanner.setBackgroundColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.elis_transparent
-                    )
-                )
-            }
-            "staging" -> {
-                binding.debugBanner.visibility = View.VISIBLE
-                binding.bannerText.visibility = View.VISIBLE
-                binding.debugBanner.setBackgroundColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.elis_orange
-                    )
-                )
-                binding.bannerText.text = resources.getString(R.string.testFlavorText)
-            }
-        }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null // Clear the binding reference
     }
 }

@@ -1,21 +1,13 @@
 package com.elis.orderingapplication.viewModels
 
 import android.app.Application
-import android.content.Context
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
-import com.elis.orderingapplication.constants.Constants
-import com.elis.orderingapplication.constants.Constants.Companion.APP_STATUS_SENT
 import com.elis.orderingapplication.constants.Constants.Companion.DATE_TOO_LATE
-import com.elis.orderingapplication.constants.Constants.Companion.ORDER_STATUS_FINISHED
 import com.elis.orderingapplication.database.OrderInfoDatabase
 import com.elis.orderingapplication.pojo2.Article
-import com.elis.orderingapplication.pojo2.DeliveryAddress
 import com.elis.orderingapplication.pojo2.Order
 import com.elis.orderingapplication.pojo2.OrderEvent
 import com.elis.orderingapplication.pojo2.OrderEventResponse
@@ -23,9 +15,7 @@ import com.elis.orderingapplication.pojo2.OrderRowsItem
 import com.elis.orderingapplication.pojo2.SendOrder
 import com.elis.orderingapplication.repositories.UserLoginRepository
 import com.elis.orderingapplication.utils.ApiResponse
-import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -37,15 +27,16 @@ class ArticleEntryViewModel(
     private val sharedViewModel: ParamsViewModel
 ) : AndroidViewModel(application) {
 
-    val orderEventResponse: MutableLiveData<ApiResponse<OrderEventResponse>?> =
+    private val orderEventResponse: MutableLiveData<ApiResponse<OrderEventResponse>?> =
         MutableLiveData()
     private val _solOrderQty = MutableLiveData<String?>()
     val solOrderQty: MutableLiveData<String?>
         get() = _solOrderQty
 
-    val changeMargin = MutableLiveData<Boolean?>()
-    private val marginChange: MutableLiveData<Boolean?>
-        get() = changeMargin
+
+    //private val changeMargin = MutableLiveData<Boolean?>()
+    //private val marginChange: MutableLiveData<Boolean?>
+     //   get() = changeMargin
 
     private val _uiState = MutableLiveData<String>()
     val uiState: LiveData<String> = _uiState
@@ -65,6 +56,7 @@ class ArticleEntryViewModel(
     private fun getOrderId(): LiveData<String> {
         return sharedViewModel.getArticleAppOrderId()
     }
+
 
     fun sendOrderToSOL(order: Order, sendOrderExternalOrderId: String): SendOrder {
         val sendOrder = SendOrder(
@@ -94,8 +86,8 @@ class ArticleEntryViewModel(
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 withContext(Dispatchers.IO) {
-                    orderQty?.let { it1 ->
-                        articleNum?.let { it2 ->
+                    orderQty.let { it1 ->
+                        articleNum.let { it2 ->
                             appOrderId.let { it3 ->
                                 database.orderInfoDao.updateOrderQty(
                                     it1,

@@ -14,17 +14,12 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import com.elis.orderingapplication.model.LoginRequest
 import com.elis.orderingapplication.model.OrderingRequest
 import com.elis.orderingapplication.viewModels.ParamsViewModel
 import com.elis.orderingapplication.viewModels.LoginViewModel
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig
-import com.google.firebase.remoteconfig.ktx.remoteConfig
-import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import android.widget.ProgressBar
 import androidx.activity.addCallback
 import androidx.lifecycle.ViewModelProvider
@@ -38,7 +33,7 @@ import com.elis.orderingapplication.repositories.UserLoginRepository
 import com.elis.orderingapplication.utils.ApiResponse
 import com.elis.orderingapplication.utils.DeviceInfo
 import com.elis.orderingapplication.utils.DeviceInfoDialog
-import com.elis.orderingapplication.utils.FirebaseRemoteConfigValues
+import com.elis.orderingapplication.utils.FlavorBannerUtils
 import com.elis.orderingapplication.utils.InternetCheck
 import com.elis.orderingapplication.viewModels.LoginViewModelFactory
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -51,7 +46,7 @@ class LoginFragment : Fragment() {
     private lateinit var binding: FragmentLoginBinding
     private val sharedViewModel: ParamsViewModel by activityViewModels()
     private lateinit var loginView: LoginViewModel
-    private lateinit var analytics: FirebaseAnalytics
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
 
     private var username: Editable? = null
     private var password: Editable? = null
@@ -61,82 +56,36 @@ class LoginFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_login, container, false)
-        val view = binding.root
+        //val view = binding.root
         sharedViewModel.setAppVersion(BuildConfig.VERSION_NAME)
         sharedViewModel.setFlavor(BuildConfig.FLAVOR)
-        val rep = UserLoginRepository()
-        val provider = LoginViewModelFactory(rep)
+        val loginRepository = UserLoginRepository()
+        val provider = LoginViewModelFactory(loginRepository)
         val loginViewModel = ViewModelProvider(this, provider)[LoginViewModel::class.java]
         loginView = loginViewModel
-        binding.apply { viewModel = loginViewModel }
-        binding.apply { paramViewModel = sharedViewModel }
+        binding.apply {
+            viewModel = loginView
+            paramViewModel = sharedViewModel
+            lifecycleOwner = this@LoginFragment
+        }
         binding.lifecycleOwner = this
         orderInfoLoading = binding.orderInfoLoading
-        // Sets info button to slow device info dialog
-        binding.overflowMenu.setOnClickListener {
-            val deviceInfo = DeviceInfo(requireContext())
-            DeviceInfoDialog.showAlertDialog(requireContext(), deviceInfo.getDeviceInfo())
-        }
+        // Sets info button to show device info dialog
+        setupOverflowMenu()
 
-        return view
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // Removed as not needed currently.
-        //fireBaseRemoteConfig()
-        // sets Today's date for login activity
-        binding.date.text = loginView.getDate()
-        sharedViewModel.setOrderDate(binding.date.text.toString())
-        sharedViewModel.setAppVersion(BuildConfig.VERSION_NAME)
-        sharedViewModel.setFlavor(BuildConfig.FLAVOR)
-        analytics = FirebaseAnalytics.getInstance(requireContext())
-        FirebaseAnalytics.getInstance(requireContext()).setAnalyticsCollectionEnabled(true)
-        FirebaseAnalytics.getInstance(requireContext()).setUserProperty("debug_mode", "true")
-        // sets Flavor banner details for login activity
-        if(SHOW_BANNER) {
-            setFlavorBanner()
-        }
-        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
-            val isInternetAvailable = checkInternetAvailability()
+        initializeLogin()
 
-            if (!isInternetAvailable) {
-                showAlertDialog()
-
-            }
-        }
         loginView.rootView = view
         loginView.orderInfoLoading = view.findViewById(R.id.order_info_loading)
 
         with(binding) {
             loginButton.setOnClickListener {
-                viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
-                    val isInternetAvailable = checkInternetAvailability()
-                    //isInternetAvailable = true
-                    if (isInternetAvailable) {
-                        // Internet is available, proceed with network operations
-                        if (checkUsernamePassword()) {
-                            // Sets the required username and password to be sent within the Login Api call.
-                            requireActivity().window.setFlags(
-                                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-                                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-                            )
-                            it.hideKeyboard()
-                            // Gets and sets the user entered username and password.
-                            val usernameText = username.text.toString()
-                            val passwordText = password.text.toString()
-                            val login = LoginRequest(usernameText, passwordText)
-                            // Initiates the Login Api call, passing the above username and password.
-                            loginView.resetLoginState(viewLifecycleOwner)
-                            loginView.getUserLogin(login)
-                            loginView.userLoginResponse.observe(viewLifecycleOwner) { response ->
-                                handleLoginResponse(response)
-                            }
-                        }
-                    } else {
-                        showNoInternetToast()
-                    }
-                }
+                checkInternetAndLogin(it)
             }
         }
     }
@@ -144,16 +93,68 @@ class LoginFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
-            Toast.makeText(
-                activity,
-                "Login is required.",
-                Toast.LENGTH_SHORT
-            ).show()
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            viewLifecycleOwner.lifecycleScope.launch {
+                Toast.makeText(requireContext(), "Login is required.", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
-    private fun showAlertDialog() {
+    private fun setupOverflowMenu() {
+        binding.overflowMenu.setOnClickListener {
+            val deviceInfo = DeviceInfo(requireContext())
+            DeviceInfoDialog.showAlertDialog(requireContext(), deviceInfo.getDeviceInfo())
+        }
+    }
+
+    private fun initializeLogin() {
+        binding.date.text = loginView.getDate()
+        sharedViewModel.setOrderDate(binding.date.text.toString())
+        sharedViewModel.setAppVersion(BuildConfig.VERSION_NAME)
+        sharedViewModel.setFlavor(BuildConfig.FLAVOR)
+        firebaseAnalytics = FirebaseAnalytics.getInstance(requireContext())
+        FirebaseAnalytics.getInstance(requireContext()).setAnalyticsCollectionEnabled(true)
+        FirebaseAnalytics.getInstance(requireContext()).setUserProperty("debug_mode", "true")
+        if (SHOW_BANNER) {
+            FlavorBannerUtils.setupFlavorBanner(
+                resources,
+                requireContext(),
+                binding,
+                sharedViewModel
+            )
+        }
+    }
+
+    private fun checkInternetAndLogin(view: View) {
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
+            if (checkInternetAvailability()) {
+                if (checkUsernamePassword()) {
+                    // Sets the required username and password to be sent within the Login Api call.
+                    requireActivity().window.setFlags(
+                        WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                        WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+                    )
+                    view.hideKeyboard()
+                    // Gets and sets the user entered username and password.
+                    val usernameText =
+                        binding.username.text?.toString() ?: "" // username.text.toString()
+                    val passwordText =
+                        binding.password.text?.toString() ?: "" // password.text.toString()
+                    val login = LoginRequest(usernameText, passwordText)
+                    // Initiates the Login Api call, passing the above username and password.
+                    loginView.resetLoginState(viewLifecycleOwner)
+                    loginView.getUserLogin(login)
+                    loginView.userLoginResponse.observe(viewLifecycleOwner) { response ->
+                        handleLoginResponse(response)
+                    }
+                }
+            } else {
+                showNoInternetToast()
+            }
+        }
+    }
+
+    /*private fun showAlertDialog() {
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("Internet Connection")
         builder.setMessage("There is currently no internet connection. Please check your connection and try again.")
@@ -167,7 +168,7 @@ class LoginFragment : Fragment() {
 
         val dialog = builder.create()
         dialog.show()
-    }
+    }*/
 
     private fun View.hideKeyboard() {
         val inputManager =
@@ -175,121 +176,21 @@ class LoginFragment : Fragment() {
         inputManager.hideSoftInputFromWindow(windowToken, 0)
     }
 
-    private fun setFlavorBanner() {
-        when (sharedViewModel.flavor.value) {
-            "development" -> {
-                binding.debugBanner.visibility = VISIBLE
-                binding.bannerText.visibility = VISIBLE
-                binding.debugBanner.setBackgroundColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.purple_200
-                    )
-                )
-                binding.bannerText.text = resources.getString(R.string.devFlavorText)
-            }
-            "production" -> {
-                binding.debugBanner.visibility = View.GONE
-                binding.bannerText.visibility = View.GONE
-                binding.debugBanner.setBackgroundColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.elis_transparent
-                    )
-                )
-            }
-            "staging" -> {
-                binding.debugBanner.visibility = VISIBLE
-                binding.bannerText.visibility = VISIBLE
-                binding.debugBanner.setBackgroundColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.elis_orange
-                    )
-                )
-                binding.bannerText.text = resources.getString(R.string.testFlavorText)
-            }
-        }
-    }
-
-    private fun fireBaseRemoteConfig() {
-        // sets the Firebase Remote Config settings
-        val remoteConfig: FirebaseRemoteConfig = Firebase.remoteConfig
-        val configSettings = remoteConfigSettings {
-            minimumFetchIntervalInSeconds = 10
-        }
-        remoteConfig.setConfigSettingsAsync(configSettings)
-        remoteConfig.setDefaultsAsync(R.xml.remote_config_defaults_orig)
-        // Fetches remote config parameters setup in the Firebase console.
-        remoteConfig.fetchAndActivate().addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                when (sharedViewModel.flavor.value) {
-                    "development" -> {
-                        remoteConfig.getString("SOLStock_LoginURL_test")
-                            .also { FirebaseRemoteConfigValues.loginURL = it }
-                        remoteConfig.getString("SOLStock_LogoutURL_test")
-                            .also { FirebaseRemoteConfigValues.logoutURL = it }
-                        remoteConfig.getString("SOLStock_OrderInfoURL_test")
-                            .also { FirebaseRemoteConfigValues.orderInfoURL = it }
-                        remoteConfig.getString("SOLStock_OrderEventURL_test")
-                            .also { FirebaseRemoteConfigValues.orderEventURL = it }
-                        remoteConfig.getString("SOLStock_ServiceCheckURL_test")
-                            .also { FirebaseRemoteConfigValues.serviceCheckURL = it }
-                        remoteConfig.getString("SOLStock_MainURL_test")
-                            .also { FirebaseRemoteConfigValues.mainURL = it }
-                    }
-                    "production" -> {
-                        remoteConfig.getString("SOL_Login_URL_LIVE")
-                            .also { FirebaseRemoteConfigValues.loginURL = it }
-                        remoteConfig.getString("SOL_Login_URL_LIVE")
-                            .also { FirebaseRemoteConfigValues.logoutURL = it }
-                        remoteConfig.getString("SOL_OrderInfo_URL_LIVE")
-                            .also { FirebaseRemoteConfigValues.orderInfoURL = it }
-                        remoteConfig.getString("SOL_OrderEvent_URL_LIVE")
-                            .also { FirebaseRemoteConfigValues.orderEventURL = it }
-                    }
-                    "staging" -> {
-                        remoteConfig.getString("SOLStock_LoginURL_test")
-                            .also { FirebaseRemoteConfigValues.loginURL = it }
-                        remoteConfig.getString("SOLStock_LogoutURL_test")
-                            .also { FirebaseRemoteConfigValues.logoutURL = it }
-                        remoteConfig.getString("SOLStock_OrderInfoURL_test")
-                            .also { FirebaseRemoteConfigValues.orderInfoURL = it }
-                        remoteConfig.getString("SOLStock_OrderEventURL_test")
-                            .also { FirebaseRemoteConfigValues.orderEventURL = it }
-                        remoteConfig.getString("SOLStock_ServiceCheckURL_test")
-                            .also { FirebaseRemoteConfigValues.serviceCheckURL = it }
-                        remoteConfig.getString("SOLStock_MainURL_test")
-                            .also { FirebaseRemoteConfigValues.mainURL = it }
-                    }
-                }
-            } else {
-                Toast.makeText(requireContext(), "Failed to fetch Firebase Config", Toast.LENGTH_LONG).show()
-            }
-        }
-    }
-
     private fun checkUsernamePassword(): Boolean {
-
-        username = binding.username.text
-        password = binding.password.text
-
         return if (TextUtils.isEmpty(binding.username.text) || TextUtils.isEmpty(binding.password.text)) {
-            Toast.makeText(
-                activity,
-                "Username or Password cannot be empty",
-                Toast.LENGTH_LONG
-            )
-                .show()
+            viewLifecycleOwner.lifecycleScope.launch {
+                Toast.makeText(
+                    requireContext(),
+                    "Username or Password cannot be empty",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
             false
         } else true
     }
 
-    private suspend fun checkInternetAvailability(): Boolean {
-        return withContext(Dispatchers.IO) {
-            val isInternetAvailable = InternetCheck.isInternetAvailable()
-            isInternetAvailable
-        }
+    private suspend fun checkInternetAvailability(): Boolean = withContext(Dispatchers.IO) {
+        InternetCheck.isInternetAvailable()
     }
 
     private fun handleLoginResponse(response: ApiResponse<OrderingLoginResponseStruct>?) {
@@ -298,21 +199,13 @@ class LoginFragment : Fragment() {
                 is ApiResponse.Success -> {
                     orderInfoLoading?.visibility = VISIBLE
                     response.data?.sessionKey?.let { sessionKey ->
-                        sharedViewModel.setSessionKey(sessionKey)
-                        val sessionKeyRequest = OrderingRequest(sessionKey)
-                        loginView.getOrderInfo(sessionKeyRequest)
-                        loginView.orderInfoResponse.observe(viewLifecycleOwner) { orderInfoResponse ->
-                            handleOrderInfoResponse(orderInfoResponse)
-                        }
+                        handleSessionKey(sessionKey)
                     }
-                    val bundle = Bundle()
-                    bundle.putString(FirebaseAnalytics.Param.METHOD, "Login Successful")
-                    bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, username.toString())
-                    bundle.putString(
-                        FirebaseAnalytics.Param.CONTENT,
-                        sharedViewModel.getSessionKey()
-                    )
-                    analytics.logEvent(FirebaseAnalytics.Event.LOGIN, bundle)
+                    // Logs successful login to Firebase Analytics
+                    logLoginSuccess(username.toString(), sharedViewModel.getSessionKey())
+                }
+                is ApiResponse.Loading -> {
+                    orderInfoLoading?.visibility = VISIBLE
                 }
 
                 is ApiResponse.Error -> {
@@ -330,16 +223,12 @@ class LoginFragment : Fragment() {
                     bundle.putString(FirebaseAnalytics.Param.METHOD, "Login error")
                     bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, username.toString())
                     bundle.putString(FirebaseAnalytics.Param.CONTENT, errorMessage)
-                    analytics.logEvent(FirebaseAnalytics.Event.LOGIN, bundle)
+                    firebaseAnalytics.logEvent(FirebaseAnalytics.Event.LOGIN, bundle)
                 }
 
                 is ApiResponse.ErrorSendOrderDate -> {
                     val errorMessage = "An unexpected error occurred"
                     showToast(errorMessage)
-                }
-
-                is ApiResponse.Loading -> {
-                    orderInfoLoading?.visibility = VISIBLE
                 }
 
                 is ApiResponse.NoDataError -> {
@@ -360,7 +249,7 @@ class LoginFragment : Fragment() {
     private fun handleOrderInfoResponse(response: ApiResponse<OrderInfo>?) {
         when (response) {
             is ApiResponse.Success -> {
-                sharedViewModel.setOrderInfo(response)
+                //sharedViewModel.setOrderInfo(response)
                 val deliveryAddressList = response.data?.deliveryAddresses
                 val orderingGroupList = response.data?.orderingGroups
                 context?.let { context ->
@@ -387,6 +276,23 @@ class LoginFragment : Fragment() {
             null -> TODO()
         }
 
+    }
+
+    private fun handleSessionKey(sessionKey: String) {
+        sharedViewModel.setSessionKey(sessionKey)
+        val sessionKeyRequest = OrderingRequest(sessionKey)
+        loginView.getOrderInfo(sessionKeyRequest)
+        loginView.orderInfoResponse.observe(viewLifecycleOwner) { orderInfoResponse ->
+            handleOrderInfoResponse(orderInfoResponse)
+        }
+    }
+
+    private fun logLoginSuccess(username: String, sessionKey: String) {
+        val bundle = Bundle()
+        bundle.putString(FirebaseAnalytics.Param.METHOD, "Login Successful")
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, username)
+        bundle.putString(FirebaseAnalytics.Param.CONTENT, sessionKey)
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.LOGIN, bundle)
     }
 
     private fun showNoInternetToast() {

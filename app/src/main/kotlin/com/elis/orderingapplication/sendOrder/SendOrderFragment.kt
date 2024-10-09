@@ -32,6 +32,7 @@ import com.elis.orderingapplication.repositories.UserLoginRepository
 import com.elis.orderingapplication.utils.ApiResponse
 import com.elis.orderingapplication.utils.DeviceInfo
 import com.elis.orderingapplication.utils.DeviceInfoDialog
+import com.elis.orderingapplication.utils.FlavorBannerUtils
 import com.elis.orderingapplication.utils.NetworkUtils
 import com.elis.orderingapplication.viewModels.ArticleEntryViewModelFactory
 import com.elis.orderingapplication.viewModels.SharedViewModelFactory
@@ -42,8 +43,12 @@ import java.util.UUID
 
 class SendOrderFragment : Fragment() {
 
-    private lateinit var binding: FragmentSendOrderOrderBinding
+    private var _binding: FragmentSendOrderOrderBinding? = null
+
+    //private lateinit var binding: FragmentSendOrderOrderBinding
+    private val binding: FragmentSendOrderOrderBinding get() = _binding!!
     private val sharedViewModel: ParamsViewModel by activityViewModels()
+
     //private val args: SendOrderFragmentArgs by navArgs()
     private lateinit var recyclerView: RecyclerView
     private lateinit var ordersAdapter: SendOrdersAdapter
@@ -60,7 +65,7 @@ class SendOrderFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding =
+        _binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_send_order_order, container, false)
 
         binding.sharedViewModel = sharedViewModel
@@ -101,15 +106,19 @@ class SendOrderFragment : Fragment() {
             })
         }
 
-
         // Inflate the layout for this fragment
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if(SHOW_BANNER) {
-            setFlavorBanner()
+        if (SHOW_BANNER) {
+            FlavorBannerUtils.setupFlavorBanner(
+                resources,
+                requireContext(),
+                binding,
+                sharedViewModel
+            )
             binding.debugBanner.visibility = VISIBLE
         }
         recyclerView = binding.orderSelection
@@ -151,7 +160,7 @@ class SendOrderFragment : Fragment() {
                         orderViewModel.onOrderClicked(myData)
                         sharedViewModel.setArticleDeliveryDate(myData.orderDate.toString())
                         sharedViewModel.setArticleAppOrderId(myData.appOrderId)
-                        orderData = orderToParcelable(myData)
+                        //orderData = orderToParcelable(myData)
                     }
                 }
             })
@@ -359,42 +368,8 @@ class SendOrderFragment : Fragment() {
         requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
     }
 
-    private fun setFlavorBanner() {
-        when (sharedViewModel.flavor.value) {
-            "development" -> {
-                binding.debugBanner.visibility = VISIBLE
-                binding.bannerText.visibility = VISIBLE
-                binding.debugBanner.setBackgroundColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.purple_200
-                    )
-                )
-                binding.bannerText.text = resources.getString(R.string.devFlavorText)
-            }
-            "production" -> {
-                binding.debugBanner.visibility = View.GONE
-                binding.bannerText.visibility = View.GONE
-                binding.debugBanner.setBackgroundColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.elis_transparent
-                    )
-                )
-            }
-            "staging" -> {
-                binding.debugBanner.visibility = VISIBLE
-                binding.bannerText.visibility = VISIBLE
-                binding.debugBanner.setBackgroundColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.elis_orange
-                    )
-                )
-                binding.bannerText.text = resources.getString(R.string.testFlavorText)
-            }
-        }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null // Clear the binding reference
     }
-
-
 }

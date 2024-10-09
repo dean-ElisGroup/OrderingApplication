@@ -12,19 +12,19 @@ import com.elis.orderingapplication.pojo2.ArticleParcelable
 class ArticleEntryAdapter(
     fragmentManager: FragmentManager,
     lifecycle: Lifecycle,
-    private var articles: List<Article>,
+    //private var articles: List<Article>,
+    private var articles:MutableList<Article> = mutableListOf(),
 
     ) : FragmentStateAdapter(fragmentManager, lifecycle) {
+
     override fun getItemCount(): Int = articles.size
 
     override fun createFragment(position: Int): Fragment {
 
-        val articles = articles[position]
+        //val articles = articles[position]
         val entryFragment = ArticleEntryCardFragment()
         val articlePosition = position + 1
-
         //val updatedArticleList = parcelizeArticle(articles)
-
 
         val fragmentBundle = Bundle().apply {
             //putParcelable("article", updatedArticleList)
@@ -62,7 +62,13 @@ class ArticleEntryAdapter(
     }
 
     fun updateData(newData: List<Article>) {
-        articles = newData
+        //articles = newData
+        articles = newData.toMutableList()
+        notifyDataSetChanged()
+    }
+
+    fun clearArticles() {
+        articles.clear()
         notifyDataSetChanged()
     }
 }

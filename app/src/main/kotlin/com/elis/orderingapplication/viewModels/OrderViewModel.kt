@@ -16,6 +16,7 @@ import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
+
 class OrderViewModel(application: Application, private val sharedViewModel: ParamsViewModel) :
     AndroidViewModel(application) {
 
@@ -40,7 +41,6 @@ class OrderViewModel(application: Application, private val sharedViewModel: Para
         val orderDateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         val orderDate = LocalDateTime.now().format(orderDateFormatter)
         return orderDate
-
     }
 
     fun setOrderData(orderData: OrderData){

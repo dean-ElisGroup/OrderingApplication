@@ -4,13 +4,10 @@ import android.app.AlertDialog
 import android.content.Context
 import android.os.Build
 import android.view.View
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
 import com.elis.orderingapplication.R
 import com.elis.orderingapplication.database.OrderInfoDatabase
 import com.elis.orderingapplication.model.LoginRequest
@@ -21,16 +18,12 @@ import com.elis.orderingapplication.pojo2.OrderInfo
 import com.elis.orderingapplication.pojo2.OrderingGroup
 import com.elis.orderingapplication.repositories.UserLoginRepository
 import com.elis.orderingapplication.utils.ApiResponse
-import com.google.android.material.snackbar.Snackbar
-import com.google.common.reflect.TypeToken
-import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.util.concurrent.TimeUnit
 
 class LoginViewModel(private val loginRep: UserLoginRepository) : ViewModel() {
     val userLoginResponse: MutableLiveData<ApiResponse<OrderingLoginResponseStruct>?> =

@@ -22,10 +22,12 @@ import com.elis.orderingapplication.adapters.ArticleEntryAdapter
 import com.elis.orderingapplication.constants.Constants
 import com.elis.orderingapplication.constants.Constants.Companion.SHOW_BANNER
 import com.elis.orderingapplication.databinding.FragmentArticleBinding
+import com.elis.orderingapplication.databinding.FragmentPosBinding
 import com.elis.orderingapplication.pojo2.Order
 import com.elis.orderingapplication.repositories.UserLoginRepository
 import com.elis.orderingapplication.utils.DeviceInfo
 import com.elis.orderingapplication.utils.DeviceInfoDialog
+import com.elis.orderingapplication.utils.FlavorBannerUtils
 import com.elis.orderingapplication.viewModels.ArticleDataViewModel
 import com.elis.orderingapplication.viewModels.ArticleEntryViewModel
 import com.elis.orderingapplication.viewModels.ArticleEntryViewModelFactory
@@ -37,7 +39,9 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 
 class ArticleFragment : Fragment(), ArticleEntryCardFragment.LastArticleCallback, ArticleEntryCardFragment.OrderStatusCallback {
 
-    private lateinit var binding: FragmentArticleBinding
+    private var _binding: FragmentArticleBinding? = null
+    //private lateinit var binding: FragmentArticleBinding
+    private val binding: FragmentArticleBinding get() = _binding!!
     private val sharedViewModel: ParamsViewModel by activityViewModels()
     private lateinit var viewPager: ViewPager2
     private lateinit var viewPagerAdapter: ArticleEntryAdapter
@@ -54,11 +58,12 @@ class ArticleFragment : Fragment(), ArticleEntryCardFragment.LastArticleCallback
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding =
+        _binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_article, container, false)
 
-        binding.orderData = args.orderData
-        binding.orderDateVal = args.order
+        //binding.orderData = args.orderData
+        //binding.orderDateVal = args.order
+        binding.orderId = args.appOrderId
         binding.toolbar.title = getString(R.string.article_title)
         binding.toolbar.setNavigationIcon(R.drawable.ic_back)
         binding.toolbar.setTitleTextAppearance(requireContext(),R.style.titleTextStyle)
@@ -90,6 +95,11 @@ class ArticleFragment : Fragment(), ArticleEntryCardFragment.LastArticleCallback
         }
 
         viewPager = binding.articleEntryViewpager
+        viewPagerAdapter = ArticleEntryAdapter(
+            childFragmentManager,
+            lifecycle,
+            //emptyList(),
+        )
 
         // Inflate the layout for this fragment
         return binding.root
@@ -98,11 +108,16 @@ class ArticleFragment : Fragment(), ArticleEntryCardFragment.LastArticleCallback
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if(SHOW_BANNER) {
-            setFlavorBanner()
+            FlavorBannerUtils.setupFlavorBanner(
+                resources,
+                requireContext(),
+                binding,
+                sharedViewModel
+            )
             binding.debugBanner.visibility = VISIBLE
         }
 
-        binding.progressBar.visibility = View.VISIBLE
+        binding.progressBar.visibility = VISIBLE
 
         val fab = view.findViewById<ExtendedFloatingActionButton>(R.id.send_order_fab)
         fab.setOnClickListener {
@@ -119,20 +134,24 @@ class ArticleFragment : Fragment(), ArticleEntryCardFragment.LastArticleCallback
         sharedViewModel.setLastArticleCallback(this)
         sharedViewModel.setOrderStatusCallback(this)
 
+        val orderDate = sharedViewModel.orderDate.value
+        val orderId = sharedViewModel.orderId.value
+
         val userLoginRepository = UserLoginRepository()
-        val articleEntryViewModel: ArticleEntryViewModel by viewModels {
-            ArticleEntryViewModelFactory(
-                sharedViewModel,
-                requireActivity().application,
-                userLoginRepository
-            )
-        }
-        viewPager = binding.articleEntryViewpager
-        viewPagerAdapter = ArticleEntryAdapter(
-            childFragmentManager,
-            lifecycle,
-            emptyList(),
-        )
+        //val articleEntryViewModel: ArticleEntryViewModel by viewModels {
+        //    ArticleEntryViewModelFactory(
+        //        sharedViewModel,
+        //        requireActivity().application,
+        //        userLoginRepository
+        //    )
+        //}
+        //viewPager = binding.articleEntryViewpager
+        //viewPagerAdapter = ArticleEntryAdapter(
+        //    childFragmentManager,
+        //    lifecycle,
+            //emptyList(),
+        //)
+        viewPagerAdapter.clearArticles()
         viewPager.adapter = viewPagerAdapter
 
         Handler(Looper.getMainLooper()).postDelayed({
@@ -151,44 +170,6 @@ class ArticleFragment : Fragment(), ArticleEntryCardFragment.LastArticleCallback
             }
         }, 500)
     }
-
-    private fun setFlavorBanner() {
-        when (sharedViewModel.flavor.value) {
-            "development" -> {
-                binding.debugBanner.visibility = VISIBLE
-                binding.bannerText.visibility = VISIBLE
-                binding.debugBanner.setBackgroundColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.purple_200
-                    )
-                )
-                binding.bannerText.text = resources.getString(R.string.devFlavorText)
-            }
-            "production" -> {
-                binding.debugBanner.visibility = View.GONE
-                binding.bannerText.visibility = View.GONE
-                binding.debugBanner.setBackgroundColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.elis_transparent
-                    )
-                )
-            }
-            "staging" -> {
-                binding.debugBanner.visibility = View.VISIBLE
-                binding.bannerText.visibility = View.VISIBLE
-                binding.debugBanner.setBackgroundColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.elis_orange
-                    )
-                )
-                binding.bannerText.text = resources.getString(R.string.testFlavorText)
-            }
-        }
-    }
-
 
     private fun getCurrentFragment(): Fragment? {
         return childFragmentManager.findFragmentByTag("f${viewPager.currentItem}")
@@ -233,5 +214,9 @@ class ArticleFragment : Fragment(), ArticleEntryCardFragment.LastArticleCallback
             }
             dialog.show()
         }
+    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null // Clear the binding reference
     }
 }
