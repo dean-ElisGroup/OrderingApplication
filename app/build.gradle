@@ -36,7 +36,7 @@ android {
             applicationIdSuffix ".dev"
             manifestPlaceholders = [appLabel: "Stock Ordering - Dev"]
             namespace 'com.solstockorder.dev'
-            versionName '2.0.5'
+            versionName '2.0.6'
             buildConfigField "String", "API_BASE_URL", '"http://serviceonlinetest.elisonline.co.uk/SolMasterTraining5/Ordering.wso/"'
             sourceSets{
                 development{
@@ -127,6 +127,7 @@ dependencies {
     implementation 'androidx.camera:camera-view:1.3.4'
     implementation 'com.google.firebase:firebase-firestore:25.1.0'
     implementation 'com.google.firebase:firebase-inappmessaging-display:21.0.0'
+    implementation 'androidx.media3:media3-common:1.4.1'
     def room_version = '2.6.1'
 
     implementation("androidx.room:room-runtime:2.6.1")

@@ -23,7 +23,7 @@ import com.elis.orderingapplication.pojo2.OrderEvent
 import com.elis.orderingapplication.repositories.UserLoginRepository
 import com.elis.orderingapplication.utils.ApiResponse
 import com.elis.orderingapplication.viewModels.ArticleEntryViewModel
-import com.elis.orderingapplication.viewModels.ArticleEntryViewModelFactory
+import com.elis.orderingapplication.viewModels.AppViewModelFactory
 import com.elis.orderingapplication.viewModels.ParamsViewModel
 import com.elis.orderingapplication.viewModels.SharedViewModelFactory
 import com.elis.orderingapplication.pojo2.Order
@@ -75,7 +75,7 @@ class ArticleEntryCardFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val userLoginRepository = UserLoginRepository()
-        val viewModelFactory = ArticleEntryViewModelFactory(
+        val viewModelFactory = AppViewModelFactory(
             sharedViewModel, requireActivity().application, userLoginRepository
         )
 

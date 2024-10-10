@@ -9,7 +9,6 @@ import android.view.View
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.view.WindowManager
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -22,15 +21,12 @@ import com.elis.orderingapplication.adapters.ArticleEntryAdapter
 import com.elis.orderingapplication.constants.Constants
 import com.elis.orderingapplication.constants.Constants.Companion.SHOW_BANNER
 import com.elis.orderingapplication.databinding.FragmentArticleBinding
-import com.elis.orderingapplication.databinding.FragmentPosBinding
 import com.elis.orderingapplication.pojo2.Order
 import com.elis.orderingapplication.repositories.UserLoginRepository
 import com.elis.orderingapplication.utils.DeviceInfo
 import com.elis.orderingapplication.utils.DeviceInfoDialog
 import com.elis.orderingapplication.utils.FlavorBannerUtils
 import com.elis.orderingapplication.viewModels.ArticleDataViewModel
-import com.elis.orderingapplication.viewModels.ArticleEntryViewModel
-import com.elis.orderingapplication.viewModels.ArticleEntryViewModelFactory
 import com.elis.orderingapplication.viewModels.ArticleViewModel
 import com.elis.orderingapplication.viewModels.ParamsViewModel
 import com.elis.orderingapplication.viewModels.SharedViewModelFactory
@@ -139,7 +135,7 @@ class ArticleFragment : Fragment(), ArticleEntryCardFragment.LastArticleCallback
 
         val userLoginRepository = UserLoginRepository()
         //val articleEntryViewModel: ArticleEntryViewModel by viewModels {
-        //    ArticleEntryViewModelFactory(
+        //    AppViewModelFactory(
         //        sharedViewModel,
         //        requireActivity().application,
         //        userLoginRepository

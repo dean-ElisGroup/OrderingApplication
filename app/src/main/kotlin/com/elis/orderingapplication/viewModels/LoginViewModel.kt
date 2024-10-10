@@ -1,14 +1,12 @@
 package com.elis.orderingapplication.viewModels
 
-import android.app.AlertDialog
+import com.elis.orderingapplication.utils.NetworkErrorException
 import android.content.Context
-import android.os.Build
 import android.view.View
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.elis.orderingapplication.R
 import com.elis.orderingapplication.database.OrderInfoDatabase
 import com.elis.orderingapplication.model.LoginRequest
 import com.elis.orderingapplication.model.OrderingLoginResponseStruct
@@ -21,7 +19,9 @@ import com.elis.orderingapplication.utils.ApiResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.Response
+import java.lang.ref.WeakReference
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -31,90 +31,102 @@ class LoginViewModel(private val loginRep: UserLoginRepository) : ViewModel() {
     val orderInfoResponse: MutableLiveData<ApiResponse<OrderInfo>?> =
         MutableLiveData()
 
-    lateinit var rootView: View
-    lateinit var orderInfoLoading: View
+    private val _showErrorMessageEvent = MutableLiveData<String>()
+    val showErrorMessageEvent = _showErrorMessageEvent
+    private val _showErrorEvent = MutableLiveData<Boolean>() // Or use a Flow
 
-    var orderCount = 0
+    private var rootViewRef: WeakReference<View>? = null
+    private var orderInfoLoadingRef: WeakReference<View>? = null
+
 
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
 
-    fun getDeviceInfo() {
-        val deviceName = Build.MODEL
-        val deviceName1 = Build.DEVICE
+    override fun onCleared() {
+        super.onCleared()
+        rootViewRef?.clear()
+        orderInfoLoadingRef?.clear()
     }
 
     fun getUserLogin(loginRequest: LoginRequest) = viewModelScope.launch {
-        userLoginResponse.postValue(ApiResponse.Loading())
-        val response = loginRep.getUserLogin(loginRequest)
-        userLoginResponse.postValue(handleUserLoginResponse(response))
+        try {
+            userLoginResponse.postValue(ApiResponse.Loading())
+            val response = loginRep.getUserLogin(loginRequest)
+            userLoginResponse.postValue(handleUserLoginResponse(response))
+        } catch (e: NetworkErrorException) {
+            // Handle network error, e.g., display an error message
+            _showErrorEvent.postValue(true)
+            withContext(Dispatchers.Main) {
+                _showErrorMessageEvent.postValue(e.message ?: "Network error")
+            }
+        }
     }
 
     fun getOrderInfo(sessionKey: OrderingRequest) = viewModelScope.launch {
         orderInfoResponse.postValue(ApiResponse.Loading())
-        //val response = loginRep.getOrderInfo(sessionKey)
         when (val response = loginRep.getOrderInfo(sessionKey)) {
             is ApiResponse.Success -> {
-                // Handle successful response
                 handleSuccessfulOrderInfoResponse(response.data)
             }
 
-            is ApiResponse.Error -> {
-                // Display error message to the user
-                response.message?.let { showErrorMessage(it) }
+            is ApiResponse.NetworkError -> {
+                withContext(Dispatchers.Main) {
+                    _showErrorMessageEvent.postValue(response.message ?: "Network error")
+                }
             }
 
-            is ApiResponse.NoDataError -> {
-                // Display error message to the user
-                response.message?.let { showErrorMessage(it) }
+            else -> {
+                response.message?.let {
+                    _showErrorMessageEvent.postValue(it)
+                }
             }
-
-            is ApiResponse.UnknownError -> {
-                // Display error message to the user
-                response.message?.let { showErrorMessage(it) }
-            }
-
-            is ApiResponse.ErrorLogin -> TODO()
-            is ApiResponse.ErrorSendOrderDate -> TODO()
-            is ApiResponse.Loading -> TODO()
         }
     }
 
     private fun handleSuccessfulOrderInfoResponse(orderInfo: OrderInfo?) {
-        val orderingGroupResponse = orderInfo?.orderingGroups
+        val transformedOrderInfo = orderInfo?.let { OrderInfoTransformer.transformOrderInfo(it) }
+        orderInfoResponse.postValue(handleOrderInfoResponse(transformedOrderInfo))
+    }
 
-        orderInfo?.deliveryAddresses?.forEach { deliveryAddress ->
-            deliveryAddress.pointsOfService?.forEach { pointsOfService ->
-                // Update fields within the PointsOfService object
-                pointsOfService.deliveryAddressNo = deliveryAddress.deliveryAddressNo
-                pointsOfService.deliveryAddressName = deliveryAddress.deliveryAddressName
-                pointsOfService.orderingGroupDescription =
-                    orderingGroupResponse?.firstOrNull { it.orderingGroupNo == pointsOfService.pointOfServiceOrderingGroupNo }?.orderingGroupDescription
-                // Iterate over the orders list within each PointsOfService
-                pointsOfService.orders?.forEach { order ->
-                    // Update fields within the Order object
-                    order.totalArticles = order.articles?.size
-                    order.appPosNo = pointsOfService.pointOfServiceNo
-                    order.posName = pointsOfService.pointOfServiceName
-                    order.deliveryAddressNo = pointsOfService.deliveryAddressNo
-                    order.deliveryAddressName = pointsOfService.deliveryAddressName
-                    // Iterate over the articles list within each Order
-                    order.articles?.forEach { article ->
-                        // Update fields within the Article object
-                        article.pointOfService = order.appPosNo
-                        article.appOrderId = order.appOrderId
-                        article.deliveryDate = order.deliveryDate
-                        article.orderDate = order.orderDate.toString()
-                        article.deliveryAddressNo = order.deliveryAddressNo
-                        article.deliveryAddressName = order.deliveryAddressName
+    object OrderInfoTransformer {
+        fun transformOrderInfo(orderInfo: OrderInfo): OrderInfo {
+            val orderingGroupResponse = orderInfo.orderingGroups
+
+            orderInfo.deliveryAddresses?.forEach { deliveryAddress ->
+                deliveryAddress.pointsOfService?.forEach { pointsOfService ->
+                    // Update fields within the PointsOfService object
+                    pointsOfService.deliveryAddressNo = deliveryAddress.deliveryAddressNo
+                    pointsOfService.deliveryAddressName = deliveryAddress.deliveryAddressName
+                    pointsOfService.orderingGroupDescription =
+                        orderingGroupResponse?.firstOrNull { it.orderingGroupNo == pointsOfService.pointOfServiceOrderingGroupNo }?.orderingGroupDescription
+
+                    // Iterate over the orders list within each PointsOfService
+                    pointsOfService.orders?.forEach { order ->
+                        // Update fields within the Order object
+                        order.totalArticles = order.articles?.size
+                        order.appPosNo = pointsOfService.pointOfServiceNo
+                        order.posName = pointsOfService.pointOfServiceName
+                        order.deliveryAddressNo = pointsOfService.deliveryAddressNo
+                        order.deliveryAddressName = pointsOfService.deliveryAddressName
+
+                        // Iterate over the articles list within each Order
+                        order.articles?.forEach { article ->
+                            // Update fields within the Article object
+                            article.pointOfService = order.appPosNo
+                            article.appOrderId = order.appOrderId
+                            article.deliveryDate = order.deliveryDate
+                            article.orderDate = order.orderDate.toString()
+                            article.deliveryAddressNo = order.deliveryAddressNo
+                            article.deliveryAddressName = order.deliveryAddressName
+                        }
                     }
                 }
             }
-        }
 
-        orderInfoResponse.postValue(handleOrderInfoResponse(orderInfo))
+            return orderInfo
+        }
     }
 
-    private fun showErrorMessage(message: String) {
+    /*private fun showErrorMessage(message: String) {
         orderInfoLoading.visibility = View.GONE
         val builder = AlertDialog.Builder(rootView.context)
         builder.setTitle("Connection error")
@@ -123,43 +135,6 @@ class LoginViewModel(private val loginRep: UserLoginRepository) : ViewModel() {
             .setPositiveButton("OK", null)
             .create()
             .show()
-    }
-
-
-    /*}
-
-        val orderingGroupResponse = response?.body()?.orderingGroups
-
-        response?.body()?.deliveryAddresses?.forEach { deliveryAddress ->
-            deliveryAddress.pointsOfService?.forEach { pointsOfService ->
-                // Update fields within the PointsOfService object
-                pointsOfService.deliveryAddressNo = deliveryAddress.deliveryAddressNo
-                pointsOfService.deliveryAddressName = deliveryAddress.deliveryAddressName
-                pointsOfService.orderingGroupDescription =
-                    orderingGroupResponse?.firstOrNull { it.orderingGroupNo == pointsOfService.pointOfServiceOrderingGroupNo }?.orderingGroupDescription
-                // Iterate over the orders list within each PointsOfService
-                pointsOfService.orders?.forEach { order ->
-                    // Update fields within the Order object
-                    order.totalArticles = order.articles?.size
-                    order.appPosNo = pointsOfService.pointOfServiceNo
-                    order.posName = pointsOfService.pointOfServiceName
-                    order.deliveryAddressNo = pointsOfService.deliveryAddressNo
-                    order.deliveryAddressName = pointsOfService.deliveryAddressName
-                    // Iterate over the articles list within each Order
-                    order.articles?.forEach { article ->
-                        // Update fields within the Article object
-                        article.pointOfService = order.appPosNo
-                        article.appOrderId = order.appOrderId
-                        article.deliveryDate = order.deliveryDate
-                        article.orderDate = order.orderDate.toString()
-                        article.deliveryAddressNo = order.deliveryAddressNo
-                        article.deliveryAddressName = order.deliveryAddressName
-                    }
-                }
-            }
-        }
-
-        orderInfoResponse.postValue(handleOrderInfoResponse(response))
     }*/
 
     fun insertToDatabase(
@@ -202,7 +177,6 @@ class LoginViewModel(private val loginRep: UserLoginRepository) : ViewModel() {
         return when {
             response.isSuccessful && response.body()?.message?.isEmpty() == true -> {
                 ApiResponse.Success(response.body())
-
             }
 
             response.isSuccessful && response.body()?.message == "Login failed" -> {
@@ -214,15 +188,6 @@ class LoginViewModel(private val loginRep: UserLoginRepository) : ViewModel() {
             }
         }
     }
-
-    /*private fun handleOrderInfoResponse(response: Response<OrderInfo>): ApiResponse<OrderInfo> {
-        if (response.isSuccessful && response.body()?.deliveryAddresses?.isNotEmpty() == true) {
-            response.body()?.let { resultResponse ->
-                return ApiResponse.Success(resultResponse)
-            }
-        }
-        return ApiResponse.NoDataError("There was an issue loading data. Please try again.")
-    }*/
 
     private fun handleOrderInfoResponse(response: OrderInfo?): ApiResponse<OrderInfo> {
         if (response?.deliveryAddresses?.isNotEmpty() == true) {

@@ -14,4 +14,5 @@ sealed class ApiResponse<T>(
     class ErrorSendOrderDate<T>(message: String, data: T? = null) : ApiResponse<T>(data, message)
     class NoDataError<T>(message: String, data: T? = null) : ApiResponse<T>(data, message)
     class UnknownError<T>(message: String, data: T? = null) : ApiResponse<T>(data, message)
+    class NetworkError<T>(message: String, data: T? = null) : ApiResponse<T>(data, message)
 }

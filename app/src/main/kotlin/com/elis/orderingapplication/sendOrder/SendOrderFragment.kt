@@ -10,7 +10,6 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -34,7 +33,7 @@ import com.elis.orderingapplication.utils.DeviceInfo
 import com.elis.orderingapplication.utils.DeviceInfoDialog
 import com.elis.orderingapplication.utils.FlavorBannerUtils
 import com.elis.orderingapplication.utils.NetworkUtils
-import com.elis.orderingapplication.viewModels.ArticleEntryViewModelFactory
+import com.elis.orderingapplication.viewModels.AppViewModelFactory
 import com.elis.orderingapplication.viewModels.SharedViewModelFactory
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -147,7 +146,7 @@ class SendOrderFragment : Fragment() {
         }
 
         val userLoginRepository = UserLoginRepository()
-        val viewModelFactory = ArticleEntryViewModelFactory(
+        val viewModelFactory = AppViewModelFactory(
             sharedViewModel, requireActivity().application, userLoginRepository
         )
 

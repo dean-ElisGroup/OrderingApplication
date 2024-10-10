@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.elis.orderingapplication.repositories.UserLoginRepository
 import com.elis.orderingapplication.sendOrder.SendOrderViewModel
 
-class ArticleEntryViewModelFactory(
+class AppViewModelFactory(
     private val sharedViewModel: ParamsViewModel,
     private val application: Application,
     private val articleEntryRepository: UserLoginRepository
@@ -18,9 +18,6 @@ class ArticleEntryViewModelFactory(
         if (modelClass.isAssignableFrom(LandingPageViewModel::class.java)) {
             return LandingPageViewModel(application, articleEntryRepository) as T
         }
-        //if (modelClass.isAssignableFrom(LandingPageViewModel::class.java)) {
-        //    return LandingPageViewModel(application, articleEntryRepository, sharedViewModel) as T
-        //}
         if (modelClass.isAssignableFrom(SendOrderViewModel::class.java)) {
             return SendOrderViewModel(application, articleEntryRepository, sharedViewModel) as T
         }

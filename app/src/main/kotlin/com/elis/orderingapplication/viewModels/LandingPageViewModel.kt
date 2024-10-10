@@ -9,24 +9,22 @@ import com.elis.orderingapplication.repositories.UserLoginRepository
 import com.elis.orderingapplication.utils.ApiResponse
 import kotlinx.coroutines.launch
 
-
 class LandingPageViewModel(
     application: Application,
-    private val loginRep: UserLoginRepository,
+    private val userRepository: UserLoginRepository,
 ) : AndroidViewModel(application) {
 
-    val userLoginResponse: MutableLiveData<ApiResponse<Boolean>> = MutableLiveData()
-    fun getUserLogout(logoutRequest: LogoutRequest)  = viewModelScope.launch {
-        val response = loginRep.userLogout(logoutRequest)
-        userLoginResponse.postValue(handleUserLoginResponse(response))
+    val userLogoutResponse: MutableLiveData<ApiResponse<Boolean>> = MutableLiveData()
+
+    fun logoutUser(logoutRequest: LogoutRequest) = viewModelScope.launch {
+        val response = userRepository.userLogout(logoutRequest)
+        userLogoutResponse.postValue(handleLogoutResponse(response))
     }
 
-    private fun handleUserLoginResponse(response: Boolean): ApiResponse<Boolean> {
-        return if (response) {
-            ApiResponse.Success(response)
-        } else
-            ApiResponse.Error("Logout could not be completed")
+    private fun handleLogoutResponse(response: Boolean): ApiResponse<Boolean> {
+        return when (response) {
+            true -> ApiResponse.Success(response)
+            false -> ApiResponse.Error("Logout failed. Please check your network connection or try again later.")
         }
-
-
+    }
 }
