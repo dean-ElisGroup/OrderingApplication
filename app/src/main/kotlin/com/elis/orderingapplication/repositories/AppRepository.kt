@@ -12,13 +12,13 @@ import com.elis.orderingapplication.retrofit.RetroFitInstance
 import com.elis.orderingapplication.utils.ApiResponse
 import retrofit2.Response
 
-class UserLoginRepository {
+class AppRepository {
     suspend fun getUserLogin(loginRequest: LoginRequest): Response<OrderingLoginResponseStruct> {
         return try {
             RetroFitInstance.api.getSessionKey(loginRequest)
         } catch (e: Exception) {
             // Handle network error,e.g., log it and throw a custom exception
-            Log.e("UserLoginRepository", "Network error: ${e.message}", e)
+            Log.e("AppRepository", "Network error: ${e.message}", e)
             throw NetworkErrorException("Failed to connect to the server")
         }
     }
@@ -36,7 +36,7 @@ class UserLoginRepository {
             }
         } catch (e: Exception) {
             //ApiResponse.UnknownError(e.message ?: "An unknown error occurred")
-            Log.e("UserLoginRepository", "Network error: ${e.message}", e)
+            Log.e("AppRepository", "Network error: ${e.message}", e)
             ApiResponse.NetworkError(e.message ?: "Failed to connect to the server")
         }
     }

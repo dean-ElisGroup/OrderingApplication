@@ -27,7 +27,7 @@ import com.elis.orderingapplication.databinding.FragmentSendOrderOrderBinding
 import com.elis.orderingapplication.pojo2.Order
 import com.elis.orderingapplication.pojo2.OrderEvent
 import com.elis.orderingapplication.pojo2.OrderParcelable
-import com.elis.orderingapplication.repositories.UserLoginRepository
+import com.elis.orderingapplication.repositories.AppRepository
 import com.elis.orderingapplication.utils.ApiResponse
 import com.elis.orderingapplication.utils.DeviceInfo
 import com.elis.orderingapplication.utils.DeviceInfoDialog
@@ -44,11 +44,9 @@ class SendOrderFragment : Fragment() {
 
     private var _binding: FragmentSendOrderOrderBinding? = null
 
-    //private lateinit var binding: FragmentSendOrderOrderBinding
     private val binding: FragmentSendOrderOrderBinding get() = _binding!!
     private val sharedViewModel: ParamsViewModel by activityViewModels()
 
-    //private val args: SendOrderFragmentArgs by navArgs()
     private lateinit var recyclerView: RecyclerView
     private lateinit var ordersAdapter: SendOrdersAdapter
     private var deliveryAddressForArgs: String = ""
@@ -145,9 +143,9 @@ class SendOrderFragment : Fragment() {
             return orderParcelable
         }
 
-        val userLoginRepository = UserLoginRepository()
+        val appRepository = AppRepository()
         val viewModelFactory = AppViewModelFactory(
-            sharedViewModel, requireActivity().application, userLoginRepository
+            sharedViewModel, requireActivity().application, appRepository
         )
 
         ViewModelProvider(this, viewModelFactory)[SendOrderViewModel::class.java]

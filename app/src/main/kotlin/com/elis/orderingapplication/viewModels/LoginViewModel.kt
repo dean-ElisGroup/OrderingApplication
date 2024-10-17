@@ -14,7 +14,7 @@ import com.elis.orderingapplication.model.OrderingRequest
 import com.elis.orderingapplication.pojo2.DeliveryAddress
 import com.elis.orderingapplication.pojo2.OrderInfo
 import com.elis.orderingapplication.pojo2.OrderingGroup
-import com.elis.orderingapplication.repositories.UserLoginRepository
+import com.elis.orderingapplication.repositories.AppRepository
 import com.elis.orderingapplication.utils.ApiResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -25,7 +25,7 @@ import java.lang.ref.WeakReference
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-class LoginViewModel(private val loginRep: UserLoginRepository) : ViewModel() {
+class LoginViewModel(private val loginRep: AppRepository) : ViewModel() {
     val userLoginResponse: MutableLiveData<ApiResponse<OrderingLoginResponseStruct>?> =
         MutableLiveData()
     val orderInfoResponse: MutableLiveData<ApiResponse<OrderInfo>?> =
@@ -125,17 +125,6 @@ class LoginViewModel(private val loginRep: UserLoginRepository) : ViewModel() {
             return orderInfo
         }
     }
-
-    /*private fun showErrorMessage(message: String) {
-        orderInfoLoading.visibility = View.GONE
-        val builder = AlertDialog.Builder(rootView.context)
-        builder.setTitle("Connection error")
-            .setIcon(R.drawable.outline_error_24)
-            .setMessage("Could not retrieve data. \n\nCheck your internet connection and try again.")
-            .setPositiveButton("OK", null)
-            .create()
-            .show()
-    }*/
 
     fun insertToDatabase(
         context: Context,

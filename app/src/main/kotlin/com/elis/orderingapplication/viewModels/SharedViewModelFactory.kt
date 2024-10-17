@@ -3,8 +3,6 @@ package com.elis.orderingapplication.viewModels
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.elis.orderingapplication.repositories.UserLoginRepository
-import com.elis.orderingapplication.sendOrder.SendOrderViewModel
 
 class SharedViewModelFactory(
     private val sharedViewModel: ParamsViewModel,

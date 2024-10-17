@@ -17,5 +17,8 @@ class Constants {
         // Send Order Event Error
         const val DATE_TOO_LATE = "Earliest next delivery is:"
         const val SHOW_BANNER = true
+        //PosGroupFragment
+        const val DELIVERY_ADDRESS_NAME_KEY = "DELIVERY_ADDRESS_NAME"
+        const val ORDERING_GROUP_KEY = "ORDERING_GROUP"
     }
 }

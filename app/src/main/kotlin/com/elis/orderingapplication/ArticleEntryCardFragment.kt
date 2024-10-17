@@ -20,7 +20,7 @@ import com.elis.orderingapplication.constants.Constants
 import com.elis.orderingapplication.databinding.FragmentArticleEntryViewpagerBinding
 import com.elis.orderingapplication.pojo2.Article
 import com.elis.orderingapplication.pojo2.OrderEvent
-import com.elis.orderingapplication.repositories.UserLoginRepository
+import com.elis.orderingapplication.repositories.AppRepository
 import com.elis.orderingapplication.utils.ApiResponse
 import com.elis.orderingapplication.viewModels.ArticleEntryViewModel
 import com.elis.orderingapplication.viewModels.AppViewModelFactory
@@ -29,6 +29,7 @@ import com.elis.orderingapplication.viewModels.SharedViewModelFactory
 import com.elis.orderingapplication.pojo2.Order
 import com.elis.orderingapplication.pojo2.OrderEventResponse
 import com.elis.orderingapplication.utils.NetworkUtils
+import com.gu.toolargetool.TooLargeTool
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.isActive
@@ -45,18 +46,13 @@ class ArticleEntryCardFragment : Fragment() {
     private val articleEntryViewModel: ArticleEntryViewModel by viewModels {
         SharedViewModelFactory(sharedViewModel, requireActivity().application)
     }
-    //private lateinit var article: Article
     private var countedQty: Int = 0
-
     private var currentOrderData: Order? = null
     private var currentArticle: Article? = null
     private var numberOfArticles: Int? = null
     private var totalArticles: Int? = null
     private var currentArticlePosition: Int? = null
     private var currentArticleOrder: Int? = null
-    //private var internetCheckJob: Job? = null
-
-    //private var bindingEntry: FragmentArticleEntryViewpagerBinding? = null
     private var isNavigationInProgress = false
 
     override fun onCreateView(
@@ -66,19 +62,16 @@ class ArticleEntryCardFragment : Fragment() {
         _binding = FragmentArticleEntryViewpagerBinding.inflate(inflater, container, false)
         binding.sharedViewModel = sharedViewModel
 
-
-
         return _binding!!.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val userLoginRepository = UserLoginRepository()
+        val appRepository = AppRepository()
         val viewModelFactory = AppViewModelFactory(
-            sharedViewModel, requireActivity().application, userLoginRepository
+            sharedViewModel, requireActivity().application, appRepository
         )
-
 
         ViewModelProvider(this, viewModelFactory)[ArticleEntryViewModel::class.java]
 
@@ -88,6 +81,7 @@ class ArticleEntryCardFragment : Fragment() {
         observeOrderData()
         observeArticleData()
         setupCountedQtyTextChangeListener()
+        TooLargeTool.startLogging(requireActivity().application)
     }
 
     private fun observeOrderData() {

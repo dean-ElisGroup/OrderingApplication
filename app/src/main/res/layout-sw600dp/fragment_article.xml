@@ -7,7 +7,7 @@
     <data>
         <variable
             name="orderData"
-            type="com.elis.orderingapplication.pojo2.OrderParcelable" />
+            type="com.elis.orderingapplication.pojo2.Order" />
         <variable
             name="orderDateVal"
             type="String" />

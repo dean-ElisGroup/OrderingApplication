@@ -1,9 +1,9 @@
 package com.elis.orderingapplication.viewModels
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.elis.orderingapplication.constants.Constants.Companion.DATE_TOO_LATE
 import com.elis.orderingapplication.database.OrderInfoDatabase
@@ -13,7 +13,7 @@ import com.elis.orderingapplication.pojo2.OrderEvent
 import com.elis.orderingapplication.pojo2.OrderEventResponse
 import com.elis.orderingapplication.pojo2.OrderRowsItem
 import com.elis.orderingapplication.pojo2.SendOrder
-import com.elis.orderingapplication.repositories.UserLoginRepository
+import com.elis.orderingapplication.repositories.AppRepository
 import com.elis.orderingapplication.utils.ApiResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -21,11 +21,12 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import retrofit2.Response
 
+
 class ArticleEntryViewModel(
-    application: Application,
-    private val loginRep: UserLoginRepository,
+    private val application: Application,
+    private val appRepository: AppRepository,
     private val sharedViewModel: ParamsViewModel
-) : AndroidViewModel(application) {
+) : ViewModel() {
 
     private val orderEventResponse: MutableLiveData<ApiResponse<OrderEventResponse>?> =
         MutableLiveData()
@@ -33,10 +34,6 @@ class ArticleEntryViewModel(
     val solOrderQty: MutableLiveData<String?>
         get() = _solOrderQty
 
-
-    //private val changeMargin = MutableLiveData<Boolean?>()
-    //private val marginChange: MutableLiveData<Boolean?>
-     //   get() = changeMargin
 
     private val _uiState = MutableLiveData<String>()
     val uiState: LiveData<String> = _uiState
@@ -129,7 +126,7 @@ class ArticleEntryViewModel(
 
     fun orderEvent(orderEvent: OrderEvent): ApiResponse<OrderEventResponse> = runBlocking {
         orderEventResponse.postValue(ApiResponse.Loading())
-        val response = loginRep.sendOrderEvent(orderEvent)
+        val response = appRepository.sendOrderEvent(orderEvent)
         handleSendOrderResponse(response)
     }
 

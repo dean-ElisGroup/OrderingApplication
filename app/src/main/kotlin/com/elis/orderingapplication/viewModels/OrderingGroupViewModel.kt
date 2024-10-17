@@ -12,26 +12,21 @@ class OrderingGroupViewModel(
     application: Application,
     private val sharedViewModel: ParamsViewModel
 ) : AndroidViewModel(application) {
-    private val _navigateToPosGroup = MutableLiveData<JoinOrderingGroup?>()
 
-    val navigateToOrderingGroup
-        get() = _navigateToPosGroup
+    private val _navigateToOrderingGroup = MutableLiveData<JoinOrderingGroup?>()
+    val navigateToOrderingGroup: LiveData<JoinOrderingGroup?> = _navigateToOrderingGroup
+    private val deliveryAddressNumber: LiveData<String> = sharedViewModel.getDeliveryAddressNumber()
 
     val database = OrderInfoDatabase.getInstance(application)
     val orderingGroup: LiveData<List<JoinOrderingGroup>> =
-        database.orderInfoDao.getOrderingGroupList(getDeliveryAddressNum().value.toString())
-
-    private fun getDeliveryAddressNum(): LiveData<String> {
-        return sharedViewModel.getDeliveryAddressNumber()
-    }
+        database.orderInfoDao.getOrderingGroupList(deliveryAddressNumber.value.toString())
 
     fun onOrderingGroupClicked(orderingGroup: JoinOrderingGroup) {
-        _navigateToPosGroup.value = orderingGroup
+        _navigateToOrderingGroup.value = orderingGroup
     }
 
     fun onOrderingGroupNavigated() {
-        _navigateToPosGroup.value = null
+        _navigateToOrderingGroup.value = null
     }
-
 
 }

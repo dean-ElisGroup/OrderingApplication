@@ -20,7 +20,7 @@ import com.elis.orderingapplication.constants.Constants.Companion.SHOW_BANNER
 import com.elis.orderingapplication.database.OrderInfoDatabase
 import com.elis.orderingapplication.databinding.FragmentLandingPageBinding
 import com.elis.orderingapplication.model.LogoutRequest
-import com.elis.orderingapplication.repositories.UserLoginRepository
+import com.elis.orderingapplication.repositories.AppRepository
 import com.elis.orderingapplication.utils.ApiResponse
 import com.elis.orderingapplication.utils.DeviceInfo
 import com.elis.orderingapplication.utils.DeviceInfoDialog
@@ -41,7 +41,7 @@ class LandingPageFragment :Fragment() {
         AppViewModelFactory(
             sharedViewModel,
             requireActivity().application,
-            UserLoginRepository() // Repository created in the factory
+            AppRepository() // Repository created in the factory
         )
     }
     private lateinit var database: OrderInfoDatabase

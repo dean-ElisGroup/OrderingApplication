@@ -32,7 +32,7 @@ import com.elis.orderingapplication.model.OrderingLoginResponseStruct
 import com.elis.orderingapplication.pojo2.DeliveryAddress
 import com.elis.orderingapplication.pojo2.OrderInfo
 import com.elis.orderingapplication.pojo2.OrderingGroup
-import com.elis.orderingapplication.repositories.UserLoginRepository
+import com.elis.orderingapplication.repositories.AppRepository
 import com.elis.orderingapplication.utils.ApiResponse
 import com.elis.orderingapplication.utils.DeviceInfo
 import com.elis.orderingapplication.utils.DeviceInfoDialog
@@ -59,7 +59,7 @@ class LoginFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_login, container, false)
         sharedViewModel.setAppVersion(BuildConfig.VERSION_NAME)
         sharedViewModel.setFlavor(BuildConfig.FLAVOR)
-        val loginRepository = UserLoginRepository()
+        val loginRepository = AppRepository()
         val provider = LoginViewModelFactory(loginRepository)
         val loginViewModel = ViewModelProvider(this, provider)[LoginViewModel::class.java]
         loginView = loginViewModel

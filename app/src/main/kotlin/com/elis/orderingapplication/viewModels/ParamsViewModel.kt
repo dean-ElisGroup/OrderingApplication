@@ -1,6 +1,7 @@
 package com.elis.orderingapplication.viewModels
 
 import android.os.Bundle
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,6 +11,10 @@ import com.elis.orderingapplication.pojo2.Order
 import com.elis.orderingapplication.pojo2.OrderInfo
 import com.elis.orderingapplication.pojo2.OrderRowsItem
 import com.elis.orderingapplication.utils.ApiResponse
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
+import java.util.Locale
 
 class ParamsViewModel : ViewModel() {
     val _orderDate = MutableLiveData<String>("")
@@ -17,6 +22,9 @@ class ParamsViewModel : ViewModel() {
 
     val _orderId = MutableLiveData<String>("")
     val orderId: LiveData<String> = _orderId
+
+    private val _formattedOrderDate = MutableLiveData<String>()
+    val formattedOrderDate: LiveData<String> = _formattedOrderDate
 
     private lateinit var _sessionKey: String
 
@@ -74,6 +82,19 @@ class ParamsViewModel : ViewModel() {
         _orderDate.value = orderDate
     }
 
+    fun setOrderDate1(orderDate: String) {
+        _orderDate.value = orderDate
+        val dateFormat = DateTimeFormatter.ofPattern("EEEE,MMMM,dd,yyyy", Locale.getDefault())
+        try {
+            val localDate = LocalDate.parse(orderDate, DateTimeFormatter.ISO_DATE) // Assuming your input format is ISO_DATE
+            _formattedOrderDate.value = dateFormat.format(localDate)
+        } catch (e: DateTimeParseException) {
+            // Handle the exception, e.g., log it or set a default value
+            Log.e("ParamsViewModel", "Error parsing date: $orderDate", e)
+            _formattedOrderDate.value = ""
+        }
+    }
+
     fun setSessionKey(sessionKey: String) {
         _sessionKey = sessionKey
     }
@@ -117,14 +138,6 @@ class ParamsViewModel : ViewModel() {
     fun setArticleTotal(articleTotal: Int?) {
         _articleTotal.value = articleTotal
     }
-
-    //fun setOrderInfo(orderInfo: ApiResponse<OrderInfo>?) {
-    //    _orderInfo = orderInfo
-    //}
-
-    //fun getOrder(): ApiResponse<OrderInfo>? {
-    //    return _orderInfo
-    //}
 
     fun setDeliveryAddress(deliveryAddress: ApiResponse<OrderInfo>?) {
         _deliveryAddress = deliveryAddress?.data?.deliveryAddresses

@@ -6,18 +6,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import com.elis.orderingapplication.databinding.FragmentPosGroupBinding
 import com.elis.orderingapplication.viewModels.OrderingGroupViewModel
 import com.elis.orderingapplication.viewModels.ParamsViewModel
 import com.elis.orderingapplication.adapters.listAdapters.OrderingGroupAdapter
+import com.elis.orderingapplication.constants.Constants.Companion.DELIVERY_ADDRESS_NAME_KEY
+import com.elis.orderingapplication.constants.Constants.Companion.ORDERING_GROUP_KEY
 import com.elis.orderingapplication.constants.Constants.Companion.SHOW_BANNER
 import com.elis.orderingapplication.pojo2.JoinOrderingGroup
 import com.elis.orderingapplication.utils.DeviceInfo
@@ -28,12 +27,9 @@ import com.elis.orderingapplication.viewModels.SharedViewModelFactory
 class PosGroupFragment : Fragment() {
 
     private var _binding: FragmentPosGroupBinding? = null
-    //private lateinit var binding: FragmentPosGroupBinding
     private val binding: FragmentPosGroupBinding get() = _binding!!
     private val sharedViewModel: ParamsViewModel by activityViewModels()
-    private val args: PosGroupFragmentArgs by navArgs()
     private lateinit var orderingGroupAdapter: OrderingGroupAdapter
-    private var deliveryAddressForArgs: String = ""
     private val orderingGroupViewModel: OrderingGroupViewModel by viewModels {
         SharedViewModelFactory(sharedViewModel, requireActivity().application)
     }
@@ -42,14 +38,13 @@ class PosGroupFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-        _binding = FragmentPosGroupBinding.inflate(inflater)
+        _binding = FragmentPosGroupBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = this
         binding.orderingGroupViewModel = orderingGroupViewModel
         binding.sharedViewModel = sharedViewModel
         binding.toolbar.title = getString(R.string.pos_group_title)
         binding.toolbar.setNavigationIcon(R.drawable.ic_back)
-        binding.toolbar.setTitleTextAppearance(requireContext(),R.style.titleTextStyle)
+        binding.toolbar.setTitleTextAppearance(requireContext(), R.style.titleTextStyle)
         binding.toolbar.setNavigationOnClickListener {
             view?.let { it ->
                 Navigation.findNavController(it)
@@ -63,6 +58,7 @@ class PosGroupFragment : Fragment() {
                     DeviceInfoDialog.showAlertDialog(requireContext(), deviceInfo.getDeviceInfo())
                     true
                 }
+
                 R.id.home_button -> {
                     findNavController().navigate(R.id.action_posGroupFragment_to_landingPageFragment)
                     true
@@ -71,25 +67,19 @@ class PosGroupFragment : Fragment() {
                 else -> false
             }
         }
-
-        val deliveryAddressFromArgs =
-            sharedViewModel.argsBundleFromTest.value?.getString("DELIVERY_ADDRESS_NAME", "")
-        if (deliveryAddressFromArgs != null) {
-            binding.deliveryAddress.text = deliveryAddressFromArgs
-        } else {
-            sharedViewModel.argsBundleFromTest.observe(viewLifecycleOwner, Observer {
-                deliveryAddressForArgs = it.getString("DELIVERY_ADDRESS_NAME", "")
-                binding.deliveryAddress.text = deliveryAddressForArgs
-            })
-        }
-
-        // Inflate the layout for this fragment
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if(SHOW_BANNER) {
+        setupFlavorBanner()
+        setupRecyclerView()
+        setupDeliveryAddress()
+        observeOrderingGroupData()
+    }
+
+    private fun setupFlavorBanner() {
+        if (SHOW_BANNER) {
             FlavorBannerUtils.setupFlavorBanner(
                 resources,
                 requireContext(),
@@ -98,48 +88,65 @@ class PosGroupFragment : Fragment() {
             )
             binding.debugBanner.visibility = VISIBLE
         }
+    }
+
+    private fun setupRecyclerView() {
         val recyclerView: RecyclerView = binding.orderingGroupSelection
         val spacingInPixels = resources.getDimensionPixelSize(R.dimen.spacing)
-        val itemSpacingDecoration = CardViewDecoration(spacingInPixels)
-        recyclerView.addItemDecoration(itemSpacingDecoration)
+        recyclerView.addItemDecoration(CardViewDecoration(spacingInPixels))
 
         orderingGroupAdapter = OrderingGroupAdapter(object : OrderingGroupAdapter.MyClickListener {
             override fun onItemClick(myData: JoinOrderingGroup) {
-                orderingGroupViewModel.onOrderingGroupClicked(myData)
-                sharedViewModel.setOrderingGroupNo(myData.orderingGroupNo)
-                sharedViewModel.setDeliveryAddressNum(myData.deliveryAddressNo)
-                val currentArgsBundle = sharedViewModel.argsBundleFromTest.value ?: Bundle()
-                val updatedArgsBundle = currentArgsBundle.apply {
-                    putString("ORDERING_GROUP", myData.orderingGroupDescription)
-                }
-                sharedViewModel.argsBundleFromTest.value = updatedArgsBundle
-                orderingGroupViewModel.navigateToOrderingGroup.observe(
-                    viewLifecycleOwner,
-                    Observer { orderingGroup ->
-                        orderingGroup?.let {
-                            findNavController().navigate(
-                                PosGroupFragmentDirections.actionPosGroupFragmentToPosFragment(
-                                    orderingGroup.orderingGroupNo,
-                                    orderingGroup.orderingGroupDescription
-                                )
-                            )
-                            orderingGroupViewModel.onOrderingGroupNavigated()
-                        }
-                    })
-
+                handleOrderingGroupClick(myData)
             }
         })
-
         binding.orderingGroupSelection.adapter = orderingGroupAdapter
+    }
 
-        // Observe the LiveData from the ViewModel
+    private fun setupDeliveryAddress() {
+        val deliveryAddressFromArgs =
+            sharedViewModel.argsBundleFromTest.value?.getString(DELIVERY_ADDRESS_NAME_KEY, "")
+        binding.deliveryAddress.text = deliveryAddressFromArgs ?: run {
+            sharedViewModel.argsBundleFromTest.observe(viewLifecycleOwner) { bundle ->
+                binding.deliveryAddress.text = bundle.getString(DELIVERY_ADDRESS_NAME_KEY, "")
+            }
+            ""
+        }
+    }
+
+    private fun observeOrderingGroupData() {
         orderingGroupViewModel.orderingGroup.observe(viewLifecycleOwner) { orderingGroup ->
             orderingGroupAdapter.setData(orderingGroup)
         }
     }
 
+    private fun handleOrderingGroupClick(orderingGroup: JoinOrderingGroup) {
+        orderingGroupViewModel.onOrderingGroupClicked(orderingGroup)
+        sharedViewModel.setOrderingGroupNo(orderingGroup.orderingGroupNo)
+        sharedViewModel.setDeliveryAddressNum(orderingGroup.deliveryAddressNo)
+        val updatedArgsBundle = sharedViewModel.argsBundleFromTest.value?.apply {
+            putString(ORDERING_GROUP_KEY, orderingGroup.orderingGroupDescription)
+        } ?: Bundle().apply {
+            putString(ORDERING_GROUP_KEY, orderingGroup.orderingGroupDescription)
+        }
+        sharedViewModel.argsBundleFromTest.value = updatedArgsBundle
+        orderingGroupViewModel.navigateToOrderingGroup.observe(viewLifecycleOwner) { group ->
+            group?.let { navigateToPosFragment(it) }
+        }
+    }
+
+    private fun navigateToPosFragment(orderingGroup: JoinOrderingGroup) {
+        findNavController().navigate(
+            PosGroupFragmentDirections.actionPosGroupFragmentToPosFragment(
+                orderingGroup.orderingGroupNo,
+                orderingGroup.orderingGroupDescription
+            )
+        )
+        orderingGroupViewModel.onOrderingGroupNavigated()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null // Clear the binding reference
+        _binding = null
     }
 }

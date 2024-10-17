@@ -22,7 +22,7 @@ import com.elis.orderingapplication.constants.Constants
 import com.elis.orderingapplication.constants.Constants.Companion.SHOW_BANNER
 import com.elis.orderingapplication.databinding.FragmentArticleBinding
 import com.elis.orderingapplication.pojo2.Order
-import com.elis.orderingapplication.repositories.UserLoginRepository
+import com.elis.orderingapplication.repositories.AppRepository
 import com.elis.orderingapplication.utils.DeviceInfo
 import com.elis.orderingapplication.utils.DeviceInfoDialog
 import com.elis.orderingapplication.utils.FlavorBannerUtils
@@ -57,8 +57,6 @@ class ArticleFragment : Fragment(), ArticleEntryCardFragment.LastArticleCallback
         _binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_article, container, false)
 
-        //binding.orderData = args.orderData
-        //binding.orderDateVal = args.order
         binding.orderId = args.appOrderId
         binding.toolbar.title = getString(R.string.article_title)
         binding.toolbar.setNavigationIcon(R.drawable.ic_back)
@@ -94,7 +92,6 @@ class ArticleFragment : Fragment(), ArticleEntryCardFragment.LastArticleCallback
         viewPagerAdapter = ArticleEntryAdapter(
             childFragmentManager,
             lifecycle,
-            //emptyList(),
         )
 
         // Inflate the layout for this fragment
@@ -115,7 +112,16 @@ class ArticleFragment : Fragment(), ArticleEntryCardFragment.LastArticleCallback
 
         binding.progressBar.visibility = VISIBLE
 
-        val fab = view.findViewById<ExtendedFloatingActionButton>(R.id.send_order_fab)
+        articleViewModel.order.observe(viewLifecycleOwner) { order ->
+            // Assuming you want to display the first article
+            binding.orderData = order.firstOrNull()
+        }
+
+        articleViewModel.orderDate.observe(viewLifecycleOwner) { formattedDate ->
+            binding.orderDateVal = formattedDate // Assuming you have a 'orderDate' variable in your layout
+        }
+
+            val fab = view.findViewById<ExtendedFloatingActionButton>(R.id.send_order_fab)
         fab.setOnClickListener {
             fab.isEnabled = false
             // Handle FAB click
@@ -133,20 +139,8 @@ class ArticleFragment : Fragment(), ArticleEntryCardFragment.LastArticleCallback
         val orderDate = sharedViewModel.orderDate.value
         val orderId = sharedViewModel.orderId.value
 
-        val userLoginRepository = UserLoginRepository()
-        //val articleEntryViewModel: ArticleEntryViewModel by viewModels {
-        //    AppViewModelFactory(
-        //        sharedViewModel,
-        //        requireActivity().application,
-        //        userLoginRepository
-        //    )
-        //}
-        //viewPager = binding.articleEntryViewpager
-        //viewPagerAdapter = ArticleEntryAdapter(
-        //    childFragmentManager,
-        //    lifecycle,
-            //emptyList(),
-        //)
+        val appRepository = AppRepository()
+
         viewPagerAdapter.clearArticles()
         viewPager.adapter = viewPagerAdapter
 
