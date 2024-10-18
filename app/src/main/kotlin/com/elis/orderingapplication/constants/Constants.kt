@@ -20,5 +20,6 @@ class Constants {
         //PosGroupFragment
         const val DELIVERY_ADDRESS_NAME_KEY = "DELIVERY_ADDRESS_NAME"
         const val ORDERING_GROUP_KEY = "ORDERING_GROUP"
+        const val POINT_OF_SERVICE_NAME_KEY = "POINT_OF_SERVICE_NAME"
     }
 }

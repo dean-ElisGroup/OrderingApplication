@@ -37,7 +37,7 @@ android {
             manifestPlaceholders = [appLabel: "Stock Ordering - Dev"]
             namespace 'com.solstockorder.dev'
             versionName '2.0.6'
-            buildConfigField "String", "API_BASE_URL", '"http://serviceonlinetest.elisonline.co.uk/SolMasterTraining5/Ordering.wso/"'
+            buildConfigField "String", "API_BASE_URL", '"http://serviceonlinetest.elisonline.co.uk/SolMasterTraining3/Ordering.wso/"'
             sourceSets{
                 development{
                     kotlin.srcDir 'src/development/kotlin'
